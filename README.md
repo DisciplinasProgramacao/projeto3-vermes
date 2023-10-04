@@ -8,7 +8,7 @@ Escreva um ou dois parágrafos resumindo o objetivo do seu projeto.
 * Nome completo do aluno 4
 * Joao Victor Salim @JvSalim
 * Nome completo do aluno 4
-* Nome completo do aluno 4
+* Lucas Ferreira Garcia @lucasgarcia04
 * Nome completo do aluno 4
 
 ## Professores responsáveis
