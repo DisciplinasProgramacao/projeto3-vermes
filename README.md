@@ -4,9 +4,9 @@ Escreva um ou dois parágrafos resumindo o objetivo do seu projeto.
 
 ## Alunos integrantes da equipe
 
-* Gabriel Ferreira Amaral
+* Gabriel Ferreira @Druitti
+* Nome completo do aluno 4
 * Joao Victor Salim @JvSalim
-* Nome completo do aluno 3
 * Nome completo do aluno 4
 * Nome completo do aluno 4
 * Nome completo do aluno 4
