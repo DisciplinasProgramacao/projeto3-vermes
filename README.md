@@ -7,12 +7,12 @@ Escreva um ou dois parágrafos resumindo o objetivo do seu projeto.
 * Gabriel Faria @gabrielfaria13
 * Gabriel Ferreira @Druitti
 * Joao Victor Salim @JvSalim
-* Nome completo do aluno 4
-* Lucas Ferreira Garcia @lucasgarcia04
-* Nome completo do aluno 4
+* Lucas Garcia @lucasgarcia04
+* Maisa Pires @my4wyy
+* Miguel Vieira @migueltico2
 
 ## Professores responsáveis
 
-* Nome completo do professor 1
-* Nome completo do professor 2
+* João Caram
+* Cleiton Tavares
 
