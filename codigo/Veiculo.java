@@ -19,8 +19,16 @@ public class Veiculo {
 	}
 
 	public double sair() {
-		
-	}
+    if (qtUso > 0) {
+        qtUso--;
+        usos[qtUso] = null; 
+        return valorPago;
+    } else {
+        System.out.println("Não há carros estacionados.");
+        return 0.0; 
+    }
+}
+
 
 	public double totalArrecadado() {
 		double valorTotal = 0.0;
