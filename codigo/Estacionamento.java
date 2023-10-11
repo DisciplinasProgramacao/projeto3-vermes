@@ -22,26 +22,28 @@ public class Estacionamento {
     }
 
     public void addVeiculo(Veiculo veiculo, String idCli) {
-        Cliente cliente = buscarCliente(idCli);
+
+        Cliente quem = new Cliente("idCli",idCli);
+		Cliente cliente = busca(quem);
         if (cliente != null) {
             cliente.addVeiculo(veiculo);
         }
     }
 
     public void addCliente(Cliente cliente) {
-        if (buscarCliente(cliente.getId()) == null) {
+        if (busca(cliente)==null) {
             clientes.add(cliente);
         }
     }
 
-    private Cliente buscarCliente(String idCli) {
-        for (Cliente cliente : clientes) {
-            if (cliente != null && cliente.getId().equals(idCli)) {
+	private Cliente busca(Cliente quem){
+		for (Cliente cliente : clientes) {
+            if (cliente != null && cliente.equals(quem)) {
                 return cliente;
             }
         }
-        return null;
-    }
+		return null;
+	}
 
     private void gerarVagas() {
         vagas = new LinkedList<>();
