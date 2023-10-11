@@ -74,40 +74,30 @@ public class Estacionamento {
         }
         return totalArrecadado() / usos.size();
     }
-
-    public String top5Clientes(int mes) {
-        String resultado = "";
-
-        Cliente[] clientesArray = clientes.toArray(new Cliente[clientes.size()]);
-
-        // Ordenação manual do array de clientes por arrecadação em ordem decrescente
-        for (int i = 0; i < clientesArray.length - 1; i++) {
-            for (int j = i + 1; j < clientesArray.length; j++) {
-                double arrecadacaoI = clientesArray[i].arrecadadoNoMes(mes);
-                double arrecadacaoJ = clientesArray[j].arrecadadoNoMes(mes);
-
-                if (arrecadacaoI < arrecadacaoJ) {
-                    // Troca de posições
-                    Cliente temp = clientesArray[i];
-                    clientesArray[i] = clientesArray[j];
-                    clientesArray[j] = temp;
-                }
-            }
-        }
-
-        // Obtém os cinco primeiros clientes do array ordenado
-        int contador = 1;
-        for (Cliente cliente : clientesArray) {
-            if (contador > 5) {
+public String top5Clientes(int mes) {
+    List<Cliente> topClientes = new ArrayList<>();
+    for (Cliente cliente : clientes) {
+        double arrecadacao = cliente.arrecadadoNoMes(mes);
+        for (int i = 0; i <= topClientes.size(); i++) {
+            if (i == topClientes.size() || arrecadacao > topClientes.get(i).arrecadadoNoMes(mes)) {
+                topClientes.add(i, cliente);
                 break;
             }
-            resultado += contador + ". Cliente: " + cliente.getNome() +
-                    ", Arrecadação no mês: R$" + cliente.arrecadadoNoMes(mes) + "\n";
-            contador++;
         }
-
-        return resultado;
+        if (topClientes.size() > 5) {
+            topClientes.remove(topClientes.size() - 1);
+        }
     }
+
+    String resultado = "";
+    for (int i = 0; i < topClientes.size(); i++) {
+        Cliente cliente = topClientes.get(i);
+        resultado += (i + 1) + ". Cliente: " + cliente.getNome() +
+                ", Arrecadação no mês: R$" + cliente.arrecadadoNoMes(mes) + "\n";
+    }
+
+    return resultado;
+}
 
     }
 
