@@ -94,7 +94,7 @@ public String top5Clientes(int mes) {
     String resultado = "";
     for (int i = 0; i < topClientes.size(); i++) {
         Cliente cliente = topClientes.get(i);
-        resultado += (i + 1) + ". Cliente: " + cliente.getNome() +
+        resultado += (i + 1) + ". Cliente: " + cliente +
                 ", Arrecadação no mês: R$" + cliente.arrecadadoNoMes(mes) + "\n";
     }
 
