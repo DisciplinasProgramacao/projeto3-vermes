@@ -77,7 +77,7 @@ public class Estacionamento {
         return totalArrecadado() / usos.size();
     }
 public String top5Clientes(int mes) {
-    List<Cliente> topClientes = new ArrayList<>();
+    List<Cliente> topClientes = new LinkedList<>();
     for (Cliente cliente : clientes) {
         double arrecadacao = cliente.arrecadadoNoMes(mes);
         for (int i = 0; i <= topClientes.size(); i++) {
