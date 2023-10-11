@@ -12,51 +12,51 @@ public class Estacionamento {
     private int vagasPorFileira;
     private LinkedList<UsoDeVaga> usos;
 
-    public Estacionamento(String nome, int fileiras, int vagasPorFila) {
-        this.nome = nome;
-        this.quantFileiras = fileiras;
-        this.vagasPorFileira = vagasPorFila;
-        this.clientes = new LinkedList<>();
-        this.usos = new LinkedList<>();
-        gerarVagas();
-    }
+  
 
    
    
 
     public void estacionar(String placa) {
-        Veiculo veiculo = buscarVeiculo(placa);
-        if (veiculo != null) {
-            for (Vaga vaga : vagas) {
-                if (vaga.estacionar()) {
-                    veiculo.estacionar(vaga);
-                    UsoDeVaga uso = new UsoDeVaga(vaga);
-                    uso.setEntrada(LocalDateTime.now());
-                    usos.add(uso);
-                    break;
+        for (Vaga vaga : vagas) {
+            if (vaga.disponivel()) {
+                if (clientes.isEmpty()) {
+                    System.out.println("Não há clientes cadastrados. O veículo com a placa " + placa + " não pode ser estacionado.");
+                    return;
                 }
+                Cliente cliente = clientes.getFirst();
+                
+                Veiculo novoVeiculo = new Veiculo(placa);
+            
+                vaga.estacionar();
+                
+                cliente.addVeiculo(novoVeiculo);
+                
+                return;
             }
         }
+    
+        System.out.println("Não há vagas disponíveis para estacionar o veículo com a placa " + placa);
     }
 
     public double sair(String placa) {
-        Veiculo veiculo = buscarVeiculo(placa);
-        if (veiculo != null) {
-            for (UsoDeVaga uso : usos) {
-                if (uso.getVaga().getVeiculo().equals(veiculo)) {
-                    uso.setSaida(LocalDateTime.now());
-                    double valorPago = uso.sair();
-                    return valorPago;
-                }
+        for (Cliente cliente : clientes) {
+            Veiculo veiculo = cliente.possuiVeiculo(placa);
+            if (veiculo != null) {
+                double valorPago = veiculo.sair();
+                System.out.println("Valor a ser pago: " + valorPago);
+                return valorPago;
             }
         }
+
+        System.out.println("Veículo não encontrado.");
         return 0.0;
     }
 
     public double totalArrecadado() {
         double total = 0.0;
         for (UsoDeVaga uso : usos) {
-            total += uso.getValorPago();
+            total += uso.valorPago();
         }
         return total;
     }
@@ -66,11 +66,16 @@ public class Estacionamento {
         for (UsoDeVaga uso : usos) {
             LocalDate dataSaida = uso.getSaida().toLocalDate();
             if (dataSaida.getMonthValue() == mes) {
-                total += uso.getValorPago();
+                total += uso.valorPago();
             }
         }
         return total;
     }
+
+	
+	
+	}
+
 
 	public void addVeiculo(Veiculo veiculo, String idCli) {
 			
