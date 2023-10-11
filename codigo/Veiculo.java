@@ -19,15 +19,24 @@ public class Veiculo {
 	}
 
 	public double sair() {
-    if (qtUso > 0) {
-        qtUso--;
-        usos[qtUso] = null; 
-        return valorPago;
-    } else {
-        System.out.println("Não há carros estacionados.");
-        return 0.0; 
-    }
-}
+		if (qtUso > 0) {
+			qtUso--;
+			UsoDeVaga ultimoUso = usos[qtUso];
+			if (ultimoUso != null) {
+				ultimoUso.sair(); 
+				double valorPago = ultimoUso.valorPago();
+				usos[qtUso] = null;
+				return valorPago;
+			} else {
+				System.out.println("Erro");
+				return 0.0;
+			}
+		} else {
+			System.out.println("Não há carros estacionados.");
+			return 0.0;
+		}
+	}
+	
 
 
 	public double totalArrecadado() {
