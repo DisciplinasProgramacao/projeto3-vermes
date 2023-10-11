@@ -76,7 +76,38 @@ public class Estacionamento {
     }
 
     public String top5Clientes(int mes) {
-        // Implementar ainda
-        return null;
+        String resultado = "";
+
+        Cliente[] clientesArray = clientes.toArray(new Cliente[clientes.size()]);
+
+        // Ordenação manual do array de clientes por arrecadação em ordem decrescente
+        for (int i = 0; i < clientesArray.length - 1; i++) {
+            for (int j = i + 1; j < clientesArray.length; j++) {
+                double arrecadacaoI = clientesArray[i].arrecadadoNoMes(mes);
+                double arrecadacaoJ = clientesArray[j].arrecadadoNoMes(mes);
+
+                if (arrecadacaoI < arrecadacaoJ) {
+                    // Troca de posições
+                    Cliente temp = clientesArray[i];
+                    clientesArray[i] = clientesArray[j];
+                    clientesArray[j] = temp;
+                }
+            }
+        }
+
+        // Obtém os cinco primeiros clientes do array ordenado
+        int contador = 1;
+        for (Cliente cliente : clientesArray) {
+            if (contador > 5) {
+                break;
+            }
+            resultado += contador + ". Cliente: " + cliente.getNome() +
+                    ", Arrecadação no mês: R$" + cliente.arrecadadoNoMes(mes) + "\n";
+            contador++;
+        }
+
+        return resultado;
     }
-}
+
+    }
+
