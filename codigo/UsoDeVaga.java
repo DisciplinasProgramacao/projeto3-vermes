@@ -45,11 +45,13 @@ public class UsoDeVaga {
     }
     public Servico getServico() {
         return servico;
+
     }
 
     public double valorPago() {
         return valorPago;
     }
+
      /**
       * Calcula o valor a ser pago pelo uso da vaga.
       */
