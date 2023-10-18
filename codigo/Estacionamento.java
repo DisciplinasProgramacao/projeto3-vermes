@@ -77,30 +77,5 @@ public class Estacionamento {
 	}
 
 
-	public void addVeiculo(Veiculo veiculo, String idCli) {
-			
-		}
 	
-		public void addCliente(Cliente cliente) {
-			
-		}
-	
-		private void gerarVagas() {
-			
-		}
-	
-		public double valorMedioPorUso() {
-			
-		}
-	
-		public String top5Clientes(int mes) {
-			
-		}
-	
-		
-	
-		
-	
-	}
-
 
