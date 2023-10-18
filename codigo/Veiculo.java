@@ -50,7 +50,7 @@ public class Veiculo {
 	public double arrecadadoNoMes(int mes) {
 		double valorArrecadado = 0.0;
 		for (UsoDeVaga uso : usos) {
-			if (uso != null && uso.getData().getMonth() == mes) {
+			if (uso != null && uso.getMes() == mes) {
 				valorArrecadado += uso.valorMedioPorUso();
 			}
 		}
