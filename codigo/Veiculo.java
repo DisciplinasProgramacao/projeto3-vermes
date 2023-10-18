@@ -51,7 +51,7 @@ public class Veiculo {
 		double valorArrecadado = 0.0;
 		for (UsoDeVaga uso : usos) {
 			if (uso != null && uso.getMes() == mes) {
-				valorArrecadado += uso.valorMedioPorUso();
+				valorArrecadado += uso.valorPago();
 			}
 		}
 		return valorArrecadado;
