@@ -1,4 +1,5 @@
 
+
 public class Veiculo {
 
 	private String placa;
@@ -8,13 +9,13 @@ public class Veiculo {
 
 	public Veiculo(String placa) {
 		this.placa = placa;
-		this.usos = new UsoDeVaga[MAX_USO];
+        this.usos = new UsoDeVaga[MAX_USO];
 	}
 
 	public void estacionar(Vaga vaga) {
-		UsoDeVaga novoUso = new UsoDeVaga(vaga);
-		usos[qtUso] = novoUso;
-		qtUso++;
+		 UsoDeVaga novoUso = new UsoDeVaga(vaga);
+		 usos[qtUso] = novoUso;
+		 qtUso++;
 	}
 
 	public double sair() {
@@ -22,7 +23,7 @@ public class Veiculo {
 			qtUso--;
 			UsoDeVaga ultimoUso = usos[qtUso];
 			if (ultimoUso != null) {
-				ultimoUso.sair();
+				ultimoUso.sair(); 
 				double valorPago = ultimoUso.valorPago();
 				usos[qtUso] = null;
 				return valorPago;
@@ -35,20 +36,22 @@ public class Veiculo {
 			return 0.0;
 		}
 	}
+	
+
 
 	public double totalArrecadado() {
 		double valorTotal = 0.0;
-		for (UsoDeVaga uso : usos) {
-			valorTotal += uso.valorPago();
+		for (UsoDeVaga uso : usos){
+		valorTotal += uso.valorPago();
 		}
-		return valorTotal;
+        return valorTotal;
 	}
 
 	public double arrecadadoNoMes(int mes) {
 		double valorArrecadado = 0.0;
 		for (UsoDeVaga uso : usos) {
-			if (uso != null && uso.getData().getMonth() == mes) {
-				valorArrecadado += uso.valorMedioPorUso();
+			if (uso != null && uso.getMes() == mes) {
+				valorArrecadado += uso.valorPago();
 			}
 		}
 		return valorArrecadado;
