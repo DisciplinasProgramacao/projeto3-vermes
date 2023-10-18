@@ -9,55 +9,66 @@ public class UsoDeVaga {
     private LocalDateTime entrada;
     private LocalDateTime saida;
     private double valorPago;
-    private boolean manobristaContratado;
-    private boolean lavagemContratada;
-    private boolean polimentoContratado;
+    private Servico servico;
 
     
-
+     /**
+      * Construtor da classe UsoDeVaga.
+      * @param vaga Vaga a ser utilizada.
+      */
     public UsoDeVaga(Vaga vaga) {
         this.vaga = vaga;
         this.entrada = LocalDateTime.now(); 
-        this.manobristaContratado = false;
-        this.lavagemContratada = false;
-        this.polimentoContratado = false;
+         
 
     }
-    public void contratarManobrista(){
-        this.manobristaContratado = true;
+    /**
+     *  Método para contratar um serviço para o veículo.
+     * @param qual Serviço a ser contratado.
+     */
+    public void contratarServico(Servico qual){
+        this.servico = qual;
     }
-    public void contratarLavagem(){
-        this.lavagemContratada = true;
-    }
-    public void contratarPolimento(){
-        this.polimentoContratado = true;
-    }
-
+     /**
+      * Registra a saída do veículo da vaga.
+      */
     public void sair() {
         this.saida = LocalDateTime.now(); 
         calcularValorPago();
+        
+        if(servico != null)
+        {double tempoMini = servico.getTempo();}
+        
+        double tempo = calcularDiferencaEmMinutos(entrada, saida);
+
+        
+    }
+    public Servico getServico() {
+        return servico;
     }
 
     public double valorPago() {
         return valorPago;
     }
-
-    private void calcularValorPago() {
-        if (manobristaContratado) {
-            valorPago += 5.0; // Custo do Manobrista
-        }
-        if (lavagemContratada && calcularDiferencaEmMinutos(entrada, saida) >= 60) {
-            valorPago += 20.0; // Custo da Lavagem (se permanência for de pelo menos 1 hora)
-        }
-        if (polimentoContratado && calcularDiferencaEmMinutos(entrada, saida) >= 120) {
-            valorPago += 45.0; // Custo do Polimento (se permanência for de pelo menos 2 horas)
-        }
+     /**
+      * Calcula o valor a ser pago pelo uso da vaga.
+      */
+    public void calcularValorPago() {
+        
         long minutos = calcularDiferencaEmMinutos(entrada, saida);
         double valorTemp = (minutos / 15) * VALOR_FRACAO;
         valorPago = valorTemp > VALOR_MAXIMO ? VALOR_MAXIMO : valorTemp;
+         if(servico != null)
+         {valorPago += servico.getValor();}
     }
+    /**
+     * Calcula a diferença em minutos entre duas datas.
+     * @param inicio Data inicial.
+     * @param fim  Data final.
+     * @return diferença em minutos entre duas datas.
+     */
 
-    private long calcularDiferencaEmMinutos(LocalDateTime inicio, LocalDateTime fim) {
+    public long calcularDiferencaEmMinutos(LocalDateTime inicio, LocalDateTime fim) {
         long diferencaEmMinutos = 0;
         while (inicio.isBefore(fim)) {
             inicio = inicio.plusMinutes(1);

@@ -1,101 +1,60 @@
 
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+
 import static org.junit.Assert.*;
 
-import java.beans.Transient;
+import java.time.LocalDateTime;
 
 public class UsoDeVagaTest {
+ 
+    private Vaga vaga;
+    private UsoDeVaga usoDeVaga;
+
+    
+
     
 
     @Test
-    public void testVagaDisponivel() {
-        criaUsoDeVagaHelper(1, true);
-        assertTrue(vaga.isDisponivel());
+    public void testContratarServico() {
+        criaUsoDeVagaHelper(1, 1);
+        usoDeVaga.contratarServico(Servico.MANOBRISTA);
+        assertEquals("Constratando serviço correto",Servico.MANOBRISTA, usoDeVaga.getServico());
     }
-
-    @Test
-    public void testVagaOcupada() {
-        criaUsoDeVagaHelper(2, false);
-        assertFalse(vaga.isDisponivel());
-    }
-
-    @Test
-    public void testAlterarDisponibilidade() {
-        criaUsoDeVagaHelper(3, true);
-        vaga.setDisponivel(false);
-        assertFalse(vaga.isDisponivel());
-    }
-
-    @Test 
-    public void testContratarManobrista() {
-        criaUsoDeVagaHelper(4, true);
-        vaga.contratarManobrista();
-        assertTrue(vaga.isManobristaContratado());
-    }
-
-    @Test
-    public void testContratarLavagem() {
-        criaUsoDeVagaHelper(5, true);
-        vaga.contratarLavagem();
-        assertTrue(vaga.isLavagemContratada());
-    }
-
-    @Test 
-    public void testContratarPolimento() {
-        criaUsoDeVagaHelper(6, true);
-        vaga.contratarPolimento();
-        assertTrue(vaga.isPolimentoContratado());
-    }
-
+      
     @Test
     public void testSair() {
-        criaUsoDeVagaHelper(7, true);
-        vaga.sair();
-        assertNotNull(vaga.getSaida());
+        criaUsoDeVagaHelper(1, 2);
+        usoDeVaga.sair();
+        assertEquals("Imprimindo data de saída atual",LocalDateTime.now(), usoDeVaga.getSaida());
     }
 
     @Test
-    public void testValorPago() {
-        criaUsoDeVagaHelper(8, true);
-        vaga.sair();
-        assertNotNull(vaga.valorPago());
+    public void testCalculcarValorPago(){
+        criaUsoDeVagaHelper(1, 3);
+        usoDeVaga.sair();
+        usoDeVaga.calcularValorPago();
+        assertEquals("Calculando valor pago",0.0, usoDeVaga.valorPago(), 0.0);
     }
+
     @Test
-    public void testCalcularValorPago() {
-        criaUsoDeVagaHelper(9, true);
-        vaga.sair();
-        assertNotNull(vaga.calcularValorPago());
+    public void testCalcularDiferencaEmMinutos(){
+        criaUsoDeVagaHelper(1, 4);
+        LocalDateTime inicio = LocalDateTime.of(2020, 10, 10, 10, 10);
+        LocalDateTime fim = LocalDateTime.of(2020, 10, 10, 10, 20);
+        assertEquals("Calculando diferença em minutos",10, usoDeVaga.calcularDiferencaEmMinutos(inicio, fim));
     }
-    @Test
-    public void testCalcularDiferencaEmMinutos() {
-        criaUsoDeVagaHelper(10, true);
-        vaga.sair();
-        assertNotNull(vaga.calcularDiferencaEmMinutos());
+
+    public void criaUsoDeVagaHelper(int fila, int coluna){
+        vaga = new Vaga(fila, coluna);
+        usoDeVaga = new UsoDeVaga(vaga);
     }
-    @Test
-    public void testCalcularValorPagoComSeriços() {
-        criaUsoDeVagaComServiçoHelper(11, true, true, true, true);
-        vaga.sair();
-        assertNotNull(vaga.calcularValorPago());
-    }
+
     
+   
     
 
-
-
-
-    public void criaUsoDeVagaHelper(int fila,  boolean disponivel) {
-        Vaga vaga = new Vaga(fila, disponivel);
-        UsoDeVaga vaga = new UsoDeVaga(vaga);
-       
-    }
-    public void criaUsoDeVagaComServiçoHelper(int fila, boolean disponivel, boolean manobristaContratado, boolean lavagemContratada, boolean polimentoContratado) {
-        Vaga vaga = new Vaga(fila, disponivel);
-        UsoDeVaga vaga = new UsoDeVaga(vaga);
-        vaga.contratarManobrista();
-        vaga.contratarLavagem();
-        vaga.contratarPolimento();
-    }
+    
     
 
 }
