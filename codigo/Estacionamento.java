@@ -32,11 +32,17 @@ public class Estacionamento {
         }
     }
 
-    public void addCliente(Cliente cliente) {
-        if (busca(cliente)==null) {
+ public boolean addCliente(Cliente cliente) {
+        if (buscarCliente(cliente.getId()) == null) {
             clientes.add(cliente);
+            return true;
         }
+        else {
+            return false;
+        }
+
     }
+
 
 	private Cliente busca(Cliente quem){
 		for (Cliente cliente : clientes) {
