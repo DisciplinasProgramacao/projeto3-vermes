@@ -17,7 +17,7 @@ public class Estacionamento {
    
    
 
-    public void estacionar(String placa) {
+  public void estacionar(String placa) {
         for (Vaga vaga : vagas) {
             if (vaga.disponivel()) {
                 if (clientes.isEmpty()) {
@@ -31,6 +31,7 @@ public class Estacionamento {
                 vaga.estacionar();
                 
                 cliente.addVeiculo(novoVeiculo);
+                novoVeiculo.estacionar(vaga); 
                 
                 return;
             }
