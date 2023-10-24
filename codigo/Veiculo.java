@@ -5,26 +5,29 @@ public class Veiculo {
 	private String placa;
 	private UsoDeVaga[] usos;
 	private static final int MAX_USO = 1000;
-	private int qtUso = 0;
+	private int qtUso;
+	
 
 	public Veiculo(String placa) {
 		this.placa = placa;
         this.usos = new UsoDeVaga[MAX_USO];
+
 	}
 
 	public void estacionar(Vaga vaga) {
 		 UsoDeVaga novoUso = new UsoDeVaga(vaga);
-		 usos[qtUso] = novoUso;
-		 qtUso++;
+		 usos[++qtUso] = novoUso;
+
 	}
+
 
 	public double sair() {
 		if (qtUso > 0) {
-			qtUso--;
+			
 			UsoDeVaga ultimoUso = usos[qtUso];
 			if (ultimoUso != null) {
 				ultimoUso.sair(); 
-				double valorPago = ultimoUso.valorPago();
+				double valorPago = ultimoUso.getValorPago();
 				usos[qtUso] = null;
 				return valorPago;
 			} else {
@@ -42,7 +45,7 @@ public class Veiculo {
 	public double totalArrecadado() {
 		double valorTotal = 0.0;
 		for (UsoDeVaga uso : usos){
-		valorTotal += uso.valorPago();
+		valorTotal += uso.getValorPago();
 		}
         return valorTotal;
 	}
@@ -51,14 +54,18 @@ public class Veiculo {
 		double valorArrecadado = 0.0;
 		for (UsoDeVaga uso : usos) {
 			if (uso != null && uso.getMes() == mes) {
-				valorArrecadado += uso.valorPago();
+				valorArrecadado += uso.getValorPago();
 			}
 		}
 		return valorArrecadado;
 	}
 
 	public int totalDeUsos() {
-		return usos.length;
+		return qtUso;
 	}
+
+	public String getPlaca() {
+        return placa;
+    }
 
 }
