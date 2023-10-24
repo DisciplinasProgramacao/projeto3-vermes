@@ -110,15 +110,14 @@ public class Estacionamento {
     }
 
         public double arrecadacaoNoMes(int mes) {
-        double total = 0.0;
-        for (UsoDeVaga uso : usos) {
-            LocalDate dataSaida = uso.getSaida().toLocalDate();
-            if (dataSaida.getMonthValue() == mes) {
-                total += uso.valorPago();
-            }
-        }
-        return total;
-    }
+		double totalMes = 0;
+		for (Cliente cliente : clientes) {
+			if (cliente != null) {
+				totalMes += cliente.arrecadadoNoMes(mes);
+			}
+		}
+		return totalMes;
+	}
 
 
     public double valorMedioPorUso() {
