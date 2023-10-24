@@ -63,27 +63,30 @@ public class Estacionamento {
         }
     }
 
-    public void estacionar(String placa) {
-        for (Vaga vaga : vagas) {
-            if (vaga.disponivel()) {
-                if (clientes.isEmpty()) {
-                    System.out.println("Não há clientes cadastrados. O veículo com a placa " + placa + " não pode ser estacionado.");
-                    return;
-                }
-                Cliente cliente = clientes.getFirst();
-                Veiculo novoVeiculo = new Veiculo(placa);
-                vaga.estacionar();
-                
-                cliente.addVeiculo(novoVeiculo);
-                novoVeiculo.estacionar(vaga); 
-                
+public void estacionar(String placa) throws EstacionamentoLotadoException {
+    boolean estacionado = false;
+    for (Vaga vaga : vagas) {
+        if (vaga.disponivel()) {
+            estacionado = true;
+            if (clientes.isEmpty()) {
+                System.out.println("Não há clientes cadastrados. O veículo com a placa " + placa + " não pode ser estacionado.");
                 return;
             }
+            Cliente cliente = clientes.getFirst();
+            Veiculo novoVeiculo = new Veiculo(placa);
+            vaga.estacionar();
+
+            cliente.addVeiculo(novoVeiculo);
+            novoVeiculo.estacionar(vaga);
+
+            return;
         }
-    
-        System.out.println("Não há vagas disponíveis para estacionar o veículo com a placa " + placa);
     }
 
+    if (!estacionado) {
+        throw new EstacionamentoLotadoException("Estacionamento lotado. Não há vagas disponíveis para estacionar o veículo com a placa " + placa);
+    }
+}
 
      public double sair(String placa) {
         for (Cliente cliente : clientes) {
