@@ -16,10 +16,15 @@ public class UsoDeVaga {
       * Construtor da classe UsoDeVaga.
       * @param vaga Vaga a ser utilizada.
       */
-    public UsoDeVaga(Vaga vaga) {
+    public UsoDeVaga(Vaga vaga) throws VagaIndisoponivelException{
         this.vaga = vaga;
         this.entrada = LocalDateTime.now(); 
          
+        if (vaga.disponivel()) {
+            vaga.estacionar();
+        } else {
+            throw new VagaIndisoponivelException("A vaga está indisponível.");
+        }
 
     }
     /**
@@ -32,17 +37,26 @@ public class UsoDeVaga {
      /**
       * Registra a saída do veículo da vaga.
       */
-    public void sair() {
+    public void sair() throws ServicoNaoExecutadoException {
         this.saida = LocalDateTime.now(); 
         calcularValorPago();
-        
+       
         if(servico != null)
-        {double tempoMini = servico.getTempo();}
+        {
+        double tempoMini = servico.getTempo();
         
         double tempo = calcularDiferencaEmMinutos(entrada, saida);
-
-        
+            if(tempo < tempoMini){
+                throw new ServicoNaoExecutadoException("O serviço não foi executado. O tempo mínimo é de " + servico.getTempo() + " minutos.");
+            }
     }
+    }
+        
+
+
+    
+
+    
     public Servico getServico() {
         return servico;
 
