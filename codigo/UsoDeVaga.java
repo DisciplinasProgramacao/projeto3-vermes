@@ -81,4 +81,11 @@ public class UsoDeVaga {
     public LocalDateTime getSaida() {
         return saida;
     }
+    public LocalDateTime getEntrada(){
+        return entrada;
+    }
+
+    public int getMes(){
+        return entrada.getMonthValue();
+    }
 }
