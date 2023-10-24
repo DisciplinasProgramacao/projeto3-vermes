@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class Cliente {
 
@@ -11,6 +10,14 @@ public class Cliente {
 		this.nome = nome;
 		this.id = id;
 		this.veiculos = new Veiculo[50];
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public String getNome() {
+		return nome;
 	}
 
 	public void addVeiculo(Veiculo veiculo) {
@@ -70,21 +77,8 @@ public class Cliente {
 		return arrecadadoMes;
 	}
 
-	public List<Registro> obterHistoricoVeiculo(String placa) {
-		Veiculo veiculo = possuiVeiculo(placa);
-		if (veiculo != null) {
-			return veiculo.getHistorico();
-		}
-		return null;
-	}
 
-	public List<Registro> obterHistoricoTodosVeiculos() {
-		List<Registro> historicoTotal = new ArrayList<>();
-		for (Veiculo veiculo : veiculos) {
-			if (veiculo != null) {
-				historicoTotal.addAll(veiculo.getHistorico());
-			}
-		}
-		return historicoTotal;
-	}
 }
+
+
+
