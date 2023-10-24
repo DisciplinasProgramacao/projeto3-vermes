@@ -21,7 +21,9 @@ public class UsoDeVaga {
         this.entrada = LocalDateTime.now(); 
          
         if (vaga.disponivel()) {
-            throw new VagaIndisoponivelException("A vaga está ocupada.");
+            vaga.estacionar();
+        } else {
+            throw new VagaIndisoponivelException("A vaga está indisponível.");
         }
 
     }
