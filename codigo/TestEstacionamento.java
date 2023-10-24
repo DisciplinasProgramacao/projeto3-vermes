@@ -5,32 +5,31 @@ import org.junit.jupiter.api.Test;
 public class TestEstacionamento {
 
     private Estacionamento estacionamento;
+    private Cliente c;
+    private Veiculo v;
 
     @BeforeEach
     public void setUp() {
         estacionamento = new Estacionamento("estacionamento vermes", 10, 10);
+        c = new Cliente("gabriel", "333");
+        v = new Veiculo("ADD123");
+        estacionamento.addCliente(c);
     }
 
     @Test
     public void testAddCliente() {
         Cliente cliente = new Cliente("lucas", "123");
-        estacionamento.addCliente(cliente);
-        assertTrue(estacionamento.cliente.contains(cliente));
+        assertTrue(estacionamento.addCliente(cliente));
     }
 
     @Test
     public void testEstacionar() {
-        estacionamento.addCliente(new Cliente("gabriel", "333"));
+        Cliente c = new Cliente("gabriel", "333");
+        Veiculo v = new Veiculo("ADD123");
+        c.addVeiculo(v);
         estacionamento.estacionar("ADD123");
-    
-        boolean vagaEstacionada = false;
-        for (Vaga vaga : estacionamento.vagas) {
-            if (!vaga.disponivel()) {
-                vagaEstacionada = true;
-                break;
-            }
-        }
-        assertTrue(vagaEstacionada);
+        assertEquals(1,v.totalDeUsos());         
+        
     }
 
     @Test
@@ -92,21 +91,20 @@ public class TestEstacionamento {
 
     @Test
     public void testTop5Clientes() {
-
         Cliente cliente1 = new Cliente("maisa", "3456");
         estacionamento.addCliente(cliente1);
         estacionamento.estacionar("POO123");
         estacionamento.sair("POO123");
-
+    
         Cliente cliente2 = new Cliente("Miguel", "2323");
         estacionamento.addCliente(cliente2);
         estacionamento.estacionar("DEF456");
         estacionamento.sair("DEF456");
-
-        String topClientes = estacionamento.top5Clientes(10); 
-       
-        String clientestop = "1. Cliente: Cliente 1, Arrecadação no mês: R$0.0\n2. Cliente: Cliente 2, Arrecadação no mês: R$0.0\n";
+    
+        String topClientes = estacionamento.top5Clientes(12); 
+    
+        String clientestop = "1. Cliente: maisa, Arrecadação no mês: R$0.0\n2. Cliente: Miguel, Arrecadação no mês: R$0.0\n";
         assertEquals(clientestop, topClientes);
     }
+    
 }
-
