@@ -1,6 +1,3 @@
-
-import java.time.LocalDateTime;
-import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,6 +20,10 @@ public class Estacionamento {
         gerarVagas();
     }
 
+    public String getNome(){
+        return nome;
+    }
+
     public void addVeiculo(Veiculo veiculo, String idCli) {
 
         Cliente quem = new Cliente("idCli",idCli);
@@ -33,14 +34,13 @@ public class Estacionamento {
     }
 
  public boolean addCliente(Cliente cliente) {
-        if (buscarCliente(cliente.getId()) == null) {
+        if ((busca(cliente)) == null) {
             clientes.add(cliente);
             return true;
         }
         else {
             return false;
         }
-
     }
 
 
@@ -71,9 +71,7 @@ public class Estacionamento {
                     return;
                 }
                 Cliente cliente = clientes.getFirst();
-                
                 Veiculo novoVeiculo = new Veiculo(placa);
-            
                 vaga.estacionar();
                 
                 cliente.addVeiculo(novoVeiculo);
@@ -104,7 +102,7 @@ public class Estacionamento {
     public double totalArrecadado() {
         double total = 0.0;
         for (UsoDeVaga uso : usos) {
-            total += uso.valorPago();
+            total += uso.getValorPago();
         }
         return total;
     }
@@ -126,6 +124,7 @@ public class Estacionamento {
         }
         return totalArrecadado() / usos.size();
     }
+    
 public String top5Clientes(int mes) {
     List<Cliente> topClientes = new LinkedList<>();
     for (Cliente cliente : clientes) {
@@ -152,4 +151,3 @@ public String top5Clientes(int mes) {
 }
 
     }
-
