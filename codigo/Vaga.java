@@ -32,4 +32,7 @@ public class Vaga {
 		return disponivel;
 	}
 
+	public String toString() {
+		return id;
+	}
 }
