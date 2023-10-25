@@ -33,6 +33,7 @@ public class UsoDeVagaTest {
     public void testCalculcarValorPago() throws ServicoNaoExecutadoException, VagaIndisoponivelException {
         criaUsoDeVagaHelper(1, 3);
         vaga.estacionar();
+        
         usoDeVaga.sair();
         usoDeVaga.calcularValorPago();
         assertEquals("Calculando valor pago",0.0, usoDeVaga.valorPago(), 0.0);
