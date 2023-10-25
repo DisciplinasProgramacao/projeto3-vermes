@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
 
-public class UsoDeVagaTest {
+public class TestUsoDeVaga {
  
     private Vaga vaga;
     private UsoDeVaga usoDeVaga;
