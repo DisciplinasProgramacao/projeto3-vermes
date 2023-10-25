@@ -1,20 +1,53 @@
-import java.io.IOException;
 import java.util.Scanner;
-import java.util.List; 
+import java.io.IOException;
+import java.util.List;
 
+/**
+ * Classe que representa a aplicação de gerenciamento de um estacionamento.
+ */
 public class Aplicacao {
-    private static Scanner SCANNER;
+    private static Scanner scanner;
     private static Estacionamento estacionamento;
 
-    public static void main(String[] args) {
-        SCANNER = new Scanner(System.in);
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        scanner = new Scanner(System.in);
         estacionamento = new Estacionamento("Estacionamento da Maisa", 5, 10);
+
+        try {
+            Estacionamento est = Serializacao.carregarEstacionamento();
+            if (est != null) {
+                estacionamento = est;
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Erro ao carregar o estacionamento: " + e.getMessage());
+        }
+        Estacionamento estacionamento1 = new Estacionamento("Estacionamento 1", 5, 10);
+        Estacionamento estacionamento2 = new Estacionamento("Estacionamento 2", 5, 10);
+        Estacionamento estacionamento3 = new Estacionamento("Estacionamento 3", 5, 10);
+        System.out.println("Escolha o estacionamento (1, 2 ou 3): ");
+        int escolhaEstacionamento = Integer.parseInt(scanner.nextLine());
+
+        switch (escolhaEstacionamento) {
+            case 1:
+                estacionamento = estacionamento1;
+                break;
+            case 2:
+                estacionamento = estacionamento2;
+                break;
+            case 3:
+                estacionamento = estacionamento3;
+                break;
+            default:
+                System.out.println("Opção inválida. Usando Estacionamento 1 por padrão.");
+                estacionamento = estacionamento1;
+                break;
+        }
+
         menu();
     }
 
     public static void menu() throws IOException {
         System.out.println("Escolha uma das opções: ");
-        System.out.println("\t0. Salvar e sair");
         System.out.println("\t1. Cadastrar cliente");
         System.out.println("\t2. Adicionar veículo");
         System.out.println("\t3. Estacionar");
@@ -24,51 +57,65 @@ public class Aplicacao {
         System.out.println("\t7. Consultar valor médio de utilização do estacionamento");
         System.out.println("\t8. Consultar top 5 clientes");
         System.out.println("\t9. Mostrar histórico de cliente");
+        System.out.println("\t0. Sair do programa");
 
         int opcao;
 
         try {
-            opcao = Integer.parseInt(SCANNER.nextLine());
+            opcao = Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException exception) {
             opcao = -1;
         }
-        boolean saindo = false;
 
         switch (opcao) {
-            case 0 -> cadastrarCliente();
-            case 1 -> adicionarVeiculo();
-            case 2 -> estacionarVeiculo();
-            case 3 -> sairDaVaga();
-            case 4 -> consultarTotal();
-            case 5 -> consultarTotalMes();
-            case 6 -> consultarValorMedio();
-            case 7 -> mostrarTop5Clientes();
-            case 8 -> mostrarHistoricoCliente();
-            default -> System.out.println("A opção informada é inválida.");
+            case 1:
+                cadastrarCliente();
+                break;
+            case 2:
+                adicionarVeiculo();
+                break;
+            case 3:
+                estacionarVeiculo();
+                break;
+            case 4:
+                sairDaVaga();
+                break;
+            case 5:
+                consultarTotal();
+                break;
+            case 6:
+                consultarTotalMes();
+                break;
+            case 7:
+                consultarValorMedio();
+                break;
+            case 8:
+                mostrarTop5Clientes();
+                break;
+            case 9:
+                mostrarHistoricoCliente();
+                break;
+            case 0:
+                try {
+                    Serializacao.salvarEstacionamento(estacionamento);
+                } catch (IOException e) {
+                    System.out.println("Erro ao salvar estacionamentos: " + e.getMessage());
+                }
+                System.out.println("Saindo do programa.");
+                System.exit(0);
+            default:
+                System.out.println("A opção informada é inválida.");
         }
 
-        if (!saindo) {
-
-            System.out.println();
-            System.out.println("Pressione ENTER para voltar ao menu...");
-
-            try {
-                System.in.read();
-            } catch (IOException ignored) {
-            }
-
-            menu();
-        }
+        menu(); // Chama o menu novamente após a seleção da opção.
     }
-
-
 
     public static void cadastrarCliente() {
         System.out.println("Digite o ID do cliente: ");
-        String idCliente = SCANNER.nextLine();
+        String idCliente = scanner.nextLine();
 
         System.out.println("Digite o nome do cliente: ");
-        String nomeCliente = SCANNER.nextLine();
+        String nomeCliente = scanner.nextLine();
 
         Cliente cliente = new Cliente(nomeCliente, idCliente);
         estacionamento.addCliente(cliente);
@@ -76,12 +123,12 @@ public class Aplicacao {
 
     public static void adicionarVeiculo() {
         System.out.println("Digite o ID do cliente: ");
-        String idCliente = SCANNER.nextLine();
+        String idCliente = scanner.nextLine();
 
         System.out.println("Digite a placa do veículo: ");
-        String placa = SCANNER.nextLine();
+        String placa = scanner.nextLine();
 
-        Cliente cliente = estacionamento.buscarCliente(idCliente);
+        Cliente cliente = estacionamento.busca(idCliente);
 
         if (cliente != null) {
             Veiculo veiculo = new Veiculo(placa);
@@ -93,17 +140,16 @@ public class Aplicacao {
 
     public static void estacionarVeiculo() {
         System.out.println("Digite a placa do veículo: ");
-        String placa = SCANNER.nextLine();
+        String placa = scanner.nextLine();
 
-        Veiculo veiculo = estacionamento.buscarVeiculo(placa);
+        Veiculo veiculo = estacionamento.buscaVeiculo(placa);
 
         if (veiculo != null) {
-            Vaga vaga = estacionamento.getVagaDisponivel();
-            if (vaga != null) {
-                veiculo.estacionar(vaga);
+            try {
+                estacionamento.estacionar(veiculo.getPlaca());
                 System.out.println("Veículo estacionado com sucesso.");
-            } else {
-                System.out.println("Não há vagas disponíveis.");
+            } catch (EstacionamentoLotadoException e) {
+                System.out.println(e.getMessage());
             }
         } else {
             System.out.println("Veículo não encontrado.");
@@ -112,15 +158,11 @@ public class Aplicacao {
 
     public static void sairDaVaga() {
         System.out.println("Digite a placa do veículo: ");
-        String placa = SCANNER.nextLine();
+        String placa = scanner.nextLine();
 
-        Veiculo veiculo = estacionamento.buscarVeiculo(placa);
-
-        if (veiculo != null) {
-            double valorPago = veiculo.sair();
+        double valorPago = estacionamento.sair(placa);
+        if (valorPago > 0) {
             System.out.println("Valor pago: R$" + valorPago);
-        } else {
-            System.out.println("Veículo não encontrado.");
         }
     }
 
@@ -131,13 +173,31 @@ public class Aplicacao {
 
     public static void consultarTotalMes() {
         System.out.println("Digite o mês: ");
-        int mes = Integer.parseInt(SCANNER.nextLine());
+        int mes = Integer.parseInt(scanner.nextLine());
         double totalMes = estacionamento.arrecadacaoNoMes(mes);
         System.out.println("A arrecadação do mês " + mes + " foi de R$" + totalMes);
     }
 
-   public static void consultarValorMedio() {
-    double valorMedio = estacionamento.valorMedioPorUso();
-    System.out.println("O valor médio de uso no estacionamento foi de R$" + valorMedio);
-}
+    public static void consultarValorMedio() {
+        double valorMedio = estacionamento.valorMedioPorUso();
+        System.out.println("O valor médio de uso no estacionamento foi de R$" + valorMedio);
+    }
+
+    public static void mostrarTop5Clientes() {
+        System.out.println(estacionamento.top5Clientes(10));
+    }
+
+    public static void mostrarHistoricoCliente() {
+        System.out.println("Digite o ID do cliente: ");
+        String idCliente = scanner.nextLine();
+        Cliente cliente = estacionamento.busca(idCliente);
+        if (cliente != null) {
+            List<Registro> historico = cliente.getHistorico();
+            for (Registro registro : historico) {
+                System.out.println("Data: " + registro.getData() + ", Descrição: " + registro.getDescricao() + ", Quilometragem: " + registro.getQuilometragem());
+            }
+        } else {
+            System.out.println("Cliente não encontrado.");
+        }
+    }
 }
