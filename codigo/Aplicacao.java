@@ -8,39 +8,42 @@ import java.util.List;
 public class Aplicacao {
     private static Scanner scanner;
     private static Estacionamento estacionamento;
+    private static String nomeArquivo;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         scanner = new Scanner(System.in);
-        estacionamento = new Estacionamento("Estacionamento da Maisa", 5, 10);
+        nomeArquivo = "estacionamento1.dat";
 
-        try {
-            Estacionamento est = Serializacao.carregarEstacionamento();
-            if (est != null) {
-                estacionamento = est;
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Erro ao carregar o estacionamento: " + e.getMessage());
-        }
-        Estacionamento estacionamento1 = new Estacionamento("Estacionamento 1", 5, 10);
-        Estacionamento estacionamento2 = new Estacionamento("Estacionamento 2", 5, 10);
-        Estacionamento estacionamento3 = new Estacionamento("Estacionamento 3", 5, 10);
         System.out.println("Escolha o estacionamento (1, 2 ou 3): ");
         int escolhaEstacionamento = Integer.parseInt(scanner.nextLine());
 
         switch (escolhaEstacionamento) {
             case 1:
-                estacionamento = estacionamento1;
+                estacionamento = new Estacionamento("Estacionamento 1", 5, 10);
+                nomeArquivo = "estacionamento1.dat";
                 break;
             case 2:
-                estacionamento = estacionamento2;
+                estacionamento = new Estacionamento("Estacionamento 2", 5, 10);
+                nomeArquivo = "estacionamento2.dat";
                 break;
             case 3:
-                estacionamento = estacionamento3;
+            
+                estacionamento = new Estacionamento("Estacionamento 3", 5, 10);
+                nomeArquivo = "estacionamento3.dat";
                 break;
             default:
                 System.out.println("Opção inválida. Usando Estacionamento 1 por padrão.");
-                estacionamento = estacionamento1;
+                estacionamento = new Estacionamento("Estacionamento 1", 5, 10);
                 break;
+        }
+
+        try {
+            Estacionamento est = Serializacao.carregarEstacionamento(nomeArquivo);
+            if (est != null) {
+                estacionamento = est;
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Erro ao carregar o estacionamento: " + e.getMessage());
         }
 
         menu();
@@ -96,13 +99,13 @@ public class Aplicacao {
                 mostrarHistoricoCliente();
                 break;
             case 0:
-                try {
-                    Serializacao.salvarEstacionamento(estacionamento);
-                } catch (IOException e) {
-                    System.out.println("Erro ao salvar estacionamentos: " + e.getMessage());
-                }
-                System.out.println("Saindo do programa.");
-                System.exit(0);
+            try {
+                Serializacao.salvarEstacionamento(estacionamento, nomeArquivo);
+            } catch (IOException e) {
+                System.out.println("Erro ao salvar estacionamento: " + e.getMessage());
+            }
+            System.out.println("Saindo do programa.");
+            System.exit(0);
             default:
                 System.out.println("A opção informada é inválida.");
         }
