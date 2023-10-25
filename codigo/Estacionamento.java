@@ -1,11 +1,12 @@
-
-import java.time.LocalDateTime;
-import java.time.LocalDate;
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-
-public class Estacionamento {
+/**
+ * A classe Estacionamento representa um estacionamento que gerencia o estacionamento de veículos para vários clientes.
+ */
+public class Estacionamento implements Serializable {
 
     private String nome;
     private LinkedList<Cliente> clientes;
@@ -14,6 +15,13 @@ public class Estacionamento {
     private int vagasPorFileira;
     private LinkedList<UsoDeVaga> usos;
 
+    /**
+     * Constrói um objeto Estacionamento com o nome especificado, número de fileiras no estacionamento e número de vagas por fileira.
+     *
+     * @param nome O nome do estacionamento.
+     * @param fileiras O número de fileiras no estacionamento.
+     * @param vagasPorFila O número de vagas por fileira.
+     */
     public Estacionamento(String nome, int fileiras, int vagasPorFila) {
         this.nome = nome;
         this.quantFileiras = fileiras;
@@ -23,36 +31,62 @@ public class Estacionamento {
         gerarVagas();
     }
 
-    public void addVeiculo(Veiculo veiculo, String idCli) {
+    /**
+     * Obtém o nome do estacionamento.
+     *
+     * @return O nome do estacionamento.
+     */
+    public String getNome() {
+        return nome;
+    }
 
-        Cliente quem = new Cliente("idCli",idCli);
-		Cliente cliente = busca(quem);
+    /**
+     * Adiciona um veículo ao cliente identificado pelo ID.
+     *
+     * @param veiculo O veículo a ser adicionado.
+     * @param idCli O ID do cliente.
+     */
+    public void addVeiculo(Veiculo veiculo, String idCli) {
+        Cliente quem = new Cliente("idCli", idCli);
+        Cliente cliente = busca(quem);
         if (cliente != null) {
             cliente.addVeiculo(veiculo);
         }
     }
 
- public boolean addCliente(Cliente cliente) {
-        if (buscarCliente(cliente.getId()) == null) {
+    /**
+     * Adiciona um cliente ao estacionamento.
+     *
+     * @param cliente O cliente a ser adicionado.
+     * @return true se o cliente foi adicionado com sucesso, false se o cliente já existir.
+     */
+    public boolean addCliente(Cliente cliente) {
+        if ((busca(cliente)) == null) {
             clientes.add(cliente);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
-
     }
 
-
-	private Cliente busca(Cliente quem){
-		for (Cliente cliente : clientes) {
+    /**
+     * Busca um cliente no estacionamento.
+     *
+     * @param quem O cliente a ser buscado.
+     * @return O cliente se encontrado, ou null se não encontrado.
+     */
+    Cliente busca(Cliente quem) {
+        for (Cliente cliente : clientes) {
             if (cliente != null && cliente.equals(quem)) {
                 return cliente;
             }
         }
-		return null;
-	}
+        return null;
+    }
 
+    /**
+     * Gera as vagas no estacionamento com base no número de fileiras e vagas por fileira.
+     */
     private void gerarVagas() {
         vagas = new LinkedList<>();
         for (int i = 0; i < quantFileiras; i++) {
@@ -63,20 +97,91 @@ public class Estacionamento {
         }
     }
 
-    public void estacionar(String placa) {
+    /**
+     * Estaciona um veículo com a placa especificada.
+     *
+     * @param placa A placa do veículo a ser estacionado.
+     * @throws EstacionamentoLotadoException Se o estacionamento estiver lotado.
+     */
+    public void estacionar(String placa) throws LotadoException {
+        Vaga vagaDisponivel = null;
+        Veiculo veiculoEncontrado = null;
+        boolean estacionado = false;
+        for (Vaga vaga : vagas) {
+            if (vaga.disponivel()) {
+                vagaDisponivel = vaga;
+                break;
+            }
+        }
+
+        if (vagaDisponivel != null) {
+            for (Cliente cliente : clientes) {
+                veiculoEncontrado = cliente.possuiVeiculo(placa);
+                if (veiculoEncontrado != null) {
+                    veiculoEncontrado.estacionar(vagaDisponivel);
+                    break;
+                }
+            }
+        }
     }
 
+    /**
+     * Retira um veículo com a placa especificada do estacionamento e retorna o valor a ser pago.
+     *
+     * @param placa A placa do veículo a ser retirado.
+     * @return O valor a ser pago pelo uso da vaga.
+     */
     public double sair(String placa) {
-        
+        for (Cliente cliente : clientes) {
+            Veiculo veiculo = cliente.possuiVeiculo(placa);
+            if (veiculo != null) {
+                double valorPago = veiculo.sair();
+                System.out.println("Valor a ser pago: " + valorPago);
+                return valorPago;
+            }
+        }
+
+        System.out.println("Veículo não encontrado.");
+        return 0.0;
     }
+
+/**
+     * Calcula o total arrecadado pelo estacionamento.
+     *
+     * @return O valor total arrecadado.
+     */
 
     public double totalArrecadado() {
-
+        double total = 0.0;
+        for (UsoDeVaga uso : usos) {
+            total += uso.valorPago();
+        }
+        return total;
     }
 
+
+/**
+     * Calcula a arrecadação no mês especificado.
+     *
+     * @param mes O número do mês (1 a 12).
+     * @return O valor arrecadado no mês.
+     */
     public double arrecadacaoNoMes(int mes) {
- 
+        double totalMes = 0;
+        for (Cliente cliente : clientes) {
+            if (cliente != null) {
+                totalMes += cliente.arrecadadoNoMes(mes);
+            }
+        }
+        return totalMes;
     }
+
+
+ /**
+     * Calcula o valor médio por uso de vaga.
+     *
+     * @return O valor médio por uso de vaga.
+     */
 
     public double valorMedioPorUso() {
         if (usos.isEmpty()) {
@@ -84,30 +189,81 @@ public class Estacionamento {
         }
         return totalArrecadado() / usos.size();
     }
+
+ /**
+     * Retorna os nomes dos top 5 clientes com maior arrecadação no mês especificado.
+     *
+     * @param mes O número do mês (1 a 12).
+     * @return Uma string contendo os nomes dos clientes.
+     */
+
 public String top5Clientes(int mes) {
-    List<Cliente> topClientes = new LinkedList<>();
-    for (Cliente cliente : clientes) {
-        double arrecadacao = cliente.arrecadadoNoMes(mes);
-        for (int i = 0; i <= topClientes.size(); i++) {
-            if (i == topClientes.size() || arrecadacao > topClientes.get(i).arrecadadoNoMes(mes)) {
-                topClientes.add(i, cliente);
-                break;
+        Cliente[] topClientes = new Cliente[5];
+
+        for (Cliente c : clientes) {
+            if (c != null) {
+                double valorDoCliente = c.arrecadadoNoMes(mes);
+
+                for (int i = 0; i < 5; i++) {
+                    if (topClientes[i] == null || valorDoCliente > topClientes[i].arrecadadoNoMes(mes)) {
+                        for (int j = 4; j > i; j--) {
+                            topClientes[j] = topClientes[j - 1];
+                        }
+                        topClientes[i] = c;
+                        break;
+                    }
+                }
             }
         }
-        if (topClientes.size() > 5) {
-            topClientes.remove(topClientes.size() - 1);
+
+        // Agora topClientes contém os 5 principais clientes
+        String[] nomesTopClientes = new String[5];
+        for (int i = 0; i < 5; i++) {
+            if (topClientes[i] != null) {
+                nomesTopClientes[i] = topClientes[i].getNome();
+            }
         }
+
+        return Arrays.toString(nomesTopClientes);
     }
 
-    String resultado = "";
-    for (int i = 0; i < topClientes.size(); i++) {
-        Cliente cliente = topClientes.get(i);
-        resultado += (i + 1) + ". Cliente: " + cliente +
-                ", Arrecadação no mês: R$" + cliente.arrecadadoNoMes(mes) + "\n";
+    /**
+     * Retorna a lista de clientes.
+     *
+     * @return A lista de clientes.
+     */
+    public Cliente[] getClientes() {
+        return clientes.toArray(new Cliente[0]);
     }
 
-    return resultado;
+    /**
+     * Busca um cliente pelo ID.
+     *
+     * @param idCliente O ID do cliente a ser buscado.
+     * @return O cliente encontrado, ou null se não encontrado.
+     */
+    public Cliente busca(String idCliente) {
+        for (Cliente cliente : clientes) {
+            if (cliente.getId().equals(idCliente)) {
+                return cliente;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Busca um veículo pela placa.
+     *
+     * @param placa A placa do veículo a ser buscado.
+     * @return O veículo encontrado, ou null se não encontrado.
+     */
+    public Veiculo buscaVeiculo(String placa) {
+        for (Cliente cliente : clientes) {
+            Veiculo veiculo = cliente.possuiVeiculo(placa);
+            if (veiculo != null) {
+                return veiculo;
+            }
+        }
+        return null;
+    }
 }
-
-    }
-

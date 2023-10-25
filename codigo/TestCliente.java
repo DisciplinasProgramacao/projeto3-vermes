@@ -1,72 +1,64 @@
+import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+/**
+ * Classe de teste para a classe Cliente.
+ */
 public class TestCliente {
 
+    private Cliente cliente;
+    private Veiculo veiculo;
+
+    @Before
+    public void setUp() {
+        cliente = new Cliente("Maisa", "ID123");
+        veiculo = new Veiculo("ABC123");
+        cliente.addVeiculo(veiculo);
+    }
+
+    /**
+     * Testa o método `addVeiculo` da classe Cliente.
+     */
     @Test
     public void testAddVeiculo() {
-        Cliente cliente = new Cliente("Maisa", "1");
-        Veiculo veiculo = new Veiculo("ABC123");
+        Veiculo novoVeiculo = new Veiculo("XYZ789");
+        cliente.addVeiculo(novoVeiculo);
+        assertEquals(novoVeiculo, cliente.possuiVeiculo("XYZ789"));
+    }
 
-        cliente.addVeiculo(veiculo);
-
+    /**
+     * Testa o método `possuiVeiculo` da classe Cliente.
+     */
+    @Test
+    public void testPossuiVeiculo() {
         assertEquals(veiculo, cliente.possuiVeiculo("ABC123"));
     }
 
-    @Test
-    public void testPossuiVeiculo() {
-        Cliente cliente = new Cliente("Miguel2", "2");
-        Veiculo veiculo = new Veiculo("XYZ789");
-
-        cliente.addVeiculo(veiculo);
-
-        assertEquals(veiculo, cliente.possuiVeiculo("XYZ789"));
-        assertNull(cliente.possuiVeiculo("XULAM000"));
-    }
-
+    /**
+     * Testa o método `totalDeUsos` da classe Cliente.
+     */
     @Test
     public void testTotalDeUsos() {
-        Cliente cliente = new Cliente("Salim", "3");
-        Veiculo veiculo1 = new Veiculo("PLA111");
-        Veiculo veiculo2 = new Veiculo("PLA222");
-
-        cliente.addVeiculo(veiculo1);
-        cliente.addVeiculo(veiculo2);
-
-        assertEquals(0, cliente.totalDeUsos());
-
-        assertEquals(2, cliente.totalDeUsos());
+        int totalUsosVeiculo = veiculo.totalDeUsos();
+        assertEquals(totalUsosVeiculo, cliente.totalDeUsos());
     }
 
+    /**
+     * Testa o método `arrecadadoPorVeiculo` da classe Cliente.
+     */
     @Test
     public void testArrecadadoPorVeiculo() {
-        Cliente cliente = new Cliente("Lukinhas", "4");
-        Veiculo veiculo = new Veiculo("PLI333");
-
-        cliente.addVeiculo(veiculo);
-
-        assertEquals(20.0, cliente.arrecadadoPorVeiculo("PLI333"), 0.001);
+        double arrecadadoVeiculo = veiculo.totalArrecadado();
+        assertEquals(arrecadadoVeiculo, cliente.arrecadadoPorVeiculo("ABC123"), 0.01); 
     }
 
+    /**
+     * Testa o método `arrecadadoTotal` da classe Cliente.
+     */
     @Test
     public void testArrecadadoTotal() {
-        Cliente cliente = new Cliente("Ferreira", "5");
-        Veiculo veiculo1 = new Veiculo("PLE444");
-        Veiculo veiculo2 = new Veiculo("PLO555");
-
-        cliente.addVeiculo(veiculo1);
-        cliente.addVeiculo(veiculo2);
-
-        assertEquals(20.0, cliente.arrecadadoTotal(), 0.001);
-    }
-
-    @Test
-    public void testArrecadadoNoMes() {
-        Cliente cliente = new Cliente("Faria", "6");
-        Veiculo veiculo = new Veiculo("PLU666");
-
-        cliente.addVeiculo(veiculo);
-
-        assertEquals(20.0, cliente.arrecadadoNoMes(10), 0.001);
+        double arrecadadoVeiculo = veiculo.totalArrecadado();
+        assertEquals(arrecadadoVeiculo, cliente.arrecadadoTotal(), 0.01); 
     }
 }

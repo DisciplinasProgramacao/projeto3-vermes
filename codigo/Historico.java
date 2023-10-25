@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Historico {
+public class Historico implements Serializable {
     private List<Registro> registros;
 
     public Historico() {
@@ -11,6 +12,7 @@ public class Historico {
     public void adicionarRegistro(Registro registro) {
         registros.add(registro);
     }
+
     public List<Registro> getHistorico() {
         return registros;
     }
@@ -24,5 +26,4 @@ public class Historico {
         }
         return historicoMes;
     }
-
 }
