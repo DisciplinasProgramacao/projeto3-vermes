@@ -31,5 +31,8 @@ public class Vaga {
 	public boolean disponivel() {
 		return disponivel;
 	}
-
+	@Override
+	public String toString() {
+		return id;
+	}
 }
