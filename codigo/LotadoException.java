@@ -1,6 +1,6 @@
-public class ExcecaoLotado extends Exception {
+public class LotadoException extends Exception {
 
-    public ExceçaoLotado() {
+    public LotadoException() {
         super("Este estacionamento está lotado);
 
 }
