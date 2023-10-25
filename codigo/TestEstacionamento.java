@@ -23,17 +23,15 @@ public class TestEstacionamento {
     }
 
     @Test
-    public void testEstacionar() {
-        Cliente c = new Cliente("gabriel", "333");
-        Veiculo v = new Veiculo("ADD123");
+    public void testEstacionar() throws EstacionamentoLotadoException {
         c.addVeiculo(v);
         estacionamento.estacionar("ADD123");
-        assertEquals(1,v.totalDeUsos());         
+        assertEquals(1, v.totalDeUsos());;         
         
     }
 
     @Test
-    public void testSair() {
+    public void testSair() throws EstacionamentoLotadoException {
         estacionamento.addCliente(new Cliente("miguel", "444"));
         estacionamento.estacionar("ABC123");
         double valorPago = estacionamento.sair("ABC123");
@@ -41,7 +39,7 @@ public class TestEstacionamento {
     }
 
     @Test
-    public void testTotalArrecadado() {
+    public void testTotalArrecadado() throws EstacionamentoLotadoException {
         Cliente cliente1 = new Cliente("maisa", "676");
         estacionamento.addCliente(cliente1);
         estacionamento.estacionar("GGG455");
@@ -57,7 +55,7 @@ public class TestEstacionamento {
     }
 
     @Test
-    public void testArrecadacaoNoMes() {
+    public void testArrecadacaoNoMes() throws EstacionamentoLotadoException {
         Cliente cliente1 = new Cliente("Faria", "323");
         estacionamento.addCliente(cliente1);
         estacionamento.estacionar("GGG789");
@@ -73,7 +71,7 @@ public class TestEstacionamento {
     }
 
     @Test
-    public void testValorMedioPorUso() {
+    public void testValorMedioPorUso() throws EstacionamentoLotadoException {
     
         Cliente cliente1 = new Cliente("lucas", "874");
         estacionamento.addCliente(cliente1);
@@ -90,7 +88,7 @@ public class TestEstacionamento {
     }
 
     @Test
-    public void testTop5Clientes() {
+    public void testTop5Clientes() throws EstacionamentoLotadoException {
         Cliente cliente1 = new Cliente("maisa", "3456");
         estacionamento.addCliente(cliente1);
         estacionamento.estacionar("POO123");
@@ -100,11 +98,20 @@ public class TestEstacionamento {
         estacionamento.addCliente(cliente2);
         estacionamento.estacionar("DEF456");
         estacionamento.sair("DEF456");
+        
+        Cliente cliente3 = new Cliente("Joao", "1234");
+    estacionamento.addCliente(cliente3);
+    estacionamento.estacionar("ABC789");
+    estacionamento.sair("ABC789");
+
+    Cliente cliente4 = new Cliente("Maria", "5678");
+    estacionamento.addCliente(cliente4);
+    estacionamento.estacionar("XYZ012");
+    estacionamento.sair("XYZ012");
     
         String topClientes = estacionamento.top5Clientes(12); 
     
-        String clientestop = "1. Cliente: maisa, Arrecadação no mês: R$0.0\n2. Cliente: Miguel, Arrecadação no mês: R$0.0\n";
-        assertEquals(clientestop, topClientes);
-    }
+        String clientestop = "[gabriel, maisa, Miguel, Joao, Maria]";
+        assertEquals(clientestop, topClientes);}
     
 }
