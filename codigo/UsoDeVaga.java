@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class UsoDeVaga {
+public class UsoDeVaga implements Serializable {
 
     private static final double FRACAO_USO = 0.25;
     private static final double VALOR_FRACAO = 4.0;
@@ -16,15 +17,10 @@ public class UsoDeVaga {
       * Construtor da classe UsoDeVaga.
       * @param vaga Vaga a ser utilizada.
       */
-    public UsoDeVaga(Vaga vaga) throws VagaIndisoponivelException{
+    public UsoDeVaga(Vaga vaga) {
         this.vaga = vaga;
         this.entrada = LocalDateTime.now(); 
          
-        if (vaga.disponivel()) {
-            vaga.estacionar();
-        } else {
-            throw new VagaIndisoponivelException("A vaga está indisponível.");
-        }
 
     }
     /**
@@ -37,29 +33,24 @@ public class UsoDeVaga {
      /**
       * Registra a saída do veículo da vaga.
       */
-    public void sair() throws ServicoNaoExecutadoException {
+    public void sair() {
         this.saida = LocalDateTime.now(); 
         calcularValorPago();
-       
+        
         if(servico != null)
-        {
-        double tempoMini = servico.getTempo();
+        {double tempoMini = servico.getTempo();}
         
         double tempo = calcularDiferencaEmMinutos(entrada, saida);
-            if(tempo < tempoMini){
-                throw new ServicoNaoExecutadoException("O serviço não foi executado. O tempo mínimo é de " + servico.getTempo() + " minutos.");
-            }
-    }
-    }
+
         
-
-
-    
-
-    
+    }
     public Servico getServico() {
         return servico;
 
+    }
+
+    public Vaga getVaga() {
+        return vaga;
     }
 
     public double valorPago() {
@@ -101,5 +92,9 @@ public class UsoDeVaga {
 
     public int getMes(){
         return entrada.getMonthValue();
+    }
+
+    public double getValorPago() {
+        return valorPago;
     }
 }
