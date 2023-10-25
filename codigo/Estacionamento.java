@@ -145,7 +145,11 @@ public class Estacionamento implements Serializable {
         return 0.0;
     }
 
-    // Outros métodos e funcionalidades da classe...
+/**
+     * Calcula o total arrecadado pelo estacionamento.
+     *
+     * @return O valor total arrecadado.
+     */
 
     public double totalArrecadado() {
         double total = 0.0;
@@ -155,6 +159,13 @@ public class Estacionamento implements Serializable {
         return total;
     }
 
+
+/**
+     * Calcula a arrecadação no mês especificado.
+     *
+     * @param mes O número do mês (1 a 12).
+     * @return O valor arrecadado no mês.
+     */
     public double arrecadacaoNoMes(int mes) {
         double totalMes = 0;
         for (Cliente cliente : clientes) {
@@ -165,12 +176,28 @@ public class Estacionamento implements Serializable {
         return totalMes;
     }
 
+
+ /**
+     * Calcula o valor médio por uso de vaga.
+     *
+     * @return O valor médio por uso de vaga.
+     */
+
     public double valorMedioPorUso() {
         if (usos.isEmpty()) {
             return 0.0;
         }
         return totalArrecadado() / usos.size();
-    }public String top5Clientes(int mes) {
+    }
+
+ /**
+     * Retorna os nomes dos top 5 clientes com maior arrecadação no mês especificado.
+     *
+     * @param mes O número do mês (1 a 12).
+     * @return Uma string contendo os nomes dos clientes.
+     */
+
+public String top5Clientes(int mes) {
         Cliente[] topClientes = new Cliente[5];
 
         for (Cliente c : clientes) {
