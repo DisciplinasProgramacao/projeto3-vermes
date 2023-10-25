@@ -103,7 +103,7 @@ public class Estacionamento implements Serializable {
      * @param placa A placa do veículo a ser estacionado.
      * @throws EstacionamentoLotadoException Se o estacionamento estiver lotado.
      */
-    public void estacionar(String placa) throws EstacionamentoLotadoException {
+    public void estacionar(String placa) throws LotadoException {
         Vaga vagaDisponivel = null;
         Veiculo veiculoEncontrado = null;
         boolean estacionado = false;
