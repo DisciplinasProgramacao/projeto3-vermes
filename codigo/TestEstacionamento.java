@@ -23,7 +23,7 @@ public class TestEstacionamento {
     }
 
     @Test
-    public void testEstacionar() throws EstacionamentoLotadoException {
+    public void testEstacionar() throws LotadoException {
         c.addVeiculo(v);
         estacionamento.estacionar("ADD123");
         assertEquals(1, v.totalDeUsos());;         
@@ -31,7 +31,7 @@ public class TestEstacionamento {
     }
 
     @Test
-    public void testSair() throws EstacionamentoLotadoException {
+    public void testSair() throws LotadoException {
         estacionamento.addCliente(new Cliente("miguel", "444"));
         estacionamento.estacionar("ABC123");
         double valorPago = estacionamento.sair("ABC123");
@@ -39,7 +39,7 @@ public class TestEstacionamento {
     }
 
     @Test
-    public void testTotalArrecadado() throws EstacionamentoLotadoException {
+    public void testTotalArrecadado() throws LotadoException {
         Cliente cliente1 = new Cliente("maisa", "676");
         estacionamento.addCliente(cliente1);
         estacionamento.estacionar("GGG455");
@@ -55,7 +55,7 @@ public class TestEstacionamento {
     }
 
     @Test
-    public void testArrecadacaoNoMes() throws EstacionamentoLotadoException {
+    public void testArrecadacaoNoMes() throws LotadoException {
         Cliente cliente1 = new Cliente("Faria", "323");
         estacionamento.addCliente(cliente1);
         estacionamento.estacionar("GGG789");
@@ -71,7 +71,7 @@ public class TestEstacionamento {
     }
 
     @Test
-    public void testValorMedioPorUso() throws EstacionamentoLotadoException {
+    public void testValorMedioPorUso() throws LotadoException {
     
         Cliente cliente1 = new Cliente("lucas", "874");
         estacionamento.addCliente(cliente1);
@@ -88,7 +88,7 @@ public class TestEstacionamento {
     }
 
     @Test
-    public void testTop5Clientes() throws EstacionamentoLotadoException {
+    public void testTop5Clientes() throws LotadoException {
         Cliente cliente1 = new Cliente("maisa", "3456");
         estacionamento.addCliente(cliente1);
         estacionamento.estacionar("POO123");
