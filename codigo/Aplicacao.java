@@ -12,7 +12,6 @@ public class Aplicacao {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         scanner = new Scanner(System.in);
-        nomeArquivo = "estacionamento1.dat";
 
         System.out.println("Escolha o estacionamento (1, 2 ou 3): ");
         int escolhaEstacionamento = Integer.parseInt(scanner.nextLine());
@@ -20,20 +19,19 @@ public class Aplicacao {
         switch (escolhaEstacionamento) {
             case 1:
                 estacionamento = new Estacionamento("Estacionamento 1", 5, 10);
-                nomeArquivo = "estacionamento1.dat";
+                nomeArquivo = "dat/estacionamento1.dat";
                 break;
             case 2:
                 estacionamento = new Estacionamento("Estacionamento 2", 5, 10);
-                nomeArquivo = "estacionamento2.dat";
+                nomeArquivo = "dat/estacionamento2.dat";
                 break;
             case 3:
             
                 estacionamento = new Estacionamento("Estacionamento 3", 5, 10);
-                nomeArquivo = "estacionamento3.dat";
+                nomeArquivo = "dat/estacionamento3.dat";
                 break;
             default:
                 System.out.println("Opção inválida. Usando Estacionamento 1 por padrão.");
-                estacionamento = new Estacionamento("Estacionamento 1", 5, 10);
                 break;
         }
 
