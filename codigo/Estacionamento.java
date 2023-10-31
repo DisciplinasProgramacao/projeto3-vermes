@@ -177,17 +177,25 @@ public class Estacionamento implements Serializable {
     }
 
 
- /**
+    /**
      * Calcula o valor médio por uso de vaga.
      *
      * @return O valor médio por uso de vaga.
      */
-
     public double valorMedioPorUso() {
-        if (usos.isEmpty()) {
+        double totalArrecadado = 0.0;
+        int totalUsos = 0;
+
+        for (Cliente cliente : clientes) {
+            totalArrecadado += cliente.arrecadadoTotal();
+            totalUsos += cliente.totalDeUsos();
+        }
+
+        if (totalUsos == 0) {
             return 0.0;
         }
-        return totalArrecadado() / usos.size();
+
+        return totalArrecadado / totalUsos;
     }
 
  /**
