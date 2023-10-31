@@ -151,7 +151,7 @@ public class Aplicacao {
             try {
                 estacionamento.estacionar(veiculo.getPlaca());
                 System.out.println("Veículo estacionado com sucesso.");
-            } catch (EstacionamentoLotadoException e) {
+            } catch (LotadoException e) {
                 System.out.println(e.getMessage());
             }
         } else {
