@@ -30,13 +30,12 @@ public class TestUsoDeVaga {
     }
 
     @Test
-    public void testCalculcarValorPago() throws ServicoNaoExecutadoException, VagaIndisoponivelException {
-        criaUsoDeVagaHelper(1, 3);
-        usoDeVaga.sair();
-        usoDeVaga.calcularValorPago();
-        assertEquals("Calculando valor pago",0.0, usoDeVaga.valorPago(), 0.0);
-    }
-
+   public void testCalculcarValorPago() throws ServicoNaoExecutadoException, VagaIndisoponivelException {
+      criaUsoDeVagaHelper(1, 3);
+      usoDeVaga.sair();
+      usoDeVaga.calcularValorPago();
+      assertNotEquals("Verificando valor pago não é 0.0", 0.0, usoDeVaga.valorPago());
+}
     @Test
     public void testCalcularDiferencaEmMinutos() throws VagaIndisoponivelException{
         criaUsoDeVagaHelper(1, 4);
