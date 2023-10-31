@@ -27,4 +27,11 @@ public class TestVaga {
         vaga.estacionar();
         assertFalse(vaga.disponivel());
     }
+
+    @Test
+    public void testToString() {
+        Vaga vaga = new Vaga(1, 1);
+        String expectedString = "1 - 1";
+        assertEquals(expectedString, vaga.toString());
+    }
 }
