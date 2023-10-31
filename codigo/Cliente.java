@@ -153,7 +153,7 @@ public class Cliente implements Serializable {
                             .append("Vaga utilizada: ").append(usoDeVaga.getVaga().toString()).append(" | ")
                             .append("Data de Entrada: ").append(usoDeVaga.getEntrada()).append(" | ")
                             .append("Data de Saída: ").append(usoDeVaga.getSaida()).append(" | ")
-                            .append("Valor Total Pago: ").append(usoDeVaga.getValorPago()).append(" | ");
+                            .append("Valor Total Pago: ").append(usoDeVaga.valorPago()).append(" | ");
                 }
             }
         }
