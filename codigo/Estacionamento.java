@@ -151,10 +151,10 @@ public class Estacionamento implements Serializable {
      * @return O valor total arrecadado.
      */
 
-    public double totalArrecadado() {
+     public double totalArrecadado() {
         double total = 0.0;
-        for (UsoDeVaga uso : usos) {
-            total += uso.valorPago();
+        for (Cliente cliente : clientes) {
+            total += cliente.arrecadadoTotal();
         }
         return total;
     }
