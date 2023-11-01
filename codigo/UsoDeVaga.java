@@ -80,7 +80,7 @@ public class UsoDeVaga {
         valorPago += servico.getValor();
     }
 }
-    }
+    
     /**
      * Calcula a diferença em minutos entre duas datas.
      * @param inicio Data inicial.
