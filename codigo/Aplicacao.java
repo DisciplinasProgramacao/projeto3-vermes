@@ -111,27 +111,6 @@ public class Aplicacao {
         menu(); // Chama o menu novamente após a seleção da opção.
     }
 
-
-    //Metodo implementado para criar carga de dados para Estacionamento 1, Estacionamento 2 e Estacionamento 3
-public static void criarCargaDados(Estacionamento estacionamento, int quantidade) {
-    for (int i = 0; i < quantidade; i++) {
-        String idCliente =   String.valueOf(i);
-        String nomeCliente = "Cliente " + i;
-
-        Cliente cliente = new Cliente(nomeCliente, idCliente);
-        Veiculo veiculo = new Veiculo("ABC" + i);
-        cliente.addVeiculo(veiculo);
-
-        estacionamento.addCliente(cliente);
-
-        try {
-            estacionamento.estacionar(veiculo.getPlaca());
-        } catch (LotadoException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-}
-
     public static void cadastrarCliente() {
         System.out.println("Digite o ID do cliente: ");
         String idCliente = scanner.nextLine();
@@ -163,12 +142,12 @@ public static void criarCargaDados(Estacionamento estacionamento, int quantidade
     public static void estacionarVeiculo() {
         System.out.println("Digite a placa do veículo: ");
         String placa = scanner.nextLine();
-
+    
         Veiculo veiculo = estacionamento.buscaVeiculo(placa);
-
+    
         if (veiculo != null) {
             try {
-                estacionamento.estacionar(veiculo.getPlaca());
+                veiculo.estacionar(null);
                 System.out.println("Veículo estacionado com sucesso.");
             } catch (LotadoException e) {
                 System.out.println(e.getMessage());
@@ -177,6 +156,7 @@ public static void criarCargaDados(Estacionamento estacionamento, int quantidade
             System.out.println("Veículo não encontrado.");
         }
     }
+    
 
     public static void sairDaVaga() {
         System.out.println("Digite a placa do veículo: ");
