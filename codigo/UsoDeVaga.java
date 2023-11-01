@@ -102,4 +102,8 @@ public class UsoDeVaga {
     public int getMes(){
         return entrada.getMonthValue();
     }
+    public Vaga getVaga(){
+     return this.vaga
+    }
+
 }
