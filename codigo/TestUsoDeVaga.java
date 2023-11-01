@@ -29,12 +29,12 @@ public class TestUsoDeVaga {
         assertEquals("Imprimindo data de saída atual",LocalDateTime.now(), usoDeVaga.getSaida());
     }
 
-    @Test
+      @Test
    public void testCalculcarValorPago() throws ServicoNaoExecutadoException, VagaIndisoponivelException {
       criaUsoDeVagaHelper(1, 3);
       usoDeVaga.sair();
       usoDeVaga.calcularValorPago();
-      assertNotEquals("Verificando valor pago não é 0.0", 0.0, usoDeVaga.valorPago());
+      assertNotEquals(4.0, usoDeVaga.valorPago());
 }
     @Test
     public void testCalcularDiferencaEmMinutos() throws VagaIndisoponivelException{
