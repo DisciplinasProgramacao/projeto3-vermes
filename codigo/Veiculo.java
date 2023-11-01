@@ -9,6 +9,7 @@ public class Veiculo implements Serializable {
     private UsoDeVaga[] usos;
     private static final int MAX_USO = 1000;
     private int qtUso = 0;
+    private Servico servico;
 
     /**
      * Construtor para criar um novo veículo com uma placa.
@@ -24,14 +25,16 @@ public class Veiculo implements Serializable {
      * Estaciona o veículo em uma vaga.
      *
      * @param vaga A vaga em que o veículo será estacionado.
+     * @throws VagaIndisoponivelException
+     * @throws throws LotadoException
      */
-    public void estacionar(Vaga vaga) {
+    public void estacionar(Vaga vaga) throws LotadoException, VagaIndisoponivelException {
         if (qtUso < MAX_USO) {
             UsoDeVaga novoUso = new UsoDeVaga(vaga);
             usos[qtUso] = novoUso;
             qtUso++;
         } else {
-            System.out.println("Capacidade máxima de uso atingida.");
+            throw new LotadoException();
         }
     }
 
@@ -39,8 +42,9 @@ public class Veiculo implements Serializable {
      * Retira o veículo da vaga e calcula o valor a ser pago.
      *
      * @return O valor a ser pago pelo uso da vaga.
+     * @throws ServicoNaoExecutadoException
      */
-    public double sair() {
+    public double sair() throws ServicoNaoExecutadoException {
         if (qtUso > 0) {
             UsoDeVaga ultimoUso = usos[qtUso - 1];
             if (ultimoUso != null) {
@@ -117,5 +121,12 @@ public class Veiculo implements Serializable {
             System.out.println("Índice de uso inválido.");
             return null;
         }
+    }
+    public Servico getServico() {
+        return servico;
+    }
+
+    public void setServico(Servico servico) {
+        this.servico = servico;
     }
 }
