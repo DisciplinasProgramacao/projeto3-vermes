@@ -70,20 +70,12 @@ public class UsoDeVaga {
       * Calcula o valor a ser pago pelo uso da vaga.
       */
     public void calcularValorPago() {
-        
-        public void calcularValorPago() {
-    // Calcula a diferença em minutos entre a entrada e a saída
-    long minutos = calcularDiferencaEmMinutos(entrada, saida);
 
-    // Arredonda para cima para garantir que mesmo com poucos minutos, seja cobrado o equivalente a 15 minutos
-    long minutosArredondados = (long) Math.ceil((double) minutos / 15) * 15;
-
-    // Calcula o valor com base nos minutos arredondados
-    double valorTemp = (minutosArredondados / 15) * VALOR_FRACAO;
-
-    // Verifica se o valor calculado é maior que o VALOR_MAXIMO
-    valorPago = valorTemp > VALOR_MAXIMO ? VALOR_MAXIMO : valorTemp;
-
+        long minutos = calcularDiferencaEmMinutos(entrada, saida);
+        double valorTemp = (minutos / 15) * VALOR_FRACAO;
+        valorPago = valorTemp > VALOR_MAXIMO ? VALOR_MAXIMO : valorTemp;
+         if(servico != null)
+         {valorPago += servico.getValor();}
     if (servico != null) {
         valorPago += servico.getValor();
     }
