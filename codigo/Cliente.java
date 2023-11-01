@@ -47,13 +47,14 @@ public class Cliente implements Serializable {
      *
      * @param veiculo O veículo a ser adicionado.
      */
-    public void addVeiculo(Veiculo veiculo) {
+    public void addVeiculo(Veiculo veiculo, Servico servico) {
         for (int i = 0; i < veiculos.length; i++) {
             if (veiculos[i] == null) {
                 veiculos[i] = veiculo;
                 break;
             }
         }
+        veiculo.setServico(servico);  // Define o serviço no veículo
     }
 
     /**
