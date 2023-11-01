@@ -13,7 +13,7 @@ public class Estacionamento implements Serializable {
     private LinkedList<Vaga> vagas;
     private int quantFileiras;
     private int vagasPorFileira;
-    private LinkedList<UsoDeVaga> usos;
+  
 
     /**
      * Constrói um objeto Estacionamento com o nome especificado, número de fileiras no estacionamento e número de vagas por fileira.
@@ -27,7 +27,6 @@ public class Estacionamento implements Serializable {
         this.quantFileiras = fileiras;
         this.vagasPorFileira = vagasPorFila;
         this.clientes = new LinkedList<>();
-        this.usos = new LinkedList<>();
         gerarVagas();
     }
 
@@ -106,7 +105,6 @@ public class Estacionamento implements Serializable {
     public void estacionar(String placa) throws LotadoException {
         Vaga vagaDisponivel = null;
         Veiculo veiculoEncontrado = null;
-        boolean estacionado = false;
         for (Vaga vaga : vagas) {
             if (vaga.disponivel()) {
                 vagaDisponivel = vaga;
@@ -275,3 +273,4 @@ public String top5Clientes(int mes) {
         return null;
     }
 }
+
