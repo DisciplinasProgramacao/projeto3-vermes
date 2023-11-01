@@ -10,7 +10,7 @@ public class Aplicacao {
     private static Estacionamento estacionamento;
     private static String nomeArquivo;
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, VagaIndisoponivelException {
         scanner = new Scanner(System.in);
 
         System.out.println("Escolha o estacionamento (1, 2 ou 3): ");
@@ -47,7 +47,7 @@ public class Aplicacao {
         menu();
     }
 
-    public static void menu() throws IOException {
+    public static void menu() throws IOException, VagaIndisoponivelException {
         System.out.println("Escolha uma das opções: ");
         System.out.println("\t1. Cadastrar cliente");
         System.out.println("\t2. Adicionar veículo");
@@ -125,21 +125,51 @@ public class Aplicacao {
     public static void adicionarVeiculo() {
         System.out.println("Digite o ID do cliente: ");
         String idCliente = scanner.nextLine();
-
-        System.out.println("Digite a placa do veículo: ");
-        String placa = scanner.nextLine();
-
+    
         Cliente cliente = estacionamento.busca(idCliente);
-
+    
         if (cliente != null) {
+            System.out.println("Digite a placa do veículo: ");
+            String placa = scanner.nextLine();
             Veiculo veiculo = new Veiculo(placa);
-            cliente.addVeiculo(veiculo);
+    
+            System.out.println("Escolha um dos serviços:");
+            System.out.println("1. Manobrista - R$5.0");
+            System.out.println("2. Lavagem - R$20.0");
+            System.out.println("3. Polimento - R$45.0");
+    
+            int opcaoServico = Integer.parseInt(scanner.nextLine());
+    
+            Servico servicoEscolhido = null;
+            switch (opcaoServico) {
+                case 1:
+                    servicoEscolhido = Servico.MANOBRISTA;
+                    break;
+                case 2:
+                    servicoEscolhido = Servico.LAVAGEM;
+                    break;
+                case 3:
+                    servicoEscolhido = Servico.POLIMENTO;
+                    break;
+                default:
+                    System.out.println("Opção inválida. Nenhum serviço selecionado.");
+                    break;
+            }
+    
+            if (servicoEscolhido != null) {
+                cliente.addVeiculo(veiculo, servicoEscolhido);  // Adicione o serviço escolhido ao veículo
+                System.out.println("Veículo adicionado com sucesso.");
+            } else {
+                System.out.println("Operação cancelada. Nenhum serviço selecionado.");
+            }
         } else {
             System.out.println("Cliente não encontrado.");
         }
     }
+    
+    
 
-    public static void estacionarVeiculo() {
+    public static void estacionarVeiculo() throws VagaIndisoponivelException {
         System.out.println("Digite a placa do veículo: ");
         String placa = scanner.nextLine();
     
