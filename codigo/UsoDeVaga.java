@@ -12,83 +12,73 @@ public class UsoDeVaga implements Serializable {
     private double valorPago;
     private Servico servico;
 
-    
-     /**
-      * Construtor da classe UsoDeVaga.
-      * @param vaga Vaga a ser utilizada.
-      */
-    public UsoDeVaga(Vaga vaga) throws VagaIndisoponivelException{
+    /**
+     * Construtor da classe UsoDeVaga.
+     * @param vaga Vaga a ser utilizada.
+     */
+    public UsoDeVaga(Vaga vaga) throws VagaIndisoponivelException {
         this.vaga = vaga;
-        this.entrada = LocalDateTime.now(); 
-         
+
         if (vaga.disponivel()) {
             vaga.estacionar();
+            this.entrada = LocalDateTime.now();
+            this.valorPago = VALOR_FRACAO; 
         } else {
             throw new VagaIndisoponivelException("A vaga está indisponível.");
         }
-
     }
+
     /**
-     *  Método para contratar um serviço para o veículo.
+     * Método para contratar um serviço para o veículo.
      * @param qual Serviço a ser contratado.
      */
-    public void contratarServico(Servico qual){
+    public void contratarServico(Servico qual) {
         this.servico = qual;
     }
-     /**
-      * Registra a saída do veículo da vaga.
-      */
+
+    /**
+     * Registra a saída do veículo da vaga.
+     */
     public void sair() throws ServicoNaoExecutadoException {
-        this.saida = LocalDateTime.now(); 
+        this.saida = LocalDateTime.now();
         calcularValorPago();
-       
-        if(servico != null)
-        {
-        double tempoMini = servico.getTempo();
-        
-        double tempo = calcularDiferencaEmMinutos(entrada, saida);
-            if(tempo < tempoMini){
+
+        if (servico != null) {
+            double tempoMinimo = servico.getTempo();
+
+            double tempo = calcularDiferencaEmMinutos(entrada, saida);
+            if (tempo < tempoMinimo) {
                 throw new ServicoNaoExecutadoException("O serviço não foi executado. O tempo mínimo é de " + servico.getTempo() + " minutos.");
             }
+        }
     }
-    }
-        
 
-
-    
-
-    
     public Servico getServico() {
         return servico;
-
     }
 
     public double valorPago() {
         return valorPago;
     }
 
-     /**
-      * Calcula o valor a ser pago pelo uso da vaga.
-      */
+    /**
+     * Calcula o valor a ser pago pelo uso da vaga.
+     */
     public void calcularValorPago() {
-
         long minutos = calcularDiferencaEmMinutos(entrada, saida);
         double valorTemp = (minutos / 15) * VALOR_FRACAO;
         valorPago = valorTemp > VALOR_MAXIMO ? VALOR_MAXIMO : valorTemp;
-         if(servico != null)
-         {valorPago += servico.getValor();}
-    if (servico != null) {
-        valorPago += servico.getValor();
+        if (servico != null) {
+            valorPago += servico.getValor();
+        }
     }
-}
-    
+
     /**
      * Calcula a diferença em minutos entre duas datas.
      * @param inicio Data inicial.
-     * @param fim  Data final.
+     * @param fim Data final.
      * @return diferença em minutos entre duas datas.
      */
-
     public long calcularDiferencaEmMinutos(LocalDateTime inicio, LocalDateTime fim) {
         long diferencaEmMinutos = 0;
         while (inicio.isBefore(fim)) {
@@ -97,18 +87,20 @@ public class UsoDeVaga implements Serializable {
         }
         return diferencaEmMinutos;
     }
+
     public LocalDateTime getSaida() {
         return saida;
     }
-    public LocalDateTime getEntrada(){
+
+    public LocalDateTime getEntrada() {
         return entrada;
     }
 
-    public int getMes(){
+    public int getMes() {
         return entrada.getMonthValue();
     }
-    public Vaga getVaga(){
-     return this.vaga;
-    }
 
+    public Vaga getVaga() {
+        return this.vaga;
+    }
 }
