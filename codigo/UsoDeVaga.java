@@ -103,4 +103,8 @@ public class UsoDeVaga implements Serializable {
     public Vaga getVaga() {
         return this.vaga;
     }
+    @Override
+    public String toString() {
+        return "UsoDeVaga [entrada=" + entrada + ", saida=" + saida + ", valorPago=" + valorPago + ", servico=" + servico + "]";
+    }
 }
