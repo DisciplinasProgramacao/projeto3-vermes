@@ -14,7 +14,7 @@ public class TestCliente {
     public void setUp() {
         cliente = new Cliente("Maisa", "ID123");
         veiculo = new Veiculo("ABC123");
-        cliente.addVeiculo(veiculo);
+        cliente.addVeiculo(veiculo, null);
     }
 
     /**
@@ -23,7 +23,7 @@ public class TestCliente {
     @Test
     public void testAddVeiculo() {
         Veiculo novoVeiculo = new Veiculo("XYZ789");
-        cliente.addVeiculo(novoVeiculo);
+        cliente.addVeiculo(novoVeiculo, null);
         assertEquals(novoVeiculo, cliente.possuiVeiculo("XYZ789"));
     }
 
