@@ -10,7 +10,7 @@ public class Aplicacao {
     private static Estacionamento estacionamento;
     private static String nomeArquivo;
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, VagaIndisoponivelException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, VagaIndisoponivelException, ServicoNaoExecutadoException {
         scanner = new Scanner(System.in);
 
         System.out.println("Escolha o estacionamento (1, 2 ou 3): ");
@@ -47,7 +47,7 @@ public class Aplicacao {
         menu();
     }
 
-    public static void menu() throws IOException, VagaIndisoponivelException {
+    public static void menu() throws IOException, VagaIndisoponivelException, ServicoNaoExecutadoException {
         System.out.println("Escolha uma das opções: ");
         System.out.println("\t1. Cadastrar cliente");
         System.out.println("\t2. Adicionar veículo");
@@ -188,7 +188,7 @@ public class Aplicacao {
     }
     
 
-    public static void sairDaVaga() {
+    public static void sairDaVaga() throws ServicoNaoExecutadoException {
         System.out.println("Digite a placa do veículo: ");
         String placa = scanner.nextLine();
 
