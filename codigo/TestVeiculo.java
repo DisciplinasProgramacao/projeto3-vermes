@@ -15,20 +15,20 @@ public class TestVeiculo {
     }
 
     @Test
-    public void testEstacionar() {
+    public void testEstacionar() throws LotadoException, VagaIndisoponivelException {
         veiculo.estacionar(vaga);
         assertEquals(1, veiculo.totalDeUsos());
     }
 
     @Test
-    public void testSair() {
+    public void testSair() throws LotadoException, VagaIndisoponivelException, ServicoNaoExecutadoException {
         veiculo.estacionar(vaga);
         double valorPago = veiculo.sair();
         assertTrue(valorPago >= 0);
     }
 
     @Test
-    public void testTotalArrecadado() {
+    public void testTotalArrecadado() throws LotadoException, VagaIndisoponivelException, ServicoNaoExecutadoException {
         veiculo.estacionar(vaga);
         veiculo.sair();
         double valorTotal = veiculo.totalArrecadado();
@@ -36,7 +36,7 @@ public class TestVeiculo {
     }
 
     @Test
-    public void testArrecadadoNoMes() {
+    public void testArrecadadoNoMes() throws LotadoException, VagaIndisoponivelException, ServicoNaoExecutadoException {
         veiculo.estacionar(vaga);
         veiculo.sair();
         int mes = 10;
@@ -45,7 +45,7 @@ public class TestVeiculo {
     }
 
     @Test
-    public void testTotalDeUsos() {
+    public void testTotalDeUsos() throws LotadoException, VagaIndisoponivelException {
         veiculo.estacionar(vaga);
         assertEquals(1, veiculo.totalDeUsos());
     }
