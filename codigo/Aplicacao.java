@@ -172,19 +172,13 @@ public class Aplicacao {
     public static void estacionarVeiculo() throws VagaIndisoponivelException {
         System.out.println("Digite a placa do veículo: ");
         String placa = scanner.nextLine();
-    
-        Veiculo veiculo = estacionamento.buscaVeiculo(placa);
-    
-        if (veiculo != null) {
-            try {
-                veiculo.estacionar(null);
-                System.out.println("Veículo estacionado com sucesso.");
-            } catch (LotadoException e) {
-                System.out.println(e.getMessage());
-            }
-        } else {
-            System.out.println("Veículo não encontrado.");
+
+        try {
+            estacionamento.estacionar(placa);
+        } catch (LotadoException e) {
+            System.out.println("O estacionamento está lotado");
         }
+
     }
     
 
