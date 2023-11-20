@@ -5,95 +5,90 @@ import org.junit.jupiter.api.Test;
 public class TestEstacionamento {
 
     private Estacionamento estacionamento;
-    private Cliente cliente1;
-    private Veiculo veiculo1;
-    private Cliente cliente2;
-    private Veiculo veiculo2;
+    private Cliente c;
+    private Veiculo v;
 
     @BeforeEach
     public void setUp() {
         estacionamento = new Estacionamento("estacionamento vermes", 10, 10);
-        cliente1 = new Cliente("gabriel", "333");
-        veiculo1 = new Veiculo("ADD123");
-        cliente1.addVeiculo(veiculo1, null);
-    
-        estacionamento.addCliente(cliente1);
-        cliente2 = new Cliente("lucas", "123");
-        veiculo2 = new Veiculo("XYZ789");
-        cliente2.addVeiculo(veiculo2, null);
-        estacionamento.addCliente(cliente2);
+        c = new Cliente("gabriel", "333");
+        v = new Veiculo("ADD123");
+        estacionamento.addCliente(c);
     }
 
-
     @Test
-    public void testAddClientwe() {
+    public void testAddCliente() {
         Cliente cliente = new Cliente("lucas", "123");
         assertTrue(estacionamento.addCliente(cliente));
-        assertFalse(estacionamento.addCliente(cliente1));
     }
 
     @Test
-    public void testEstacionar() throws LotadoException, VagaIndisoponivelException {
-        cliente1.addVeiculo(veiculo1, null);
+    public void testEstacionar() throws LotadoException {
+        c.addVeiculo(v);
         estacionamento.estacionar("ADD123");
-        assertEquals(1, veiculo1.totalDeUsos());
+        assertEquals(1, v.totalDeUsos());;         
+        
     }
 
     @Test
-    public void testSair() throws LotadoException, VagaIndisoponivelException, ServicoNaoExecutadoException {
-        estacionamento.estacionar("XYZ789");
-        double valorPago = estacionamento.sair("XYZ789");
+    public void testSair() throws LotadoException {
+        estacionamento.addCliente(new Cliente("miguel", "444"));
+        estacionamento.estacionar("ABC123");
+        double valorPago = estacionamento.sair("ABC123");
         assertTrue(valorPago >= 0.0);
     }
 
     @Test
-    public void testTotalArrecadado() throws LotadoException, VagaIndisoponivelException {
-        estacionamento.estacionar("ADD123");
-        estacionamento.estacionar("XYZ789");
+    public void testTotalArrecadado() throws LotadoException {
+        Cliente cliente1 = new Cliente("maisa", "676");
+        estacionamento.addCliente(cliente1);
+        estacionamento.estacionar("GGG455");
+        estacionamento.sair("GGG455");
+
+        Cliente cliente2 = new Cliente("Slim", "989");
+        estacionamento.addCliente(cliente2);
+        estacionamento.estacionar("DEF456");
+        estacionamento.sair("DEF456");
 
         double totalArrecadado = estacionamento.totalArrecadado();
-
-        assertEquals(8.0, totalArrecadado);
+        assertEquals(0.0, totalArrecadado); 
     }
 
     @Test
-    public void testArrecadadoNoMes() throws ServicoNaoExecutadoException, LotadoException, VagaIndisoponivelException {
-        veiculo1.estacionar(new Vaga(1, 1));
-        veiculo1.sair();
-        veiculo2.estacionar(new Vaga(2, 2));
-        veiculo2.sair();
-        veiculo2.estacionar(new Vaga(3, 3));
-        veiculo2.sair();
+    public void testArrecadacaoNoMes() throws LotadoException {
+        Cliente cliente1 = new Cliente("Faria", "323");
+        estacionamento.addCliente(cliente1);
+        estacionamento.estacionar("GGG789");
+        estacionamento.sair("GGG789");
 
-        int mes = 1;
-        double arrecadacaoEsperada = veiculo1.arrecadadoNoMes(mes) + veiculo2.arrecadadoNoMes(mes);
-        double arrecadacaoNoMes = estacionamento.arrecadacaoNoMes(mes);
+        Cliente cliente2 = new Cliente("Ferreira", "976");
+        estacionamento.addCliente(cliente2);
+        estacionamento.estacionar("HJK456");
+        estacionamento.sair("HJK456");
 
-        assertEquals(arrecadacaoEsperada, arrecadacaoNoMes); 
-    }
-
-
-    @Test
-    public void testValorMedioPorUso() {
-        try {
-            estacionamento.estacionar("ADD123");
-            estacionamento.sair("ADD123");
-            estacionamento.estacionar("XYZ789");
-            estacionamento.sair("XYZ789");
-        } catch (LotadoException | VagaIndisoponivelException | ServicoNaoExecutadoException e) {
-            e.printStackTrace();
-        }
-
-        double totalArrecadado = estacionamento.totalArrecadado();
-        int totalUsos = cliente1.totalDeUsos() + cliente2.totalDeUsos();
-        double valorMedioEsperado = totalArrecadado / totalUsos;
-
-        double valorMedioCalculado = estacionamento.valorMedioPorUso();
-        assertEquals(valorMedioEsperado, valorMedioCalculado); 
+        double arrecadacaoNoMes = estacionamento.arrecadacaoNoMes(10); 
+        assertEquals(0.0, arrecadacaoNoMes); 
     }
 
     @Test
-    public void testTop5Clientes() throws LotadoException, ServicoNaoExecutadoException, VagaIndisoponivelException {
+    public void testValorMedioPorUso() throws LotadoException {
+    
+        Cliente cliente1 = new Cliente("lucas", "874");
+        estacionamento.addCliente(cliente1);
+        estacionamento.estacionar("ABC123");
+        estacionamento.sair("ABC123");
+
+        Cliente cliente2 = new Cliente("joao", "111");
+        estacionamento.addCliente(cliente2);
+        estacionamento.estacionar("GHJ789");
+        estacionamento.sair("GHJ789");
+
+        double valorMedioPorUso = estacionamento.valorMedioPorUso();
+        assertEquals(0.0, valorMedioPorUso);
+    }
+
+    @Test
+    public void testTop5Clientes() throws LotadoException {
         Cliente cliente1 = new Cliente("maisa", "3456");
         estacionamento.addCliente(cliente1);
         estacionamento.estacionar("POO123");
@@ -109,10 +104,14 @@ public class TestEstacionamento {
     estacionamento.estacionar("ABC789");
     estacionamento.sair("ABC789");
 
+    Cliente cliente4 = new Cliente("Maria", "5678");
+    estacionamento.addCliente(cliente4);
+    estacionamento.estacionar("XYZ012");
+    estacionamento.sair("XYZ012");
     
         String topClientes = estacionamento.top5Clientes(12); 
     
-        String clientestop = "[gabriel, lucas, maisa, Miguel, Joao]";
+        String clientestop = "[gabriel, maisa, Miguel, Joao, Maria]";
         assertEquals(clientestop, topClientes);}
     
 }

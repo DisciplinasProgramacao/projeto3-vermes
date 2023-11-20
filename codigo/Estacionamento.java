@@ -49,7 +49,7 @@ public class Estacionamento implements Serializable {
         Cliente quem = new Cliente("idCli", idCli);
         Cliente cliente = busca(quem);
         if (cliente != null) {
-            cliente.addVeiculo(veiculo, null);
+            cliente.addVeiculo(veiculo);
         }
     }
 
@@ -100,10 +100,9 @@ public class Estacionamento implements Serializable {
      * Estaciona um veículo com a placa especificada.
      *
      * @param placa A placa do veículo a ser estacionado.
-     * @throws VagaIndisoponivelException
      * @throws EstacionamentoLotadoException Se o estacionamento estiver lotado.
      */
-    public void estacionar(String placa) throws LotadoException, VagaIndisoponivelException {
+    public void estacionar(String placa) throws LotadoException {
         Vaga vagaDisponivel = null;
         Veiculo veiculoEncontrado = null;
         for (Vaga vaga : vagas) {
@@ -129,9 +128,8 @@ public class Estacionamento implements Serializable {
      *
      * @param placa A placa do veículo a ser retirado.
      * @return O valor a ser pago pelo uso da vaga.
-     * @throws ServicoNaoExecutadoException
      */
-    public double sair(String placa) throws ServicoNaoExecutadoException {
+    public double sair(String placa) {
         for (Cliente cliente : clientes) {
             Veiculo veiculo = cliente.possuiVeiculo(placa);
             if (veiculo != null) {
@@ -275,3 +273,4 @@ public String top5Clientes(int mes) {
         return null;
     }
 }
+
