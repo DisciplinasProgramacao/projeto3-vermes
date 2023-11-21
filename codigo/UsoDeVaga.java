@@ -65,13 +65,13 @@ public class UsoDeVaga implements Serializable {
      * Calcula o valor a ser pago pelo uso da vaga.
      */
     public void calcularValorPago() {
-        long minutos = calcularDiferencaEmMinutos(entrada, saida);
-        double valorTemp = (minutos / 15) * VALOR_FRACAO;
-        valorPago = valorTemp > VALOR_MAXIMO ? VALOR_MAXIMO : valorTemp;
-        if (servico != null) {
-            valorPago += servico.getValor();
-        }
+    long minutos = calcularDiferencaEmMinutos(entrada, saida);
+    double valorTemp = Math.ceil((double) minutos / 15) * VALOR_FRACAO;
+    valorPago = valorTemp > VALOR_MAXIMO ? VALOR_MAXIMO : valorTemp;
+    if (servico != null) {
+        valorPago += servico.getValor();
     }
+}
 
     /**
      * Calcula a diferença em minutos entre duas datas.
