@@ -11,10 +11,10 @@ public enum Turno {
 
     Turno(LocalTime inicio, LocalTime fim) {
         this.inicio = inicio;
-        this.fim = fim;
+        this.fim = fim;}
 
        public boolean eHorarioDoTurno(LocalTime hora) {
         return hora.isAfter(inicio) && hora.isBefore(fim);
-    }
+    
     }
 }
