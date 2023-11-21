@@ -133,34 +133,11 @@ public class Aplicacao {
             String placa = scanner.nextLine();
             Veiculo veiculo = new Veiculo(placa);
     
-            System.out.println("Escolha um dos serviços:");
-            System.out.println("1. Manobrista - R$5.0");
-            System.out.println("2. Lavagem - R$20.0");
-            System.out.println("3. Polimento - R$45.0");
-    
-            int opcaoServico = Integer.parseInt(scanner.nextLine());
-    
-            Servico servicoEscolhido = null;
-            switch (opcaoServico) {
-                case 1:
-                    servicoEscolhido = Servico.MANOBRISTA;
-                    break;
-                case 2:
-                    servicoEscolhido = Servico.LAVAGEM;
-                    break;
-                case 3:
-                    servicoEscolhido = Servico.POLIMENTO;
-                    break;
-                default:
-                    System.out.println("Opção inválida. Nenhum serviço selecionado.");
-                    break;
-            }
-    
-            if (servicoEscolhido != null) {
-                cliente.addVeiculo(veiculo, servicoEscolhido);  // Adicione o serviço escolhido ao veículo
+            try {
+                cliente.addVeiculo(veiculo, null);
                 System.out.println("Veículo adicionado com sucesso.");
-            } else {
-                System.out.println("Operação cancelada. Nenhum serviço selecionado.");
+            } catch (Exception e) {
+                System.out.println("Erro ao adicionar veículo: " + e.getMessage());
             }
         } else {
             System.out.println("Cliente não encontrado.");
@@ -168,20 +145,46 @@ public class Aplicacao {
     }
     
     
-
     public static void estacionarVeiculo() throws VagaIndisoponivelException {
         System.out.println("Digite a placa do veículo: ");
         String placa = scanner.nextLine();
-
-        try {
-            estacionamento.estacionar(placa);
-        } catch (LotadoException e) {
-            System.out.println("O estacionamento está lotado");
+    
+        System.out.println("Escolha um dos serviços:");
+        System.out.println("1. Manobrista - R$5.0");
+        System.out.println("2. Lavagem - R$20.0");
+        System.out.println("3. Polimento - R$45.0");
+    
+        int opcaoServico = Integer.parseInt(scanner.nextLine());
+    
+        Servico servicoEscolhido = null;
+        switch (opcaoServico) {
+            case 1:
+                servicoEscolhido = Servico.MANOBRISTA;
+                break;
+            case 2:
+                servicoEscolhido = Servico.LAVAGEM;
+                break;
+            case 3:
+                servicoEscolhido = Servico.POLIMENTO;
+                break;
+            default:
+                System.out.println("Opção inválida. Nenhum serviço selecionado.");
+                break;
         }
-
+    
+        if (servicoEscolhido != null) {
+            try {
+                estacionamento.estacionar(placa);
+                System.out.println("Veículo estacionado com sucesso.");
+            } catch (LotadoException e) {
+                System.out.println("O estacionamento está lotado");
+            }
+        } else {
+            System.out.println("Operação cancelada. Nenhum serviço selecionado.");
+        }
     }
     
-
+    
     public static void sairDaVaga() throws ServicoNaoExecutadoException {
         System.out.println("Digite a placa do veículo: ");
         String placa = scanner.nextLine();
