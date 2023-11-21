@@ -149,51 +149,61 @@ public class Aplicacao {
         System.out.println("Digite a placa do veículo: ");
         String placa = scanner.nextLine();
     
-        System.out.println("Escolha um dos serviços:");
-        System.out.println("1. Manobrista - R$5.0");
-        System.out.println("2. Lavagem - R$20.0");
-        System.out.println("3. Polimento - R$45.0");
-    
-        int opcaoServico = Integer.parseInt(scanner.nextLine());
-    
-        Servico servicoEscolhido = null;
-        switch (opcaoServico) {
-            case 1:
-                servicoEscolhido = Servico.MANOBRISTA;
-                break;
-            case 2:
-                servicoEscolhido = Servico.LAVAGEM;
-                break;
-            case 3:
-                servicoEscolhido = Servico.POLIMENTO;
-                break;
-            default:
-                System.out.println("Opção inválida. Nenhum serviço selecionado.");
-                break;
-        }
-    
-        if (servicoEscolhido != null) {
-            try {
-                estacionamento.estacionar(placa);
-                System.out.println("Veículo estacionado com sucesso.");
-            } catch (LotadoException e) {
-                System.out.println("O estacionamento está lotado");
-            }
-        } else {
-            System.out.println("Operação cancelada. Nenhum serviço selecionado.");
+        try {
+            estacionamento.estacionar(placa);
+            System.out.println("Veículo estacionado com sucesso.");
+        } catch (LotadoException e) {
+            System.out.println("O estacionamento está lotado");
         }
     }
-    
     
     public static void sairDaVaga() throws ServicoNaoExecutadoException {
         System.out.println("Digite a placa do veículo: ");
         String placa = scanner.nextLine();
-
+    
         double valorPago = estacionamento.sair(placa);
+    
         if (valorPago > 0) {
-            System.out.println("Valor pago: R$" + valorPago);
+            System.out.println("Escolha um dos serviços:");
+            System.out.println("1. Manobrista - R$5.0");
+            System.out.println("2. Lavagem - R$20.0");
+            System.out.println("3. Polimento - R$45.0");
+    
+            int opcaoServico = Integer.parseInt(scanner.nextLine());
+    
+            Servico servicoEscolhido = null;
+            switch (opcaoServico) {
+                case 1:
+                    servicoEscolhido = Servico.MANOBRISTA;
+                    break;
+                case 2:
+                    servicoEscolhido = Servico.LAVAGEM;
+                    break;
+                case 3:
+                    servicoEscolhido = Servico.POLIMENTO;
+                    break;
+                default:
+                    System.out.println("Opção inválida. Nenhum serviço selecionado.");
+                    break;
+            }
+    
+            if (servicoEscolhido != null) {
+                double valorServico = servicoEscolhido.getValor();
+                double tempoServico = servicoEscolhido.getTempo();
+    
+                System.out.println("Serviço aplicado com sucesso.");
+                valorPago += valorServico;
+    
+                System.out.println("Valor total pago (incluindo serviço): R$" + valorPago);
+                System.out.println("Tempo total do serviço: " + tempoServico + " minutos");
+            } else {
+                System.out.println("Operação cancelada. Nenhum serviço selecionado.");
+                System.out.println("Valor pago: R$" + valorPago);
+            }
         }
     }
+    
+    
 
     public static void consultarTotal() {
         double total = estacionamento.totalArrecadado();
