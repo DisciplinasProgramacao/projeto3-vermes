@@ -216,12 +216,12 @@ public class Aplicacao {
     public static void mostrarHistoricoCliente() {
         System.out.println("Digite o ID do cliente: ");
         String idCliente = scanner.nextLine();
+    
         Cliente cliente = estacionamento.busca(idCliente);
+    
         if (cliente != null) {
-            List<Registro> historico = cliente.getHistorico();
-            for (Registro registro : historico) {
-                System.out.println("Data: " + registro.getData() + ", Descrição: " + registro.getDescricao() + ", Quilometragem: " + registro.getQuilometragem());
-            }
+            String historicoCliente = cliente.historico();
+            System.out.println("Histórico do Cliente:\n" + historicoCliente);
         } else {
             System.out.println("Cliente não encontrado.");
         }
