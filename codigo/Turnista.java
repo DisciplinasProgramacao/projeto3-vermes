@@ -3,7 +3,7 @@ import java.time.LocalTime;
 public class Turnista extends UsoDeVaga implements Diario {
     
     private static final double VALOR_MAXIMO = 50.0;
-    private static final long VALOR_FRACAO = 4.0;
+    private static final double VALOR_FRACAO = 4.0;
     TipoDePlano tipoDePlano = TipoDePlano.TURNISTA;
     Turno turno;
     private double valorPago;
