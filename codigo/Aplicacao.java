@@ -1,6 +1,7 @@
-import java.util.Scanner;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Classe que representa a aplicação de gerenciamento de um estacionamento.
@@ -26,12 +27,13 @@ public class Aplicacao {
                 nomeArquivo = "dat/estacionamento2.dat";
                 break;
             case 3:
-            
                 estacionamento = new Estacionamento("Estacionamento 3", 5, 10);
                 nomeArquivo = "dat/estacionamento3.dat";
                 break;
             default:
                 System.out.println("Opção inválida. Usando Estacionamento 1 por padrão.");
+                estacionamento = new Estacionamento("Estacionamento 1", 5, 10);
+                nomeArquivo = "dat/estacionamento1.dat";
                 break;
         }
 
@@ -229,14 +231,29 @@ public class Aplicacao {
     public static void mostrarHistoricoCliente() {
         System.out.println("Digite o ID do cliente: ");
         String idCliente = scanner.nextLine();
-    
+
         Cliente cliente = estacionamento.busca(idCliente);
-    
+
         if (cliente != null) {
             String historicoCliente = cliente.historico();
             System.out.println("Histórico do Cliente:\n" + historicoCliente);
         } else {
             System.out.println("Cliente não encontrado.");
+        }
+    }
+
+    public static void calcularArrecadacaoTotalOrdenar() {
+        double arrecadacaoTotal = estacionamento.calcularArrecadacaoTotal();
+        System.out.println("A arrecadação total do estacionamento foi de R$" + arrecadacaoTotal);
+    }
+
+    public static void ordenarEstacionamentos() {
+        List<Estacionamento> estacionamentos = Arrays.asList(estacionamento);
+        
+        Estacionamento.ordenarEstacionamentos(estacionamentos);
+        
+     for (Estacionamento est : estacionamentos) {
+            System.out.println("Nome: " + est.getNome() + ", Arrecadação Total: R$" + est.calcularArrecadacaoTotal());
         }
     }
 }
