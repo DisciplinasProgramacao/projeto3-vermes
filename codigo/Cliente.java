@@ -170,4 +170,7 @@ public class Cliente implements Serializable {
     public List<Registro> getHistorico() {
         return historico.getHistorico();
     }
+    public int obterNumeroUtilizacoesNoMes(int mesCorrente) {
+        return 0;
+    }
 }
