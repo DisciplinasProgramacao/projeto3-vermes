@@ -274,4 +274,26 @@ public String top5Clientes(int mes) {
         }
         return null;
     }
+    public double mediaUtilizacaoMensalistasNoMesCorrente() {
+    int totalClientesMensalistas = 0;
+    int totalUtilizacoesMensalistas = 0;
+
+    LocalDate dataAtual = LocalDate.now();
+    int mesCorrente = dataAtual.getMonthValue();
+
+    for (Cliente cliente : clientes) {
+        if (cliente instanceof Mensalista) {
+            int utilizacoesNoMes = cliente.obterNumeroUtilizacoesNoMes(mesCorrente);
+            totalClientesMensalistas++;
+            totalUtilizacoesMensalistas += utilizacoesNoMes;
+        }
+    }
+
+    if (totalClientesMensalistas > 0) {
+        return (double) totalUtilizacoesMensalistas / totalClientesMensalistas;
+    } else {
+        return 0.0;
+    }
+}
+
 }
