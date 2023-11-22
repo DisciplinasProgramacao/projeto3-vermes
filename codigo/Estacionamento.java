@@ -321,3 +321,12 @@ public String top5Clientes(int mes) {
     }
 }
 }
+public double calcularArrecadacaoTotal() {
+        return clientes.stream()
+                .mapToDouble(Cliente::arrecadadoTotal)
+                .sum();
+    }
+       public static void ordenarEstacionamentos(List<Estacionamento> estacionamentos) {
+        Collections.sort(estacionamentos, Comparator.comparingDouble(Estacionamento::calcularArrecadacaoTotal).reversed());
+    }
+}
