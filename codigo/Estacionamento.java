@@ -2,6 +2,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.time.LocalDate;
 
 /**
  * A classe Estacionamento representa um estacionamento que gerencia o estacionamento de veículos para vários clientes.
