@@ -304,26 +304,30 @@ public String top5Clientes(int mes) {
     }
 
     public double arrecadacaoMediaHoristasNoMesCorrente() {
-    int totalClientesHoristas = 0;
-    double totalArrecadadoHoristas = 0.0;
-
-    LocalDate dataAtual = LocalDate.now();
-    int mesCorrente = dataAtual.getMonthValue();
-
-    for (Cliente cliente : clientes) {
-        if (cliente instanceof Horista) {
-            totalClientesHoristas++;
-            totalArrecadadoHoristas += cliente.arrecadadoNoMes(mesCorrente);
+        int totalClientesHoristas = 0;
+        double totalArrecadacaoHoristas = 0.0;
+    
+        LocalDate dataAtual = LocalDate.now();
+        int mesCorrente = dataAtual.getMonthValue();
+    
+        for (Cliente cliente : clientes) {
+            if (isHorista(cliente)) {
+                double arrecadacaoNoMes = cliente.obterNumeroUtilizacoesNoMes(mesCorrente);
+                totalClientesHoristas++;
+                totalArrecadacaoHoristas += arrecadacaoNoMes;
+            }
+        }
+    
+        if (totalClientesHoristas > 0) {
+            return totalArrecadacaoHoristas / totalClientesHoristas;
+        } else {
+            return 0.0;
         }
     }
-
-    if (totalClientesHoristas > 0) {
-        return totalArrecadadoHoristas / totalClientesHoristas;
-    } else {
-        return 0.0;
+    
+    private boolean isHorista(Cliente cliente) {
+        return cliente != null && cliente.getClass().equals(Horista.class);
     }
-}
-}
 public double calcularArrecadacaoTotal() {
         return clientes.stream()
                 .mapToDouble(Cliente::arrecadadoTotal)
