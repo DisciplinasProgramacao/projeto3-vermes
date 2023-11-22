@@ -300,4 +300,24 @@ public String top5Clientes(int mes) {
         return cliente != null && cliente.getClass().equals(Mensalista.class);
     }
 
+    public double arrecadacaoMediaHoristasNoMesCorrente() {
+    int totalClientesHoristas = 0;
+    double totalArrecadadoHoristas = 0.0;
+
+    LocalDate dataAtual = LocalDate.now();
+    int mesCorrente = dataAtual.getMonthValue();
+
+    for (Cliente cliente : clientes) {
+        if (cliente instanceof Horista) {
+            totalClientesHoristas++;
+            totalArrecadadoHoristas += cliente.arrecadadoNoMes(mesCorrente);
+        }
+    }
+
+    if (totalClientesHoristas > 0) {
+        return totalArrecadadoHoristas / totalClientesHoristas;
+    } else {
+        return 0.0;
+    }
+}
 }
