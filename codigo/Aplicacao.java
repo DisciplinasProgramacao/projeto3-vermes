@@ -96,10 +96,6 @@ public class Aplicacao {
             case 9:
                 mostrarHistoricoCliente();
                 break;
-            case 10:
-            double arrecadacaoMediaHoristas = estacionamento.arrecadacaoMediaHoristasNoMesCorrente();
-            System.out.println("Arrecadação média dos clientes horistas no mês corrente: R$" + arrecadacaoMediaHoristas);
-            break;
             case 0:
             try {
                 Serializacao.salvarEstacionamento(estacionamento, nomeArquivo);
