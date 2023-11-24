@@ -10,6 +10,7 @@ public class Cliente implements Serializable {
     private String id;
     private Veiculo[] veiculos;
     private Historico historico;
+    private TipoDePlano tipoDePlano;
 
     /**
      * Cria um novo objeto `Cliente` com um nome e um ID.
@@ -170,7 +171,12 @@ public class Cliente implements Serializable {
     public List<Registro> getHistorico() {
         return historico.getHistorico();
     }
+
     public int obterNumeroUtilizacoesNoMes(int mesCorrente) {
         return 0;
+    }
+
+    public void escolherPlano(TipoDePlano plano) {
+        this.tipoDePlano = plano;
     }
 }
