@@ -10,6 +10,9 @@ public class Aplicacao {
     private static Scanner scanner;
     private static Estacionamento estacionamento;
     private static String nomeArquivo;
+    private static double totalServicos = 0;
+    private static double totalMesServicos = 0;
+    private static double totalValorMedio = 0;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, VagaIndisoponivelException, ServicoNaoExecutadoException {
         scanner = new Scanner(System.in);
@@ -60,6 +63,7 @@ public class Aplicacao {
         System.out.println("\t7. Consultar valor médio de utilização do estacionamento");
         System.out.println("\t8. Consultar top 5 clientes");
         System.out.println("\t9. Mostrar histórico de cliente");
+        System.out.println("\t10. Visualizar arrecadação total de cada estacionamento");
         System.out.println("\t0. Sair do programa");
 
         int opcao;
@@ -97,6 +101,9 @@ public class Aplicacao {
                 break;
             case 9:
                 mostrarHistoricoCliente();
+                break;
+            case 10:
+                ordenarEstacionamentos();
                 break;
             case 0:
             try {
@@ -198,6 +205,9 @@ public class Aplicacao {
     
                 System.out.println("Valor total pago (incluindo serviço): R$" + valorPago);
                 System.out.println("Tempo total do serviço: " + tempoServico + " minutos");
+                totalServicos += valorServico;
+                totalMesServicos += valorServico;
+                totalValorMedio += valorServico;
             } else {
                 System.out.println("Operação cancelada. Nenhum serviço selecionado.");
                 System.out.println("Valor pago: R$" + valorPago);
@@ -206,22 +216,21 @@ public class Aplicacao {
     }
     
     
-
     public static void consultarTotal() {
         double total = estacionamento.totalArrecadado();
-        System.out.println("O total arrecadado pelo estacionamento foi de R$" + total);
+        System.out.println("O total arrecadado pelo estacionamento foi de R$" + (total + totalServicos));
     }
 
     public static void consultarTotalMes() {
         System.out.println("Digite o mês: ");
         int mes = Integer.parseInt(scanner.nextLine());
         double totalMes = estacionamento.arrecadacaoNoMes(mes);
-        System.out.println("A arrecadação do mês " + mes + " foi de R$" + totalMes);
+        System.out.println("A arrecadação do mês " + mes + " foi de R$" + (totalMes + totalMesServicos));
     }
 
     public static void consultarValorMedio() {
         double valorMedio = estacionamento.valorMedioPorUso();
-        System.out.println("O valor médio de uso no estacionamento foi de R$" + valorMedio);
+        System.out.println("O valor médio de uso no estacionamento foi de R$" + (valorMedio + totalValorMedio));
     }
 
     public static void mostrarTop5Clientes() {
@@ -249,11 +258,12 @@ public class Aplicacao {
 
     public static void ordenarEstacionamentos() {
         List<Estacionamento> estacionamentos = Arrays.asList(estacionamento);
-        
+    
         Estacionamento.ordenarEstacionamentos(estacionamentos);
-        
-     for (Estacionamento est : estacionamentos) {
-            System.out.println("Nome: " + est.getNome() + ", Arrecadação Total: R$" + est.calcularArrecadacaoTotal());
+    
+        for (Estacionamento est : estacionamentos) {
+            double arrecadacaoTotal = est.calcularArrecadacaoTotal() + totalServicos;
+            System.out.println("Nome: " + est.getNome() + ", Arrecadação Total (com serviços): R$" + arrecadacaoTotal);
         }
     }
 }
