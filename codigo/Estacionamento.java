@@ -320,10 +320,11 @@ public String top5Clientes(int mes) {
         return tipoDePlano != null && tipoDePlano.equals(TipoDePlano.HORISTA);
     }
     public double calcularArrecadacaoTotal() {
-        double arrecadacaoTotal = 0.0;
-        for (Cliente cliente : clientes) {
-            arrecadacaoTotal += cliente.arrecadadoTotal();
-        }
-        return arrecadacaoTotal;
+        return clientes.stream()
+                .mapToDouble(Cliente::arrecadadoTotal)
+                .sum();
+    }
+       public static void ordenarEstacionamentos(List<Estacionamento> estacionamentos) {
+        Collections.sort(estacionamentos, Comparator.comparingDouble(Estacionamento::calcularArrecadacaoTotal).reversed());
     }
 }
