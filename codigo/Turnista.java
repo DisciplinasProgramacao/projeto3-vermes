@@ -26,7 +26,7 @@ public class Turnista extends UsoDeVaga implements Diario {
     }
 
     @Override
-    public void calcularValorPago() {
+    public void calcularValorPago(Cliente cliente) {
         if (tipoDePlano == TipoDePlano.TURNISTA) {
             if (turno.eHorarioDoTurno(LocalTime.now())) {
                 // Cliente está estacionando no seu turno, não paga pelo estacionamento
@@ -55,3 +55,4 @@ public class Turnista extends UsoDeVaga implements Diario {
         return turno;
     }
 }
+
