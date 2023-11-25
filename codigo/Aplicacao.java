@@ -1,8 +1,5 @@
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -113,7 +110,7 @@ public class Aplicacao {
                 visualizarArrecadacaoTotal();
                 break;
             case 11:
-                exibirMediaUtilizacaoMensalistasNoMesCorrente();
+                exibirMediaUtilizacaoMensalistasNoMesCorrente(estacionamento);
                 break;
 
             case 12:
@@ -317,46 +314,41 @@ public class Aplicacao {
     }
 
     public static void visualizarArrecadacaoTotal() {
-    // Calcula a arrecadação total do estacionamento atual antes de carregar outros estacionamentos
-    calcularArrecadacaoTotalOrdenar();
-
-    List<Estacionamento> estacionamentos = new ArrayList<>();
-    double arrecadacaoTotalGeral = 0;
-
-    for (int i = 1; i <= 3; i++) {
-        String nomeArquivo = "dat/estacionamento" + i + ".dat";
-        try {
-            Estacionamento est = Serializacao.carregarEstacionamento(nomeArquivo);
-            if (est != null) {
-                estacionamentos.add(est);
-                double arrecadacaoTotal = est.totalArrecadado();
-                arrecadacaoTotalGeral += arrecadacaoTotal;
+        List<Estacionamento> estacionamentos = new ArrayList<>();
+        double arrecadacaoTotalGeral = 0;
+    
+        for (int i = 1; i <= 3; i++) {
+            String nomeArquivo = "dat/estacionamento" + i + ".dat";
+            try {
+                Estacionamento est = Serializacao.carregarEstacionamento(nomeArquivo);
+                if (est != null) {
+                    estacionamentos.add(est);
+                    double arrecadacaoTotal = est.calcularArrecadacaoTotal();
+                    arrecadacaoTotalGeral += arrecadacaoTotal;
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println("Erro ao carregar o estacionamento " + i + ": " + e.getMessage());
             }
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Erro ao carregar o estacionamento " + i + ": " + e.getMessage());
         }
+    
+        for (int i = 0; i < estacionamentos.size(); i++) {
+           int j;
+            j=i+1;
+            Estacionamento est = estacionamentos.get(i);
+            System.out.println("Nome: Estacionameto " + j + ", Arrecadação Total: R$" + est.calcularArrecadacaoTotal());
+        }
+    
+        System.out.println("Arrecadação Total Geral: R$" + arrecadacaoTotalGeral);
     }
 
-    // Ordena a lista de estacionamentos com base na arrecadação total (em ordem decrescente)
-    Collections.sort(estacionamentos, Comparator.comparingDouble(Estacionamento::totalArrecadado).reversed());
-
-    System.out.println("Somente Dados Salvos em arquivo, Ordenados por Arrecadação Decrescente:");
-    DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
-    for (int i = 0; i < estacionamentos.size(); i++) {
-        int j = i + 1;
-        Estacionamento est = estacionamentos.get(i);
-        String arrecadacaoFormatada = decimalFormat.format(est.totalArrecadado());
-        System.out.printf("Nome: %s, Arrecadação Total: R$%s%n", est.getNome(), arrecadacaoFormatada);
-    }
-
-    String arrecadacaoTotalGeralFormatada = decimalFormat.format(arrecadacaoTotalGeral);
-    System.out.printf("Arrecadação Total Geral: R$%s%n", arrecadacaoTotalGeralFormatada);
-}
-
-    private static void exibirMediaUtilizacaoMensalistasNoMesCorrente() {
-        double mediaMensalista = estacionamento.mediaUtilizacaoMensalistasNoMesCorrente();
+    private static void exibirMediaUtilizacaoMensalistasNoMesCorrente(Estacionamento estacionamento) {
+        double mediaMensalista = estacionamento.arrecadacaoMediaMensalistasNoMesCorrente();
+        System.out.println("Total de clientes mensalistas: " + estacionamento.getTotalClientesMensalistas());
+        System.out.println("Total de utilizações mensalistas: " + estacionamento.getTotalUtilizacoesMensalistas());
+    
         System.out.println("A média de utilização dos clientes mensalistas no mês corrente é: " + mediaMensalista);
     }
+    
 
     private static void exibirArrecadacaoMediaHoristasNoMesCorrente() {
         double mediaHorista = estacionamento.arrecadacaoMediaHoristasNoMesCorrente();
