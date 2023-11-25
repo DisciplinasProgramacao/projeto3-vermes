@@ -39,13 +39,13 @@ public class UsoDeVaga implements Serializable {
     /**
      * Registra a saída do veículo da vaga.
      */
-    public void sair() throws ServicoNaoExecutadoException {
+    public void sair(Cliente cliente) throws ServicoNaoExecutadoException {
         this.saida = LocalDateTime.now();
-        calcularValorPago();
-
+        calcularValorPago(cliente);
+    
         if (servico != null) {
             double tempoMinimo = servico.getTempo();
-
+    
             double tempo = calcularDiferencaEmMinutos(entrada, saida);
             if (tempo < tempoMinimo) {
                 throw new ServicoNaoExecutadoException("O serviço não foi executado. O tempo mínimo é de " + servico.getTempo() + " minutos.");
@@ -64,14 +64,19 @@ public class UsoDeVaga implements Serializable {
     /**
      * Calcula o valor a ser pago pelo uso da vaga.
      */
-    public void calcularValorPago() {
-    long minutos = calcularDiferencaEmMinutos(entrada, saida);
-    double valorTemp = Math.ceil((double) minutos / 15) * VALOR_FRACAO;
-    valorPago = valorTemp > VALOR_MAXIMO ? VALOR_MAXIMO : valorTemp;
-    if (servico != null) {
-        valorPago += servico.getValor();
+    public void calcularValorPago(Cliente cliente) {
+        if (cliente.isMensalista()) {
+            // Se o cliente for mensalista, o valor pago é 0, independentemente do tempo de uso ou serviços contratados
+            valorPago = 0;
+        } else {
+            long minutos = calcularDiferencaEmMinutos(entrada, saida);
+            double valorTemp = Math.ceil((double) minutos / 15) * VALOR_FRACAO;
+            valorPago = valorTemp > VALOR_MAXIMO ? VALOR_MAXIMO : valorTemp;
+            if (servico != null) {
+                valorPago += servico.getValor();
+            }
+        }
     }
-}
 
     /**
      * Calcula a diferença em minutos entre duas datas.
@@ -108,3 +113,4 @@ public class UsoDeVaga implements Serializable {
         return "UsoDeVaga [entrada=" + entrada + ", saida=" + saida + ", valorPago=" + valorPago + ", servico=" + servico + "]";
     }
 }
+
