@@ -1,15 +1,16 @@
-// Para Estacionamento 1, Estacionamento 2 e Estacionamento 3
-public static void criarCargaDados(Estacionamento estacionamento, int quantidade) throws VagaIndisoponivelException {
+ public static void criarCargaDados(Estacionamento estacionamento, int quantidade) throws VagaIndisoponivelException {
         for (int i = 0; i < quantidade; i++) {
             String idCliente = String.valueOf(i);
             String nomeCliente = "Cliente " + i;
     
-            Cliente cliente = new Cliente(nomeCliente, idCliente);
+            
+            TipoDePlano tipoCliente = TipoDePlano.HORISTA;
+    
+            Cliente cliente = new Cliente(nomeCliente, idCliente, tipoCliente, 0.0); 
             Veiculo veiculo = new Veiculo("ABC" + i);
+            Servico servico = Servico.MANOBRISTA;
     
-            Servico servico = Servico.MANOBRISTA; 
-    
-            cliente.addVeiculo(veiculo, servico); 
+            cliente.addVeiculo(veiculo, servico);
     
             estacionamento.addCliente(cliente);
     
