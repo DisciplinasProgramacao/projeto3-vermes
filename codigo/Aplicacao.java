@@ -314,32 +314,41 @@ public class Aplicacao {
     }
 
     public static void visualizarArrecadacaoTotal() {
-        List<Estacionamento> estacionamentos = new ArrayList<>();
-        double arrecadacaoTotalGeral = 0;
-    
-        for (int i = 1; i <= 3; i++) {
-            String nomeArquivo = "dat/estacionamento" + i + ".dat";
-            try {
-                Estacionamento est = Serializacao.carregarEstacionamento(nomeArquivo);
-                if (est != null) {
-                    estacionamentos.add(est);
-                    double arrecadacaoTotal = est.calcularArrecadacaoTotal();
-                    arrecadacaoTotalGeral += arrecadacaoTotal;
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                System.out.println("Erro ao carregar o estacionamento " + i + ": " + e.getMessage());
+    // Calcula a arrecadação total do estacionamento atual antes de carregar outros estacionamentos
+    calcularArrecadacaoTotalOrdenar();
+
+    List<Estacionamento> estacionamentos = new ArrayList<>();
+    double arrecadacaoTotalGeral = 0;
+
+    for (int i = 1; i <= 3; i++) {
+        String nomeArquivo = "dat/estacionamento" + i + ".dat";
+        try {
+            Estacionamento est = Serializacao.carregarEstacionamento(nomeArquivo);
+            if (est != null) {
+                estacionamentos.add(est);
+                double arrecadacaoTotal = est.totalArrecadado();
+                arrecadacaoTotalGeral += arrecadacaoTotal;
             }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Erro ao carregar o estacionamento " + i + ": " + e.getMessage());
         }
-    
-        for (int i = 0; i < estacionamentos.size(); i++) {
-           int j;
-            j=i+1;
-            Estacionamento est = estacionamentos.get(i);
-            System.out.println("Nome: Estacionameto " + j + ", Arrecadação Total: R$" + est.calcularArrecadacaoTotal());
-        }
-    
-        System.out.println("Arrecadação Total Geral: R$" + arrecadacaoTotalGeral);
     }
+
+    // Ordena a lista de estacionamentos com base na arrecadação total (em ordem decrescente)
+    Collections.sort(estacionamentos, Comparator.comparingDouble(Estacionamento::totalArrecadado).reversed());
+
+    System.out.println("Somente Dados Salvos em arquivo, Ordenados por Arrecadação Decrescente:");
+    DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+    for (int i = 0; i < estacionamentos.size(); i++) {
+        int j = i + 1;
+        Estacionamento est = estacionamentos.get(i);
+        String arrecadacaoFormatada = decimalFormat.format(est.totalArrecadado());
+        System.out.printf("Nome: %s, Arrecadação Total: R$%s%n", est.getNome(), arrecadacaoFormatada);
+    }
+
+    String arrecadacaoTotalGeralFormatada = decimalFormat.format(arrecadacaoTotalGeral);
+    System.out.printf("Arrecadação Total Geral: R$%s%n", arrecadacaoTotalGeralFormatada);
+}
 
     private static void exibirMediaUtilizacaoMensalistasNoMesCorrente() {
         double mediaMensalista = estacionamento.mediaUtilizacaoMensalistasNoMesCorrente();
