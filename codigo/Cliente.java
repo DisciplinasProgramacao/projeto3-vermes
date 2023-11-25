@@ -184,4 +184,6 @@ public class Cliente implements Serializable {
     public void escolherPlano(TipoDePlano plano) {
         this.tipoDePlano = plano;
     }
+
+
 }
