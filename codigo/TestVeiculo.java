@@ -13,9 +13,9 @@ public class TestVeiculo {
     @Before
     public void setUp() {
         veiculo = new Veiculo("ABC1234");
-        vaga = new Vaga(1, 1); // Fornecendo valores válidos para fila e número
-        Servico servico = Servico.MANOBRISTA; // Inicializando o serviço corretamente
-        veiculo.setServico(servico); // Configurando o serviço no veículo
+        vaga = new Vaga(1, 1);
+        Servico servico = Servico.MANOBRISTA; 
+        veiculo.setServico(servico); 
     }
     
     @Test
