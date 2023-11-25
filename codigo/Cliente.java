@@ -179,7 +179,7 @@ public class Cliente implements Serializable {
         return historicoCompleto.length() > 0 ? historicoCompleto.toString() : "Não possui histórico.";
     }
 
-    /**
+    **
      * Obtém o histórico de uso de vagas como uma lista de registros.
      *
      * @return Uma lista de registros do histórico de uso de vagas.
@@ -189,7 +189,21 @@ public class Cliente implements Serializable {
     }
 
     public int obterNumeroUtilizacoesNoMes(int mesCorrente) {
-        return 0;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+    
+        int anoAtual = cal.get(Calendar.YEAR);
+    
+        return historico.getHistorico()
+                .stream()
+                .filter(registro -> {
+                    cal.setTime(registro.getData());
+                    int mesRegistro = cal.get(Calendar.MONTH) + 1; // Adiciona 1 porque os meses são indexados de 0 a 11
+                    int anoRegistro = cal.get(Calendar.YEAR);
+                    return mesRegistro == mesCorrente && anoRegistro == anoAtual;
+                })
+                .mapToInt(registro -> 1) // Mapear cada registro para 1 (representando uma utilização)
+                .sum();
     }
 
     public void escolherPlano(TipoDePlano plano) {
