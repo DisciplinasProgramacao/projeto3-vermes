@@ -13,6 +13,7 @@ public class Aplicacao {
     private static double totalServicos = 0;
     private static double totalMesServicos = 0;
     private static double totalValorMedio = 0;
+    private static double arrecadaTotal = 0;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, VagaIndisoponivelException, ServicoNaoExecutadoException {
         scanner = new Scanner(System.in);
@@ -127,7 +128,27 @@ public class Aplicacao {
         System.out.println("Digite o nome do cliente: ");
         String nomeCliente = scanner.nextLine();
 
-        Cliente cliente = new Cliente(nomeCliente, idCliente);
+        System.out.println("Escolha o tipo de cliente (1. Horista, 2. Mensalista, 3. Turnista): ");
+        int escolhaTipoCliente = Integer.parseInt(scanner.nextLine());
+    
+        TipoDePlano tipoCliente = null;
+        switch (escolhaTipoCliente) {
+            case 1:
+                tipoCliente = TipoDePlano.HORISTA;
+                break;
+            case 2:
+                tipoCliente = TipoDePlano.MENSALISTA;
+                break;
+            case 3:
+                tipoCliente = TipoDePlano.TURNISTA;
+                break;
+            default:
+                System.out.println("Opção inválida. Cliente será cadastrado como Horista por padrão.");
+                tipoCliente = TipoDePlano.HORISTA;
+                break;
+        }
+
+        Cliente cliente = new Cliente(nomeCliente, idCliente, tipoCliente);
         estacionamento.addCliente(cliente);
     }
 
@@ -208,6 +229,7 @@ public class Aplicacao {
                 totalServicos += valorServico;
                 totalMesServicos += valorServico;
                 totalValorMedio += valorServico;
+                arrecadaTotal += valorServico;
             } else {
                 System.out.println("Operação cancelada. Nenhum serviço selecionado.");
                 System.out.println("Valor pago: R$" + valorPago);
@@ -253,17 +275,16 @@ public class Aplicacao {
 
     public static void calcularArrecadacaoTotalOrdenar() {
         double arrecadacaoTotal = estacionamento.calcularArrecadacaoTotal();
-        System.out.println("A arrecadação total do estacionamento foi de R$" + arrecadacaoTotal);
+        System.out.println("A arrecadação total do estacionamento foi de R$" + (arrecadacaoTotal + arrecadaTotal));
     }
 
     public static void ordenarEstacionamentos() {
         List<Estacionamento> estacionamentos = Arrays.asList(estacionamento);
-    
+        
         Estacionamento.ordenarEstacionamentos(estacionamentos);
-    
-        for (Estacionamento est : estacionamentos) {
-            double arrecadacaoTotal = est.calcularArrecadacaoTotal() + totalServicos;
-            System.out.println("Nome: " + est.getNome() + ", Arrecadação Total (com serviços): R$" + arrecadacaoTotal);
+        
+     for (Estacionamento est : estacionamentos) {
+            System.out.println("Nome: " + est.getNome() + ", Arrecadação Total: R$" + est.calcularArrecadacaoTotal());
         }
     }
 }
