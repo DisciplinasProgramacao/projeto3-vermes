@@ -223,4 +223,8 @@ public double calcularMensalidade() {
         }
     }
     
+    public boolean isMensalista() {
+        return tipoDePlano == TipoDePlano.MENSALISTA;
+    }
 }
+
