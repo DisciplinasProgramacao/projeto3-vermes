@@ -106,7 +106,7 @@ public class Aplicacao {
                 mostrarHistoricoCliente();
                 break;
             case 10:
-                calcularArrecadacaoTotalOrdenar();
+                ordenarEstacionamentos();
                 break;
             case 11:
                 exibirMediaUtilizacaoMensalistasNoMesCorrente();
@@ -133,10 +133,10 @@ public class Aplicacao {
     public static void cadastrarCliente() {
         System.out.println("Digite o ID do cliente: ");
         String idCliente = scanner.nextLine();
-
+    
         System.out.println("Digite o nome do cliente: ");
         String nomeCliente = scanner.nextLine();
-
+    
         System.out.println("Escolha o tipo de cliente (1. Horista, 2. Mensalista, 3. Turnista): ");
         int escolhaTipoCliente = Integer.parseInt(scanner.nextLine());
     
@@ -156,10 +156,35 @@ public class Aplicacao {
                 tipoCliente = TipoDePlano.HORISTA;
                 break;
         }
-
-        Cliente cliente = new Cliente(nomeCliente, idCliente, tipoCliente);
+    
+        Cliente cliente;
+        if (tipoCliente == TipoDePlano.TURNISTA) {
+            System.out.println("Escolha o turno (1. Manhã, 2. Tarde, 3. Noite): ");
+            int escolhaTurno = Integer.parseInt(scanner.nextLine());
+            Turno turno = null;
+            switch (escolhaTurno) {
+                case 1:
+                    turno = Turno.MANHA;
+                    break;
+                case 2:
+                    turno = Turno.TARDE;
+                    break;
+                case 3:
+                    turno = Turno.NOITE;
+                    break;
+                default:
+                    System.out.println("Opção inválida. Turno padrão (Manhã) será atribuído.");
+                    turno = Turno.MANHA;
+                    break;
+            }
+            cliente = new Cliente(nomeCliente, idCliente, tipoCliente, turno);
+        } else {
+            cliente = new Cliente(nomeCliente, idCliente, tipoCliente);
+        }
+    
         estacionamento.addCliente(cliente);
     }
+    
 
     public static void adicionarVeiculo() {
         System.out.println("Digite o ID do cliente: ");
@@ -287,34 +312,15 @@ public class Aplicacao {
         System.out.println("A arrecadação total do estacionamento foi de R$" + (arrecadacaoTotal + arrecadaTotal));
     }
 
-    public static void visualizarArrecadacaoTotal() {
-        List<Estacionamento> estacionamentos = new ArrayList<>();
-        double arrecadacaoTotalGeral = 0;
-    
-        for (int i = 1; i <= 3; i++) {
-            String nomeArquivo = "dat/estacionamento" + i + ".dat";
-            try {
-                Estacionamento est = Serializacao.carregarEstacionamento(nomeArquivo);
-                if (est != null) {
-                    estacionamentos.add(est);
-                    double arrecadacaoTotal = est.calcularArrecadacaoTotal();
-                    arrecadacaoTotalGeral += arrecadacaoTotal;
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                System.out.println("Erro ao carregar o estacionamento " + i + ": " + e.getMessage());
-            }
+    public static void ordenarEstacionamentos() {
+        List<Estacionamento> estacionamentos = Arrays.asList(estacionamento);
+        
+        Estacionamento.ordenarEstacionamentos(estacionamentos);
+        
+     for (Estacionamento est : estacionamentos) {
+            System.out.println("Nome: " + est.getNome() + ", Arrecadação Total: R$" + est.calcularArrecadacaoTotal());
         }
-    
-        for (int i = 0; i < estacionamentos.size(); i++) {
-           int j;
-            j=i+1;
-            Estacionamento est = estacionamentos.get(i);
-            System.out.println("Nome: Estacionameto " + j + ", Arrecadação Total: R$" + est.calcularArrecadacaoTotal());
-        }
-    
-        System.out.println("Arrecadação Total Geral: R$" + arrecadacaoTotalGeral);
     }
-    
     private static void exibirMediaUtilizacaoMensalistasNoMesCorrente() {
         double mediaMensalista = estacionamento.mediaUtilizacaoMensalistasNoMesCorrente();
         System.out.println("A média de utilização dos clientes mensalistas no mês corrente é: " + mediaMensalista);
