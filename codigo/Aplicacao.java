@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.ArrayList;
 
 /**
  * Classe que representa a aplicação de gerenciamento de um estacionamento.
@@ -107,7 +106,7 @@ public class Aplicacao {
                 mostrarHistoricoCliente();
                 break;
             case 10:
-                visualizarArrecadacaoTotal();
+                ordenarEstacionamentos();
                 break;
             case 11:
                 exibirMediaUtilizacaoMensalistasNoMesCorrente();
@@ -180,7 +179,7 @@ public class Aplicacao {
             }
             cliente = new Cliente(nomeCliente, idCliente, tipoCliente, turno);
         } else {
-            cliente = new Cliente(nomeCliente, idCliente, tipoCliente);
+            cliente = new Cliente(nomeCliente, idCliente, tipoCliente, arrecadaTotal);
         }
     
         estacionamento.addCliente(cliente);
@@ -313,32 +312,14 @@ public class Aplicacao {
         System.out.println("A arrecadação total do estacionamento foi de R$" + (arrecadacaoTotal + arrecadaTotal));
     }
 
-    public static void visualizarArrecadacaoTotal() {
-        List<Estacionamento> estacionamentos = new ArrayList<>();
-        double arrecadacaoTotalGeral = 0;
-    
-        for (int i = 1; i <= 3; i++) {
-            String nomeArquivo = "dat/estacionamento" + i + ".dat";
-            try {
-                Estacionamento est = Serializacao.carregarEstacionamento(nomeArquivo);
-                if (est != null) {
-                    estacionamentos.add(est);
-                    double arrecadacaoTotal = est.calcularArrecadacaoTotal();
-                    arrecadacaoTotalGeral += arrecadacaoTotal;
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                System.out.println("Erro ao carregar o estacionamento " + i + ": " + e.getMessage());
-            }
+    public static void ordenarEstacionamentos() {
+        List<Estacionamento> estacionamentos = Arrays.asList(estacionamento);
+        
+        Estacionamento.ordenarEstacionamentos(estacionamentos);
+        
+     for (Estacionamento est : estacionamentos) {
+            System.out.println("Nome: " + est.getNome() + ", Arrecadação Total: R$" + est.calcularArrecadacaoTotal());
         }
-    
-        for (int i = 0; i < estacionamentos.size(); i++) {
-           int j;
-            j=i+1;
-            Estacionamento est = estacionamentos.get(i);
-            System.out.println("Nome: Estacionameto " + j + ", Arrecadação Total: R$" + est.calcularArrecadacaoTotal());
-        }
-    
-        System.out.println("Arrecadação Total Geral: R$" + arrecadacaoTotalGeral);
     }
     private static void exibirMediaUtilizacaoMensalistasNoMesCorrente() {
         double mediaMensalista = estacionamento.mediaUtilizacaoMensalistasNoMesCorrente();
