@@ -44,11 +44,11 @@ public class Veiculo implements Serializable {
      * @return O valor a ser pago pelo uso da vaga.
      * @throws ServicoNaoExecutadoException
      */
-    public double sair() throws ServicoNaoExecutadoException {
+    public double sair(Cliente cliente) throws ServicoNaoExecutadoException {
         if (qtUso > 0) {
             UsoDeVaga ultimoUso = usos[qtUso - 1];
             if (ultimoUso != null) {
-                ultimoUso.sair();
+                ultimoUso.sair(cliente);  // Mantenha a passagem do cliente aqui
                 double valorPago = ultimoUso.valorPago();
                 return valorPago;
             } else {
@@ -130,3 +130,4 @@ public class Veiculo implements Serializable {
         this.servico = servico;
     }
 }
+
