@@ -298,6 +298,23 @@ public String top5Clientes(int mes) {
     private boolean isMensalista(TipoDePlano tipoDePlano) {
         return tipoDePlano != null && tipoDePlano.equals(TipoDePlano.MENSALISTA);
     }
+    public int getTotalUtilizacoesMensalistas() {
+        LocalDate dataAtual = LocalDate.now();
+        int mesCorrente = dataAtual.getMonthValue();
+    
+        return clientes.stream()
+                .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
+                .mapToInt(cliente -> cliente.obterNumeroUtilizacoesNoMes(mesCorrente))
+                .sum();
+    }
+    
+    public long getTotalClientesMensalistas() {
+        return clientes.stream()
+                .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
+                .count();
+    }
+
+
     public double arrecadacaoMediaHoristasNoMesCorrente() {
         LocalDate dataAtual = LocalDate.now();
         int mesCorrente = dataAtual.getMonthValue();
@@ -320,11 +337,10 @@ public String top5Clientes(int mes) {
         return tipoDePlano != null && tipoDePlano.equals(TipoDePlano.HORISTA);
     }
     public double calcularArrecadacaoTotal() {
-        return clientes.stream()
-                .mapToDouble(Cliente::arrecadadoTotal)
-                .sum();
-    }
-       public static void ordenarEstacionamentos(List<Estacionamento> estacionamentos) {
-        Collections.sort(estacionamentos, Comparator.comparingDouble(Estacionamento::calcularArrecadacaoTotal).reversed());
+        double arrecadacaoTotal = 0.0;
+        for (Cliente cliente : clientes) {
+            arrecadacaoTotal += cliente.arrecadadoTotal();
+        }
+        return arrecadacaoTotal;
     }
 }
