@@ -65,6 +65,8 @@ public class Aplicacao {
         System.out.println("\t8. Consultar top 5 clientes");
         System.out.println("\t9. Mostrar histórico de cliente");
         System.out.println("\t10. Visualizar arrecadação total de cada estacionamento");
+        System.out.println("\t11. Visualizar média utilizada por mensalistas no mês");
+        System.out.println("\t12. Visualizar média utilizada por horistas no mês");
         System.out.println("\t0. Sair do programa");
 
         int opcao;
