@@ -18,11 +18,12 @@ public class Cliente implements Serializable {
      * @param nome O nome do cliente.
      * @param id   O ID único do cliente.
      */
-    public Cliente(String nome, String id) {
+    public Cliente(String nome, String id, TipoDePlano tipoDePlano) {
         this.nome = nome;
         this.id = id;
         this.veiculos = new Veiculo[50];
         this.historico = new Historico();
+        this.tipoDePlano = tipoDePlano;
     }
 
     /**
@@ -32,6 +33,10 @@ public class Cliente implements Serializable {
      */
     public String getId() {
         return id;
+    }
+
+    public TipoDePlano getTipoDePlano() {
+        return tipoDePlano;
     }
 
     /**
