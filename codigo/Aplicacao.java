@@ -231,47 +231,45 @@ public class Aplicacao {
     
         double valorPago = estacionamento.sair(placa);
     
-        if (valorPago > 0) {
-            System.out.println("Escolha um dos serviços:");
-            System.out.println("1. Manobrista - R$5.0");
-            System.out.println("2. Lavagem - R$20.0");
-            System.out.println("3. Polimento - R$45.0");
+        System.out.println("Escolha um dos serviços:");
+        System.out.println("1. Manobrista - R$5.0");
+        System.out.println("2. Lavagem - R$20.0");
+        System.out.println("3. Polimento - R$45.0");
     
-            int opcaoServico = Integer.parseInt(scanner.nextLine());
+        int opcaoServico = Integer.parseInt(scanner.nextLine());
     
-            Servico servicoEscolhido = null;
-            switch (opcaoServico) {
-                case 1:
-                    servicoEscolhido = Servico.MANOBRISTA;
-                    break;
-                case 2:
-                    servicoEscolhido = Servico.LAVAGEM;
-                    break;
-                case 3:
-                    servicoEscolhido = Servico.POLIMENTO;
-                    break;
-                default:
-                    System.out.println("Opção inválida. Nenhum serviço selecionado.");
-                    break;
-            }
+        Servico servicoEscolhido = null;
+        switch (opcaoServico) {
+            case 1:
+                servicoEscolhido = Servico.MANOBRISTA;
+                break;
+            case 2:
+                servicoEscolhido = Servico.LAVAGEM;
+                break;
+            case 3:
+                servicoEscolhido = Servico.POLIMENTO;
+                break;
+            default:
+                System.out.println("Opção inválida. Nenhum serviço selecionado.");
+                break;
+        }
     
-            if (servicoEscolhido != null) {
-                double valorServico = servicoEscolhido.getValor();
-                double tempoServico = servicoEscolhido.getTempo();
+        if (servicoEscolhido != null) {
+            double valorServico = servicoEscolhido.getValor();
+            double tempoServico = servicoEscolhido.getTempo();
     
-                System.out.println("Serviço aplicado com sucesso.");
-                valorPago += valorServico;
+            System.out.println("Serviço aplicado com sucesso.");
+            valorPago += valorServico;
     
-                System.out.println("Valor total pago (incluindo serviço): R$" + valorPago);
-                System.out.println("Tempo total do serviço: " + tempoServico + " minutos");
-                totalServicos += valorServico;
-                totalMesServicos += valorServico;
-                totalValorMedio += valorServico;
-                arrecadaTotal += valorServico;
-            } else {
-                System.out.println("Operação cancelada. Nenhum serviço selecionado.");
-                System.out.println("Valor pago: R$" + valorPago);
-            }
+            System.out.println("Valor total pago (incluindo serviço): R$" + valorPago);
+            System.out.println("Tempo total do serviço: " + tempoServico + " minutos");
+            totalServicos += valorServico;
+            totalMesServicos += valorServico;
+            totalValorMedio += valorServico;
+            arrecadaTotal += valorServico;
+        } else {
+            System.out.println("Operação cancelada. Nenhum serviço selecionado.");
+            System.out.println("Valor pago: R$" + valorPago);
         }
     }
     
@@ -316,7 +314,9 @@ public class Aplicacao {
         System.out.println("A arrecadação total do estacionamento foi de R$" + (arrecadacaoTotal + arrecadaTotal));
     }
 
-    public static void visualizarArrecadacaoTotal() {
+   
+
+ public static void visualizarArrecadacaoTotal() {
     // Calcula a arrecadação total do estacionamento atual antes de carregar outros estacionamentos
     calcularArrecadacaoTotalOrdenar();
 
@@ -352,7 +352,7 @@ public class Aplicacao {
     String arrecadacaoTotalGeralFormatada = decimalFormat.format(arrecadacaoTotalGeral);
     System.out.printf("Arrecadação Total Geral: R$%s%n", arrecadacaoTotalGeralFormatada);
 }
-    
+  
 
     private static void exibirMediaUtilizacaoMensalistasNoMesCorrente(Estacionamento estacionamento) {
         double mediaMensalista = estacionamento.arrecadacaoMediaMensalistasNoMesCorrente();
@@ -368,3 +368,4 @@ public class Aplicacao {
         System.out.println("A média de arrecadação dos clientes horistas no mês corrente é: " + mediaHorista);
     }
 }
+
