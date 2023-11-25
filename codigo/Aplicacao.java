@@ -111,7 +111,6 @@ public class Aplicacao {
             case 11:
                 exibirMediaUtilizacaoMensalistasNoMesCorrente();
                 break;
-
             case 12:
                 exibirArrecadacaoMediaHoristasNoMesCorrente();
                 break;
@@ -133,33 +132,66 @@ public class Aplicacao {
     public static void cadastrarCliente() {
         System.out.println("Digite o ID do cliente: ");
         String idCliente = scanner.nextLine();
-
+    
         System.out.println("Digite o nome do cliente: ");
         String nomeCliente = scanner.nextLine();
-
+    
         System.out.println("Escolha o tipo de cliente (1. Horista, 2. Mensalista, 3. Turnista): ");
         int escolhaTipoCliente = Integer.parseInt(scanner.nextLine());
     
         TipoDePlano tipoCliente = null;
+        Horista cliente = null;
+    
         switch (escolhaTipoCliente) {
             case 1:
                 tipoCliente = TipoDePlano.HORISTA;
+                System.out.println("Escolha o turno (1. Manhã, 2. Tarde, 3. Noite): ");
+                int escolhaTurno = Integer.parseInt(scanner.nextLine());
+                Turno turnoEscolhido = null;
+    
+                switch (escolhaTurno) {
+                    case 1:
+                        turnoEscolhido = Turno.MANHA;
+                        break;
+                    case 2:
+                        turnoEscolhido = Turno.TARDE;
+                        break;
+                    case 3:
+                        turnoEscolhido = Turno.NOITE;
+                        break;
+                    default:
+                        System.out.println("Opção inválida. Turno padrão (Manhã) será atribuído.");
+                        turnoEscolhido = Turno.MANHA;
+                        break;
+                }
+    
+                cliente = new Horista(nomeCliente, idCliente, tipoCliente, turnoEscolhido);
                 break;
+    
             case 2:
                 tipoCliente = TipoDePlano.MENSALISTA;
+                cliente = new Mensalista(nomeCliente, idCliente, tipoCliente);
                 break;
+    
             case 3:
                 tipoCliente = TipoDePlano.TURNISTA;
+                cliente = new Turnista(nomeCliente, idCliente, tipoCliente, null);
                 break;
+    
             default:
                 System.out.println("Opção inválida. Cliente será cadastrado como Horista por padrão.");
                 tipoCliente = TipoDePlano.HORISTA;
+                cliente = new Horista(nomeCliente, idCliente, tipoCliente, Turno.MANHA);
                 break;
         }
-
-        Cliente cliente = new Cliente(nomeCliente, idCliente, tipoCliente);
+    
         estacionamento.addCliente(cliente);
     }
+    
+    
+    
+    
+    
 
     public static void adicionarVeiculo() {
         System.out.println("Digite o ID do cliente: ");
