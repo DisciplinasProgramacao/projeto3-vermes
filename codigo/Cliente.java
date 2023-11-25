@@ -128,7 +128,7 @@ public class Cliente implements Serializable {
         double totalArrecadado = 0.0;
         for (int i = 0; i < veiculos.length; i++) {
             if (veiculos[i] != null) {
-                totalArrecadado += veiculos[i].totalArrecadado();
+                totalArrecadado += veiculos[i].totalArrecadado() + calcularMensalidade();
             }
         }
         return totalArrecadado;
@@ -194,5 +194,14 @@ public class Cliente implements Serializable {
 
     public void escolherPlano(TipoDePlano plano) {
         this.tipoDePlano = plano;
+    }
+
+public double calcularMensalidade() {
+        if (tipoDePlano == TipoDePlano.MENSALISTA) {
+            return taxaMensal;
+        } else {
+            // Cliente Turnista
+            return 0; // Turnistas têm uma mensalidade fixa de R$200, não importa o horário
+        }
     }
 }
