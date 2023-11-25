@@ -106,7 +106,7 @@ public class Aplicacao {
                 mostrarHistoricoCliente();
                 break;
             case 10:
-                ordenarEstacionamentos();
+                visualizarArrecadacaoTotal();
                 break;
             case 11:
                 exibirMediaUtilizacaoMensalistasNoMesCorrente();
@@ -312,15 +312,34 @@ public class Aplicacao {
         System.out.println("A arrecadação total do estacionamento foi de R$" + (arrecadacaoTotal + arrecadaTotal));
     }
 
-    public static void ordenarEstacionamentos() {
-        List<Estacionamento> estacionamentos = Arrays.asList(estacionamento);
-        
-        Estacionamento.ordenarEstacionamentos(estacionamentos);
-        
-     for (Estacionamento est : estacionamentos) {
-            System.out.println("Nome: " + est.getNome() + ", Arrecadação Total: R$" + est.calcularArrecadacaoTotal());
+    public static void visualizarArrecadacaoTotal() {
+        List<Estacionamento> estacionamentos = new ArrayList<>();
+        double arrecadacaoTotalGeral = 0;
+    
+        for (int i = 1; i <= 3; i++) {
+            String nomeArquivo = "dat/estacionamento" + i + ".dat";
+            try {
+                Estacionamento est = Serializacao.carregarEstacionamento(nomeArquivo);
+                if (est != null) {
+                    estacionamentos.add(est);
+                    double arrecadacaoTotal = est.calcularArrecadacaoTotal();
+                    arrecadacaoTotalGeral += arrecadacaoTotal;
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println("Erro ao carregar o estacionamento " + i + ": " + e.getMessage());
+            }
         }
+    
+        for (int i = 0; i < estacionamentos.size(); i++) {
+           int j;
+            j=i+1;
+            Estacionamento est = estacionamentos.get(i);
+            System.out.println("Nome: Estacionameto " + j + ", Arrecadação Total: R$" + est.calcularArrecadacaoTotal());
+        }
+    
+        System.out.println("Arrecadação Total Geral: R$" + arrecadacaoTotalGeral);
     }
+
     private static void exibirMediaUtilizacaoMensalistasNoMesCorrente() {
         double mediaMensalista = estacionamento.mediaUtilizacaoMensalistasNoMesCorrente();
         System.out.println("A média de utilização dos clientes mensalistas no mês corrente é: " + mediaMensalista);
