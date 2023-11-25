@@ -1,5 +1,8 @@
 import java.util.List;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A classe `Cliente` representa um cliente que possui veículos e um histórico de uso de vagas.
@@ -13,6 +16,7 @@ public class Cliente implements Serializable {
     private TipoDePlano tipoDePlano;
     private Turno turno;
     private static double taxaMensal;
+    
 
 
     /**
@@ -179,7 +183,7 @@ public class Cliente implements Serializable {
         return historicoCompleto.length() > 0 ? historicoCompleto.toString() : "Não possui histórico.";
     }
 
-    **
+    /**
      * Obtém o histórico de uso de vagas como uma lista de registros.
      *
      * @return Uma lista de registros do histórico de uso de vagas.
@@ -205,7 +209,7 @@ public class Cliente implements Serializable {
                 .mapToInt(registro -> 1) // Mapear cada registro para 1 (representando uma utilização)
                 .sum();
     }
-
+    
     public void escolherPlano(TipoDePlano plano) {
         this.tipoDePlano = plano;
     }
@@ -218,4 +222,5 @@ public double calcularMensalidade() {
             return 0; // Turnistas têm uma mensalidade fixa de R$200, não importa o horário
         }
     }
+    
 }
