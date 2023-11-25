@@ -49,7 +49,7 @@ public class Estacionamento implements Serializable {
      * @param idCli O ID do cliente.
      */
     public void addVeiculo(Veiculo veiculo, String idCli) {
-        Cliente quem = new Cliente("idCli", idCli);
+        Cliente quem = new Cliente("idCli", idCli, null);
         Cliente cliente = busca(quem);
         if (cliente != null) {
             cliente.addVeiculo(veiculo, null);
@@ -277,32 +277,27 @@ public String top5Clientes(int mes) {
         }
         return null;
     }
-   public double mediaUtilizacaoMensalistasNoMesCorrente() {
-        int totalClientesMensalistas = 0;
-        int totalUtilizacoesMensalistas = 0;
-    
+    public double mediaUtilizacaoMensalistasNoMesCorrente() {
         LocalDate dataAtual = LocalDate.now();
         int mesCorrente = dataAtual.getMonthValue();
-    
-        for (Cliente cliente : clientes) {
-            if (isMensalista(cliente)) {
-                int utilizacoesNoMes = cliente.obterNumeroUtilizacoesNoMes(mesCorrente);
-                totalClientesMensalistas++;
-                totalUtilizacoesMensalistas += utilizacoesNoMes;
-            }
-        }
-    
-        if (totalClientesMensalistas > 0) {
-            return (double) totalUtilizacoesMensalistas / totalClientesMensalistas;
-        } else {
-            return 0.0;
-        }
+
+        long totalClientesMensalistas = clientes.stream()
+                .filter(this::isMensalista)
+                .count();
+
+        int totalUtilizacoesMensalistas = clientes.stream()
+                .filter(this::isMensalista)
+                .mapToInt(cliente -> cliente.obterNumeroUtilizacoesNoMes(mesCorrente))
+                .sum();
+
+        return totalClientesMensalistas > 0 ?
+                (double) totalUtilizacoesMensalistas / totalClientesMensalistas :
+                0.0;
     }
-    
+
     private boolean isMensalista(Cliente cliente) {
         return cliente != null && cliente.getClass().equals(Mensalista.class);
     }
-
     public double arrecadacaoMediaHoristasNoMesCorrente() {
         int totalClientesHoristas = 0;
         double totalArrecadacaoHoristas = 0.0;
