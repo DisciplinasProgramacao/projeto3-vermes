@@ -1,5 +1,8 @@
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -313,7 +316,7 @@ public class Aplicacao {
         System.out.println("A arrecadação total do estacionamento foi de R$" + (arrecadacaoTotal + arrecadaTotal));
     }
 
-   public static void visualizarArrecadacaoTotal() {
+    public static void visualizarArrecadacaoTotal() {
     // Calcula a arrecadação total do estacionamento atual antes de carregar outros estacionamentos
     calcularArrecadacaoTotalOrdenar();
 
@@ -350,16 +353,6 @@ public class Aplicacao {
     System.out.printf("Arrecadação Total Geral: R$%s%n", arrecadacaoTotalGeralFormatada);
 }
     
-    
-        for (int i = 0; i < estacionamentos.size(); i++) {
-           int j;
-            j=i+1;
-            Estacionamento est = estacionamentos.get(i);
-            System.out.println("Nome: Estacionameto " + j + ", Arrecadação Total: R$" + est.calcularArrecadacaoTotal());
-        }
-    
-        System.out.println("Arrecadação Total Geral: R$" + arrecadacaoTotalGeral);
-    }
 
     private static void exibirMediaUtilizacaoMensalistasNoMesCorrente(Estacionamento estacionamento) {
         double mediaMensalista = estacionamento.arrecadacaoMediaMensalistasNoMesCorrente();
