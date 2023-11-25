@@ -24,18 +24,23 @@ public class TestUsoDeVaga {
       
     @Test
     public void testSair() throws ServicoNaoExecutadoException, VagaIndisoponivelException {
+        Cliente cliente = new Cliente("John Doe", "123", TipoDePlano.MENSALISTA, 100.0);
+    
         criaUsoDeVagaHelper(1, 2);
-        usoDeVaga.sair();
-        assertEquals("Imprimindo data de saída atual",LocalDateTime.now(), usoDeVaga.getSaida());
+        usoDeVaga.sair(cliente);  
+        assertEquals("Imprimindo data de saída atual", LocalDateTime.now(), usoDeVaga.getSaida());
     }
 
-      @Test
-   public void testCalculcarValorPago() throws ServicoNaoExecutadoException, VagaIndisoponivelException {
-      criaUsoDeVagaHelper(1, 3);
-      usoDeVaga.sair();
-      usoDeVaga.calcularValorPago();
-      assertNotEquals(4.0, usoDeVaga.valorPago());
-}
+    @Test
+    public void testCalculcarValorPago() throws ServicoNaoExecutadoException, VagaIndisoponivelException {
+        Cliente cliente = new Cliente("John Doe", "123", TipoDePlano.MENSALISTA, 100.0);
+    
+        criaUsoDeVagaHelper(1, 3);
+        usoDeVaga.sair(cliente); 
+        usoDeVaga.calcularValorPago(cliente); 
+        assertNotEquals(4.0, usoDeVaga.valorPago());
+    }
+    
     @Test
     public void testCalcularDiferencaEmMinutos() throws VagaIndisoponivelException{
         criaUsoDeVagaHelper(1, 4);
@@ -45,24 +50,31 @@ public class TestUsoDeVaga {
     }
         
     @Test
-    public void testVagaIndisponivel() {
-        assertThrows(VagaIndisoponivelException.class, () -> {
-            criaUsoDeVagaHelper(1, 5);
-            UsoDeVaga usoDeVaga2 = new UsoDeVaga(vaga);
-            usoDeVaga.sair();
-            usoDeVaga.calcularValorPago();
-        });
-    }
-    @Test
-    public void testServicoNaoExecutado(){
-        ;
-        assertThrows(ServicoNaoExecutadoException.class, () -> {
-            criaUsoDeVagaHelper(1, 6);
-            usoDeVaga.contratarServico(Servico.LAVAGEM);
-            usoDeVaga.sair();
-            usoDeVaga.calcularValorPago();
-        });
-    }
+public void testVagaIndisponivel() {
+    assertThrows(VagaIndisoponivelException.class, () -> {
+        
+        Cliente cliente = new Cliente("John Doe", "123", TipoDePlano.MENSALISTA, 100.0);
+
+        criaUsoDeVagaHelper(1, 5);
+        UsoDeVaga usoDeVaga2 = new UsoDeVaga(vaga);
+        usoDeVaga.sair(cliente); 
+        usoDeVaga.calcularValorPago(cliente); 
+    });
+}
+
+@Test
+public void testServicoNaoExecutado() {
+    assertThrows(ServicoNaoExecutadoException.class, () -> {
+        
+        Cliente cliente = new Cliente("John Doe", "123", TipoDePlano.MENSALISTA, 100.0);
+
+        criaUsoDeVagaHelper(1, 6);
+        usoDeVaga.contratarServico(Servico.LAVAGEM);
+        usoDeVaga.sair(cliente); 
+        usoDeVaga.calcularValorPago(cliente); 
+    });
+}
+
 
     public void criaUsoDeVagaHelper (int fila, int coluna) throws VagaIndisoponivelException{
         vaga = new Vaga(fila, coluna);
@@ -77,4 +89,6 @@ public class TestUsoDeVaga {
     
 
 }
+
+
 
