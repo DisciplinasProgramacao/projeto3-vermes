@@ -11,7 +11,7 @@ public class Mensalista extends UsoDeVaga implements Diario {
         return true;
     }
     @Override
-    public void calcularValorPago() {
+    public void calcularValorPago(Cliente cliente) {
         this.valorPago+= 500;
     }
     @Override
