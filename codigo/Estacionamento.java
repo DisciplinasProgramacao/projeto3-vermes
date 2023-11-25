@@ -282,11 +282,11 @@ public String top5Clientes(int mes) {
         int mesCorrente = dataAtual.getMonthValue();
 
         long totalClientesMensalistas = clientes.stream()
-                .filter(this::isMensalista)
+                .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
                 .count();
 
         int totalUtilizacoesMensalistas = clientes.stream()
-                .filter(this::isMensalista)
+                .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
                 .mapToInt(cliente -> cliente.obterNumeroUtilizacoesNoMes(mesCorrente))
                 .sum();
 
@@ -295,33 +295,29 @@ public String top5Clientes(int mes) {
                 0.0;
     }
 
-    private boolean isMensalista(Cliente cliente) {
-        return cliente != null && cliente.getClass().equals(Mensalista.class);
+    private boolean isMensalista(TipoDePlano tipoDePlano) {
+        return tipoDePlano != null && tipoDePlano.equals(TipoDePlano.MENSALISTA);
     }
     public double arrecadacaoMediaHoristasNoMesCorrente() {
-        int totalClientesHoristas = 0;
-        double totalArrecadacaoHoristas = 0.0;
-    
         LocalDate dataAtual = LocalDate.now();
         int mesCorrente = dataAtual.getMonthValue();
     
-        for (Cliente cliente : clientes) {
-            if (isHorista(cliente)) {
-                double arrecadacaoNoMes = cliente.obterNumeroUtilizacoesNoMes(mesCorrente);
-                totalClientesHoristas++;
-                totalArrecadacaoHoristas += arrecadacaoNoMes;
-            }
-        }
+        long totalClientesHoristas = clientes.stream()
+                .filter(cliente -> isHorista(cliente.getTipoDePlano()))
+                .count();
     
-        if (totalClientesHoristas > 0) {
-            return totalArrecadacaoHoristas / totalClientesHoristas;
-        } else {
-            return 0.0;
-        }
+        double totalArrecadacaoHoristas = clientes.stream()
+                .filter(cliente -> isHorista(cliente.getTipoDePlano()))
+                .mapToDouble(cliente -> cliente.obterNumeroUtilizacoesNoMes(mesCorrente))
+                .sum();
+    
+        return totalClientesHoristas > 0 ?
+                totalArrecadacaoHoristas / totalClientesHoristas :
+                0.0;
     }
     
-    private boolean isHorista(Cliente cliente) {
-        return cliente != null && cliente.getClass().equals(Horista.class);
+    private boolean isHorista(TipoDePlano tipoDePlano) {
+        return tipoDePlano != null && tipoDePlano.equals(TipoDePlano.HORISTA);
     }
 public double calcularArrecadacaoTotal() {
         return clientes.stream()
