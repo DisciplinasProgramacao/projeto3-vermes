@@ -277,21 +277,21 @@ public String top5Clientes(int mes) {
         }
         return null;
     }
-    public double mediaUtilizacaoMensalistasNoMesCorrente() {
+    public double arrecadacaoMediaMensalistasNoMesCorrente() {
         LocalDate dataAtual = LocalDate.now();
         int mesCorrente = dataAtual.getMonthValue();
-
+    
         long totalClientesMensalistas = clientes.stream()
                 .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
                 .count();
-
-        int totalUtilizacoesMensalistas = clientes.stream()
+    
+        double totalArrecadacaoMensalistas = clientes.stream()
                 .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
-                .mapToInt(cliente -> cliente.obterNumeroUtilizacoesNoMes(mesCorrente))
+                .mapToDouble(cliente -> cliente.arrecadadoNoMes(mesCorrente))
                 .sum();
-
+    
         return totalClientesMensalistas > 0 ?
-                (double) totalUtilizacoesMensalistas / totalClientesMensalistas :
+                totalArrecadacaoMensalistas / totalClientesMensalistas :
                 0.0;
     }
 
