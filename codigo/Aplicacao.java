@@ -106,6 +106,13 @@ public class Aplicacao {
             case 10:
                 ordenarEstacionamentos();
                 break;
+            case 11:
+                exibirMediaUtilizacaoMensalistasNoMesCorrente();
+                break;
+
+            case 12:
+                exibirArrecadacaoMediaHoristasNoMesCorrente();
+                break;
             case 0:
             try {
                 Serializacao.salvarEstacionamento(estacionamento, nomeArquivo);
@@ -286,5 +293,14 @@ public class Aplicacao {
      for (Estacionamento est : estacionamentos) {
             System.out.println("Nome: " + est.getNome() + ", Arrecadação Total: R$" + est.calcularArrecadacaoTotal());
         }
+    }
+    private static void exibirMediaUtilizacaoMensalistasNoMesCorrente() {
+        double mediaMensalista = estacionamento.mediaUtilizacaoMensalistasNoMesCorrente();
+        System.out.println("A média de utilização dos clientes mensalistas no mês corrente é: " + mediaMensalista);
+    }
+
+    private static void exibirArrecadacaoMediaHoristasNoMesCorrente() {
+        double mediaHorista = estacionamento.arrecadacaoMediaHoristasNoMesCorrente();
+        System.out.println("A média de arrecadação dos clientes horistas no mês corrente é: " + mediaHorista);
     }
 }
