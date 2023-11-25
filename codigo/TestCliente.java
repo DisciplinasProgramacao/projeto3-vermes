@@ -12,7 +12,7 @@ public class TestCliente {
 
     @Before
     public void setUp() {
-        cliente = new Cliente("Maisa", "ID123", null);
+        cliente = new Cliente("Maisa", "ID123", null, 0);
         veiculo = new Veiculo("ABC123");
         cliente.addVeiculo(veiculo, null);
     }
