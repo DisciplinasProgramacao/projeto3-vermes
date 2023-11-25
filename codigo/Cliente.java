@@ -11,6 +11,8 @@ public class Cliente implements Serializable {
     private Veiculo[] veiculos;
     private Historico historico;
     private TipoDePlano tipoDePlano;
+    private Turno turno;
+
 
     /**
      * Cria um novo objeto `Cliente` com um nome e um ID.
@@ -25,6 +27,13 @@ public class Cliente implements Serializable {
         this.historico = new Historico();
         this.tipoDePlano = tipoDePlano;
     }
+
+    // Construtor para clientes turnistas
+    public Cliente(String nome, String id, TipoDePlano tipoDePlano, Turno turno) {
+        this(nome, id, tipoDePlano);
+        this.turno = turno;
+    }
+    
 
     /**
      * Obtém o ID do cliente.
@@ -184,6 +193,4 @@ public class Cliente implements Serializable {
     public void escolherPlano(TipoDePlano plano) {
         this.tipoDePlano = plano;
     }
-
-
 }
