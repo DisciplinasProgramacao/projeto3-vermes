@@ -13,12 +13,12 @@ public class TestEstacionamento {
     @BeforeEach
     public void setUp() {
         estacionamento = new Estacionamento("estacionamento vermes", 10, 10);
-        cliente1 = new Cliente("gabriel", "333");
+        cliente1 = new Cliente("gabriel", "333", null);
         veiculo1 = new Veiculo("ADD123");
         cliente1.addVeiculo(veiculo1, null);
     
         estacionamento.addCliente(cliente1);
-        cliente2 = new Cliente("lucas", "123");
+        cliente2 = new Cliente("lucas", "123", null);
         veiculo2 = new Veiculo("XYZ789");
         cliente2.addVeiculo(veiculo2, null);
         estacionamento.addCliente(cliente2);
@@ -27,7 +27,7 @@ public class TestEstacionamento {
 
     @Test
     public void testAddClientwe() {
-        Cliente cliente = new Cliente("lucas", "123");
+        Cliente cliente = new Cliente("lucas", "123", null);
         assertTrue(estacionamento.addCliente(cliente));
         assertFalse(estacionamento.addCliente(cliente1));
     }
@@ -94,17 +94,17 @@ public class TestEstacionamento {
 
     @Test
     public void testTop5Clientes() throws LotadoException, ServicoNaoExecutadoException, VagaIndisoponivelException {
-        Cliente cliente1 = new Cliente("maisa", "3456");
+        Cliente cliente1 = new Cliente("maisa", "3456", null);
         estacionamento.addCliente(cliente1);
         estacionamento.estacionar("POO123");
         estacionamento.sair("POO123");
     
-        Cliente cliente2 = new Cliente("Miguel", "2323");
+        Cliente cliente2 = new Cliente("Miguel", "2323", null);
         estacionamento.addCliente(cliente2);
         estacionamento.estacionar("DEF456");
         estacionamento.sair("DEF456");
         
-        Cliente cliente3 = new Cliente("Joao", "1234");
+        Cliente cliente3 = new Cliente("Joao", "1234", null);
     estacionamento.addCliente(cliente3);
     estacionamento.estacionar("ABC789");
     estacionamento.sair("ABC789");
