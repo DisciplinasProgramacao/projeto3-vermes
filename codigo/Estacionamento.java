@@ -49,7 +49,7 @@ public class Estacionamento implements Serializable {
      * @param idCli O ID do cliente.
      */
     public void addVeiculo(Veiculo veiculo, String idCli) {
-        Cliente quem = new Cliente("idCli", idCli, null);
+        Cliente quem = new Cliente("idCli", idCli, null, quantFileiras);
         Cliente cliente = busca(quem);
         if (cliente != null) {
             cliente.addVeiculo(veiculo, null);
@@ -319,12 +319,11 @@ public String top5Clientes(int mes) {
     private boolean isHorista(TipoDePlano tipoDePlano) {
         return tipoDePlano != null && tipoDePlano.equals(TipoDePlano.HORISTA);
     }
-public double calcularArrecadacaoTotal() {
-        return clientes.stream()
-                .mapToDouble(Cliente::arrecadadoTotal)
-                .sum();
-    }
-       public static void ordenarEstacionamentos(List<Estacionamento> estacionamentos) {
-        Collections.sort(estacionamentos, Comparator.comparingDouble(Estacionamento::calcularArrecadacaoTotal).reversed());
+    public double calcularArrecadacaoTotal() {
+        double arrecadacaoTotal = 0.0;
+        for (Cliente cliente : clientes) {
+            arrecadacaoTotal += cliente.arrecadadoTotal();
+        }
+        return arrecadacaoTotal;
     }
 }
