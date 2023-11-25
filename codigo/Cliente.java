@@ -12,6 +12,7 @@ public class Cliente implements Serializable {
     private Historico historico;
     private TipoDePlano tipoDePlano;
     private Turno turno;
+    private static double taxaMensal;
 
 
     /**
@@ -20,17 +21,18 @@ public class Cliente implements Serializable {
      * @param nome O nome do cliente.
      * @param id   O ID único do cliente.
      */
-    public Cliente(String nome, String id, TipoDePlano tipoDePlano) {
+    public Cliente(String nome, String id, TipoDePlano tipoDePlano, double taxaMensal) {
         this.nome = nome;
         this.id = id;
         this.veiculos = new Veiculo[50];
         this.historico = new Historico();
         this.tipoDePlano = tipoDePlano;
+        Cliente.taxaMensal = taxaMensal;
     }
 
     // Construtor para clientes turnistas
     public Cliente(String nome, String id, TipoDePlano tipoDePlano, Turno turno) {
-        this(nome, id, tipoDePlano);
+        this(nome, id, tipoDePlano, taxaMensal);
         this.turno = turno;
     }
     
