@@ -29,33 +29,40 @@ public class TestVeiculo {
     }
 
     @Test
-    public void testSair() {
-        try {
-            veiculo.estacionar(vaga);
-            double valorPago = veiculo.sair();
-            assertTrue(valorPago >= 0);
-        } catch (LotadoException | VagaIndisoponivelException | ServicoNaoExecutadoException e) {
-            fail("Não deveria lançar exceção aqui.");
-        }
+public void testSair() {
+    try {
+        Cliente cliente = new Cliente("John Doe", "123", TipoDePlano.MENSALISTA, 100.0);
+
+        veiculo.estacionar(vaga);
+        double valorPago = veiculo.sair(cliente); 
+        assertTrue(valorPago >= 0);
+    } catch (LotadoException | VagaIndisoponivelException | ServicoNaoExecutadoException e) {
+        fail("Não deveria lançar exceção aqui.");
     }
+}
 
     @Test
-    public void testTotalArrecadado() {
-        try {
-            veiculo.estacionar(vaga);
-            veiculo.sair();
-            double valorTotal = veiculo.totalArrecadado();
-            assertTrue(valorTotal >= 0);
-        } catch (LotadoException | VagaIndisoponivelException | ServicoNaoExecutadoException e) {
-            fail("Não deveria lançar exceção aqui.");
-        }
+public void testTotalArrecadado() {
+    try {
+        Cliente cliente = new Cliente("John Doe", "123", TipoDePlano.MENSALISTA, 100.0);
+
+        veiculo.estacionar(vaga);
+        veiculo.sair(cliente); 
+        double valorTotal = veiculo.totalArrecadado();
+        assertTrue(valorTotal >= 0);
+    } catch (LotadoException | VagaIndisoponivelException | ServicoNaoExecutadoException e) {
+        fail("Não deveria lançar exceção aqui.");
     }
+}
 
     @Test
     public void testArrecadadoNoMes() {
         try {
+            
+            Cliente cliente = new Cliente("John Doe", "123", TipoDePlano.MENSALISTA, 100.0);
+    
             veiculo.estacionar(vaga);
-            veiculo.sair();
+            veiculo.sair(cliente); 
             int mes = 10;
             double valorArrecadado = veiculo.arrecadadoNoMes(mes);
             assertTrue(valorArrecadado >= 0);
