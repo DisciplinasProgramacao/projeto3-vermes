@@ -138,12 +138,12 @@ public class Estacionamento implements Serializable {
         for (Cliente cliente : clientes) {
             Veiculo veiculo = cliente.possuiVeiculo(placa);
             if (veiculo != null) {
-                double valorPago = veiculo.sair();
+                double valorPago = veiculo.sair(cliente);
                 System.out.println("Valor a ser pago: " + valorPago);
                 return valorPago;
             }
         }
-
+    
         System.out.println("Veículo não encontrado.");
         return 0.0;
     }
