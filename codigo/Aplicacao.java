@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -107,11 +106,12 @@ public class Aplicacao {
                 mostrarHistoricoCliente();
                 break;
             case 10:
-                visualizarArrecadacaoTotal();
+                ordenarEstacionamentos();
                 break;
             case 11:
                 exibirMediaUtilizacaoMensalistasNoMesCorrente();
                 break;
+
             case 12:
                 exibirArrecadacaoMediaHoristasNoMesCorrente();
                 break;
@@ -182,7 +182,6 @@ public class Aplicacao {
             System.out.println("Cliente não encontrado.");
         }
     }
-    
     
     
     public static void estacionarVeiculo() throws VagaIndisoponivelException {
@@ -283,34 +282,10 @@ public class Aplicacao {
         }
     }
 
-    public static void visualizarArrecadacaoTotal() {
-        List<Estacionamento> estacionamentos = new ArrayList<>();
-        double arrecadacaoTotalGeral = 0;
-    
-        for (int i = 1; i <= 3; i++) {
-            String nomeArquivo = "dat/estacionamento" + i + ".dat";
-            try {
-                Estacionamento est = Serializacao.carregarEstacionamento(nomeArquivo);
-                if (est != null) {
-                    estacionamentos.add(est);
-                    double arrecadacaoTotal = est.calcularArrecadacaoTotal();
-                    arrecadacaoTotalGeral += arrecadacaoTotal;
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                System.out.println("Erro ao carregar o estacionamento " + i + ": " + e.getMessage());
-            }
-        }
-    
-        for (int i = 0; i < estacionamentos.size(); i++) {
-           int j;
-            j=i+1;
-            Estacionamento est = estacionamentos.get(i);
-            System.out.println("Nome: Estacionameto " + j + ", Arrecadação Total: R$" + est.calcularArrecadacaoTotal());
-        }
-    
-        System.out.println("Arrecadação Total Geral: R$" + arrecadacaoTotalGeral);
+    public static void calcularArrecadacaoTotalOrdenar() {
+        double arrecadacaoTotal = estacionamento.calcularArrecadacaoTotal();
+        System.out.println("A arrecadação total do estacionamento foi de R$" + (arrecadacaoTotal + arrecadaTotal));
     }
-    
 
     public static void ordenarEstacionamentos() {
         List<Estacionamento> estacionamentos = Arrays.asList(estacionamento);
