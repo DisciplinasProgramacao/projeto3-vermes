@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class UsoDeVaga implements Serializable {
 
@@ -65,9 +66,10 @@ public class UsoDeVaga implements Serializable {
      * Calcula o valor a ser pago pelo uso da vaga.
      */
     public void calcularValorPago(Cliente cliente) {
-        if (cliente.isMensalista()) {
+        if (cliente.isMensalista() || (cliente.isTurnista() && cliente.getTurno().eHorarioDoTurno(LocalTime.now()))) {
             // Se o cliente for mensalista, o valor pago é 0, independentemente do tempo de uso ou serviços contratados
             valorPago = 0;
+
         } else {
             long minutos = calcularDiferencaEmMinutos(entrada, saida);
             double valorTemp = Math.ceil((double) minutos / 15) * VALOR_FRACAO;

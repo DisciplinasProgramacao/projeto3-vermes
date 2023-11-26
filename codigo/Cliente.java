@@ -1,6 +1,7 @@
 import java.util.List;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -16,6 +17,7 @@ public class Cliente implements Serializable {
     private TipoDePlano tipoDePlano;
     private Turno turno;
     private static double taxaMensal;
+    private static double taxaTurnista;
     
 
 
@@ -31,13 +33,14 @@ public class Cliente implements Serializable {
         this.veiculos = new Veiculo[50];
         this.historico = new Historico();
         this.tipoDePlano = tipoDePlano;
-        Cliente.taxaMensal = taxaMensal;
+        Cliente.taxaMensal = 500;
     }
 
     // Construtor para clientes turnistas
     public Cliente(String nome, String id, TipoDePlano tipoDePlano, Turno turno) {
         this(nome, id, tipoDePlano, taxaMensal);
         this.turno = turno;
+        this.taxaTurnista = 200;
     }
     
 
@@ -132,7 +135,7 @@ public class Cliente implements Serializable {
         double totalArrecadado = 0.0;
         for (int i = 0; i < veiculos.length; i++) {
             if (veiculos[i] != null) {
-                totalArrecadado += veiculos[i].totalArrecadado() + calcularMensalidade();
+                totalArrecadado += veiculos[i].totalArrecadado() + calcularMensalidade() +  calcularTaxaTurnista();
             }
         }
         return totalArrecadado;
@@ -222,9 +225,23 @@ public double calcularMensalidade() {
             return 0; // Turnistas têm uma mensalidade fixa de R$200, não importa o horário
         }
     }
-    
+    public double calcularTaxaTurnista() {
+        if (tipoDePlano == TipoDePlano.TURNISTA) {
+            return taxaTurnista;
+        } else {
+            // Cliente Turnista
+            return 0; // Turnistas têm uma mensalidade fixa de R$200, não importa o horário
+        }
+    }    
     public boolean isMensalista() {
         return tipoDePlano == TipoDePlano.MENSALISTA;
+    }
+    public boolean isTurnista() {
+        return tipoDePlano == TipoDePlano.TURNISTA;
+    }
+
+    public Turno getTurno() {
+        return turno;
     }
 }
 
