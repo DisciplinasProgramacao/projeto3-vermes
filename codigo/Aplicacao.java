@@ -311,7 +311,7 @@ public class Aplicacao {
 
     public static void calcularArrecadacaoTotalOrdenar() {
         double arrecadacaoTotal = estacionamento.calcularArrecadacaoTotal();
-        System.out.println("A arrecadação total do estacionamento foi de R$" + (arrecadacaoTotal + arrecadaTotal));
+        System.out.println("A arrecadação total do estacionamento selecionado foi de R$" + (arrecadacaoTotal + arrecadaTotal));
     }
 
    
