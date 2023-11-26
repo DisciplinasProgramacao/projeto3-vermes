@@ -341,6 +341,11 @@ public String top5Clientes(int mes) {
                 .mapToDouble(Cliente::arrecadadoTotal)
                 .sum();
     }
+    /**
+     * Ordena a lista de estacionamentos pelo valor total arrecadado, em ordem decrescente.
+     *
+     * @param estacionamentos A lista de estacionamentos a ser ordenada.
+     */
        public static void ordenarEstacionamentos(List<Estacionamento> estacionamentos) {
         Collections.sort(estacionamentos, Comparator.comparingDouble(Estacionamento::calcularArrecadacaoTotal).reversed());
 }
