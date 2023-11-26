@@ -16,7 +16,7 @@ public class Mensalista extends UsoDeVaga implements Diario {
      * @param vaga A vaga associada ao mensalista.
      * @throws VagaIndisponivelException Se a vaga estiver ocupada.
      */
-    public Mensalista(Vaga vaga) throws VagaIndisponivelException {
+    public Mensalista(Vaga vaga) throws VagaIndisoponivelException {
         super(vaga);
     }
 
