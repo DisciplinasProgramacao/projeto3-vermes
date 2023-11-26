@@ -1,6 +1,7 @@
 import java.util.List;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -17,6 +18,8 @@ public class Cliente implements Serializable {
     private Turno turno;
     private static double taxaMensal;
     private static double taxaTurnista;
+    
+
 
     /**
      * Cria um novo objeto `Cliente` com um nome e um ID.
@@ -30,7 +33,7 @@ public class Cliente implements Serializable {
         this.veiculos = new Veiculo[50];
         this.historico = new Historico();
         this.tipoDePlano = tipoDePlano;
-        Cliente.taxaMensal = taxaMensal;
+        Cliente.taxaMensal = 500;
     }
 
     // Construtor para clientes turnistas
@@ -39,6 +42,7 @@ public class Cliente implements Serializable {
         this.turno = turno;
         this.taxaTurnista = 200;
     }
+    
 
     /**
      * Obtém o ID do cliente.
@@ -49,11 +53,6 @@ public class Cliente implements Serializable {
         return id;
     }
 
-    /**
-     * Obtém o tipo de plano associado ao cliente.
-     *
-     * @return O tipo de plano do cliente.
-     */
     public TipoDePlano getTipoDePlano() {
         return tipoDePlano;
     }
@@ -71,7 +70,6 @@ public class Cliente implements Serializable {
      * Adiciona um veículo à lista de veículos do cliente.
      *
      * @param veiculo O veículo a ser adicionado.
-     * @param servico O serviço associado ao veículo.
      */
     public void addVeiculo(Veiculo veiculo, Servico servico) {
         for (int i = 0; i < veiculos.length; i++) {
@@ -197,12 +195,6 @@ public class Cliente implements Serializable {
         return historico.getHistorico();
     }
 
-    /**
-     * Obtém o número de utilizações no mês corrente.
-     *
-     * @param mesCorrente O mês corrente.
-     * @return O número de utilizações no mês corrente.
-     */
     public int obterNumeroUtilizacoesNoMes(int mesCorrente) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
@@ -220,22 +212,12 @@ public class Cliente implements Serializable {
                 .mapToInt(registro -> 1) // Mapear cada registro para 1 (representando uma utilização)
                 .sum();
     }
-
-    /**
-     * Define o plano associado ao cliente.
-     *
-     * @param plano O tipo de plano a ser associado ao cliente.
-     */
+    
     public void escolherPlano(TipoDePlano plano) {
         this.tipoDePlano = plano;
     }
 
-    /**
-     * Calcula a mensalidade do cliente com base no tipo de plano.
-     *
-     * @return A mensalidade do cliente.
-     */
-    public double calcularMensalidade() {
+public double calcularMensalidade() {
         if (tipoDePlano == TipoDePlano.MENSALISTA) {
             return taxaMensal;
         } else {
@@ -243,12 +225,6 @@ public class Cliente implements Serializable {
             return 0; // Turnistas têm uma mensalidade fixa de R$200, não importa o horário
         }
     }
-
-    /**
-     * Calcula a taxa adicional para clientes turnistas.
-     *
-     * @return A taxa adicional para clientes turnistas.
-     */
     public double calcularTaxaTurnista() {
         if (tipoDePlano == TipoDePlano.TURNISTA) {
             return taxaTurnista;
@@ -256,32 +232,16 @@ public class Cliente implements Serializable {
             // Cliente Turnista
             return 0; // Turnistas têm uma mensalidade fixa de R$200, não importa o horário
         }
-    }
-
-    /**
-     * Verifica se o cliente possui o tipo de plano Mensalista.
-     *
-     * @return true se o cliente for mensalista, false caso contrário.
-     */
+    }    
     public boolean isMensalista() {
         return tipoDePlano == TipoDePlano.MENSALISTA;
     }
-
-    /**
-     * Verifica se o cliente possui o tipo de plano Turnista.
-     *
-     * @return true se o cliente for turnista, false caso contrário.
-     */
     public boolean isTurnista() {
         return tipoDePlano == TipoDePlano.TURNISTA;
     }
 
-    /**
-     * Obtém o turno associado ao cliente (apenas para clientes turnistas).
-     *
-     * @return O turno associado ao cliente.
-     */
     public Turno getTurno() {
         return turno;
     }
 }
+
