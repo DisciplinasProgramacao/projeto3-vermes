@@ -17,7 +17,7 @@ public class Horista extends UsoDeVaga implements Diario {
      * @param vaga A vaga associada ao horista.
      * @throws VagaIndisponivelException Se a vaga estiver ocupada.
      */
-    public Horista(Vaga vaga) throws VagaIndisponivelException {
+    public Horista(Vaga vaga) throws VagaIndisoponivelException {
        super(vaga);
     }
 
