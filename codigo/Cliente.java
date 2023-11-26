@@ -195,6 +195,12 @@ public class Cliente implements Serializable {
         return historico.getHistorico();
     }
 
+      /**
+    * Obtém o número de utilizações registradas no mês corrente.
+    *
+    * Este método percorre o histórico de registros e conta quantas utilizações ocorreram
+    * no mês e ano correntes, com base nas datas dos registros.
+    */
     public int obterNumeroUtilizacoesNoMes(int mesCorrente) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
@@ -205,41 +211,72 @@ public class Cliente implements Serializable {
                 .stream()
                 .filter(registro -> {
                     cal.setTime(registro.getData());
-                    int mesRegistro = cal.get(Calendar.MONTH) + 1; // Adiciona 1 porque os meses são indexados de 0 a 11
+                    int mesRegistro = cal.get(Calendar.MONTH) + 1; 
                     int anoRegistro = cal.get(Calendar.YEAR);
                     return mesRegistro == mesCorrente && anoRegistro == anoAtual;
                 })
-                .mapToInt(registro -> 1) // Mapear cada registro para 1 (representando uma utilização)
+                .mapToInt(registro -> 1) 
                 .sum();
     }
     
+    /**
+ * Define o tipo de plano para o cliente.
+ *
+ * @param plano O tipo de plano a ser escolhido.
+ */
     public void escolherPlano(TipoDePlano plano) {
         this.tipoDePlano = plano;
     }
 
+    /**
+ * Calcula a mensalidade com base no tipo de plano escolhido.
+ *
+ * @return A mensalidade calculada.
+ */
 public double calcularMensalidade() {
         if (tipoDePlano == TipoDePlano.MENSALISTA) {
             return taxaMensal;
         } else {
-            // Cliente Turnista
-            return 0; // Turnistas têm uma mensalidade fixa de R$200, não importa o horário
+            return 0; 
         }
     }
+
+    /**
+ * Calcula a taxa para clientes do tipo TURNISTA.
+ *
+ * @return A taxa calculada para turnistas.
+ */
     public double calcularTaxaTurnista() {
         if (tipoDePlano == TipoDePlano.TURNISTA) {
             return taxaTurnista;
         } else {
-            // Cliente Turnista
-            return 0; // Turnistas têm uma mensalidade fixa de R$200, não importa o horário
+            return 0; 
         }
     }    
+
+    /**
+ * Verifica se o cliente tem um plano MENSALISTA.
+ *
+ * @return True se o cliente for mensalista, False caso contrário.
+ */
     public boolean isMensalista() {
         return tipoDePlano == TipoDePlano.MENSALISTA;
     }
+
+    /**
+ * Verifica se o cliente tem um plano TURNISTA.
+ *
+ * @return True se o cliente for turnista, False caso contrário.
+ */
     public boolean isTurnista() {
         return tipoDePlano == TipoDePlano.TURNISTA;
     }
 
+    /**
+ * Obtém o turno associado ao cliente.
+ *
+ * @return O turno do cliente.
+ */
     public Turno getTurno() {
         return turno;
     }
