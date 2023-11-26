@@ -277,70 +277,120 @@ public String top5Clientes(int mes) {
         }
         return null;
     }
-    public double arrecadacaoMediaMensalistasNoMesCorrente() {
-        LocalDate dataAtual = LocalDate.now();
-        int mesCorrente = dataAtual.getMonthValue();
-    
-        long totalClientesMensalistas = clientes.stream()
-                .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
-                .count();
-    
-        double totalArrecadacaoMensalistas = clientes.stream()
-                .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
-                .mapToDouble(cliente -> cliente.arrecadadoNoMes(mesCorrente))
-                .sum();
-    
-        return totalClientesMensalistas > 0 ?
-                totalArrecadacaoMensalistas / totalClientesMensalistas :
-                0.0;
-    }
+    /**
+ * Calcula a arrecadação média mensal para clientes mensalistas no mês corrente.
+ *
+ * @return A arrecadação média mensal para clientes mensalistas.
+ */
+public double arrecadacaoMediaMensalistasNoMesCorrente() {
+    // Obtém a data atual para o mês corrente
+    LocalDate dataAtual = LocalDate.now();
+    int mesCorrente = dataAtual.getMonthValue();
 
-    private boolean isMensalista(TipoDePlano tipoDePlano) {
-        return tipoDePlano != null && tipoDePlano.equals(TipoDePlano.MENSALISTA);
-    }
-    public int getTotalUtilizacoesMensalistas() {
-        LocalDate dataAtual = LocalDate.now();
-        int mesCorrente = dataAtual.getMonthValue();
-    
-        return clientes.stream()
-                .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
-                .mapToInt(cliente -> cliente.obterNumeroUtilizacoesNoMes(mesCorrente))
-                .sum();
-    }
-    
-    public long getTotalClientesMensalistas() {
-        return clientes.stream()
-                .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
-                .count();
-    }
+    // Conta o número total de clientes mensalistas
+    long totalClientesMensalistas = clientes.stream()
+            .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
+            .count();
 
+    // Calcula a arrecadação total dos clientes mensalistas no mês corrente
+    double totalArrecadacaoMensalistas = clientes.stream()
+            .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
+            .mapToDouble(cliente -> cliente.arrecadadoNoMes(mesCorrente))
+            .sum();
 
-    public double arrecadacaoMediaHoristasNoMesCorrente() {
-        LocalDate dataAtual = LocalDate.now();
-        int mesCorrente = dataAtual.getMonthValue();
-    
-        long totalClientesHoristas = clientes.stream()
-                .filter(cliente -> isHorista(cliente.getTipoDePlano()))
-                .count();
-    
-        double totalArrecadacaoHoristas = clientes.stream()
-                .filter(cliente -> isHorista(cliente.getTipoDePlano()))
-                .mapToDouble(cliente -> cliente.obterNumeroUtilizacoesNoMes(mesCorrente))
-                .sum();
-    
-        return totalClientesHoristas > 0 ?
-                totalArrecadacaoHoristas / totalClientesHoristas :
-                0.0;
-    }
-    
-    private boolean isHorista(TipoDePlano tipoDePlano) {
-        return tipoDePlano != null && tipoDePlano.equals(TipoDePlano.HORISTA);
-    }
-    public double calcularArrecadacaoTotal() {
-        return clientes.stream()
-                .mapToDouble(Cliente::arrecadadoTotal)
-                .sum();
-    }
+    // Calcula a média de arrecadação para clientes mensalistas
+    return totalClientesMensalistas > 0 ?
+            totalArrecadacaoMensalistas / totalClientesMensalistas :
+            0.0;
+}
+
+/**
+ * Verifica se o tipo de plano é mensalista.
+ *
+ * @param tipoDePlano O tipo de plano do cliente.
+ * @return true se o cliente é mensalista, false caso contrário.
+ */
+private boolean isMensalista(TipoDePlano tipoDePlano) {
+    return tipoDePlano != null && tipoDePlano.equals(TipoDePlano.MENSALISTA);
+}
+
+/**
+ * Obtém o total de utilizações mensais para clientes mensalistas no mês corrente.
+ *
+ * @return O total de utilizações mensais para clientes mensalistas.
+ */
+public int getTotalUtilizacoesMensalistas() {
+    // Obtém a data atual para o mês corrente
+    LocalDate dataAtual = LocalDate.now();
+    int mesCorrente = dataAtual.getMonthValue();
+
+    // Calcula o total de utilizações mensais para clientes mensalistas
+    return clientes.stream()
+            .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
+            .mapToInt(cliente -> cliente.obterNumeroUtilizacoesNoMes(mesCorrente))
+            .sum();
+}
+
+/**
+ * Obtém o total de clientes mensalistas.
+ *
+ * @return O total de clientes mensalistas.
+ */
+public long getTotalClientesMensalistas() {
+    // Conta o número total de clientes mensalistas
+    return clientes.stream()
+            .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
+            .count();
+}
+
+/**
+ * Calcula a arrecadação média mensal para clientes horistas no mês corrente.
+ *
+ * @return A arrecadação média mensal para clientes horistas.
+ */
+public double arrecadacaoMediaHoristasNoMesCorrente() {
+    // Obtém a data atual para o mês corrente
+    LocalDate dataAtual = LocalDate.now();
+    int mesCorrente = dataAtual.getMonthValue();
+
+    // Conta o número total de clientes horistas
+    long totalClientesHoristas = clientes.stream()
+            .filter(cliente -> isHorista(cliente.getTipoDePlano()))
+            .count();
+
+    // Calcula a arrecadação total dos clientes horistas no mês corrente
+    double totalArrecadacaoHoristas = clientes.stream()
+            .filter(cliente -> isHorista(cliente.getTipoDePlano()))
+            .mapToDouble(cliente -> cliente.obterNumeroUtilizacoesNoMes(mesCorrente))
+            .sum();
+
+    // Calcula a média de arrecadação para clientes horistas
+    return totalClientesHoristas > 0 ?
+            totalArrecadacaoHoristas / totalClientesHoristas :
+            0.0;
+}
+
+/**
+ * Verifica se o tipo de plano é horista.
+ *
+ * @param tipoDePlano O tipo de plano do cliente.
+ * @return true se o cliente é horista, false caso contrário.
+ */
+private boolean isHorista(TipoDePlano tipoDePlano) {
+    return tipoDePlano != null && tipoDePlano.equals(TipoDePlano.HORISTA);
+}
+
+/**
+ * Calcula a arrecadação total do estacionamento.
+ *
+ * @return A arrecadação total do estacionamento.
+ */
+public double calcularArrecadacaoTotal() {
+    // Calcula a arrecadação total somando a arrecadação de cada cliente
+    return clientes.stream()
+            .mapToDouble(Cliente::arrecadadoTotal)
+            .sum();
+}
     /**
      * Ordena a lista de estacionamentos pelo valor total arrecadado, em ordem decrescente.
      *
