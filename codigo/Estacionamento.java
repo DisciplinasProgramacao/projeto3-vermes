@@ -399,4 +399,17 @@ public double calcularArrecadacaoTotal() {
        public static void ordenarEstacionamentos(List<Estacionamento> estacionamentos) {
         Collections.sort(estacionamentos, Comparator.comparingDouble(Estacionamento::calcularArrecadacaoTotal).reversed());
 }
+/**
+ * Busca uma vaga disponível no estacionamento.
+ *
+ * @return A vaga disponível, ou null se nenhuma vaga estiver disponível.
+ */
+public Vaga buscaVagaDisponivel() {
+    for (Vaga vaga : vagas) {
+        if (vaga.disponivel()) {
+            return vaga;
+        }
+    }
+    return null;
+}
 }
