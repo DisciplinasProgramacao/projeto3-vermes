@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * A classe `Cliente` representa um cliente que possui veículos e um histórico de uso de vagas.
  */
-public class Cliente implements Serializable {
+public class Cliente implements Serializable, Observer {
 
     private String nome;
     private String id;
@@ -18,6 +18,7 @@ public class Cliente implements Serializable {
     private Turno turno;
     private static double taxaMensal;
     private static double taxaTurnista;
+    private Estacionamento estacionamento;
     
 
 
@@ -34,6 +35,7 @@ public class Cliente implements Serializable {
         this.historico = new Historico();
         this.tipoDePlano = tipoDePlano;
         Cliente.taxaMensal = 500;
+        this.estacionamento = estacionamento;
     }
 
     // Construtor para clientes turnistas
@@ -279,6 +281,12 @@ public double calcularMensalidade() {
  */
     public Turno getTurno() {
         return turno;
+    }
+
+    @Override
+    public void updateArrecadacao(Cliente cliente, double novaArrecadacao) {
+        double novaArrecadacaoCliente = arrecadadoTotal() + novaArrecadacao;
+        estacionamento.notifyObservers(this, novaArrecadacaoCliente);
     }
 }
 
