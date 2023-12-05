@@ -190,7 +190,7 @@ public class Aplicacao {
     }
     
 
-    public static void adicionarVeiculo() {
+   public static void adicionarVeiculo() {
         System.out.println("Digite o ID do cliente: ");
         String idCliente = scanner.nextLine();
     
@@ -199,7 +199,7 @@ public class Aplicacao {
         if (cliente != null) {
             System.out.println("Digite a placa do veículo: ");
             String placa = scanner.nextLine();
-            Veiculo veiculo = new Veiculo(placa);
+            Veiculo veiculo = VeiculoFactory.criarVeiculo(placa); // Use a VeiculoFactory
     
             try {
                 cliente.addVeiculo(veiculo, null);
