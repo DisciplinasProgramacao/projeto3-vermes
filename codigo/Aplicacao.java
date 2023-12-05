@@ -213,11 +213,12 @@ public class Aplicacao {
     }
     
     
-    public static void estacionarVeiculo() throws VagaIndisoponivelException {
+public static void estacionarVeiculo() throws VagaIndisoponivelException {
         System.out.println("Digite a placa do veículo: ");
         String placa = scanner.nextLine();
     
         try {
+            UsoDeVaga usoDeVaga = UsoDeVagaFactory.criarUsoDeVaga(estacionamento.buscaVagaDisponivel());
             estacionamento.estacionar(placa);
             System.out.println("Veículo estacionado com sucesso.");
         } catch (LotadoException e) {
