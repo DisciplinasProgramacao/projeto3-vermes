@@ -293,7 +293,8 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
     }
 
     public static void mostrarTop5Clientes() {
-        System.out.println(estacionamento.top5Clientes(10));
+          Map<Cliente, Double> top5Clientes = relatorio.getTop5Clientes();
+        System.out.println("Top 5 Clientes: " + top5Clientes);
     }
 
     public static void mostrarHistoricoCliente() {
