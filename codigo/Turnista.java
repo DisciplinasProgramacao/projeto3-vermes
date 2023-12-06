@@ -30,7 +30,7 @@ public class Turnista extends UsoDeVaga implements Diario {
      *
      * @param vaga A vaga associada ao turnista.
      * @param turno O turno associado ao turnista.
-     * @throws VagaIndisponivelException Se a vaga estiver ocupada.
+     * @throws VagaIndisoponivelException Se a vaga estiver ocupada.
      */
     public Turnista(Vaga vaga, Turno turno) throws VagaIndisoponivelException {
         super(vaga);

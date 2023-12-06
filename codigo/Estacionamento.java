@@ -123,8 +123,8 @@ public class Estacionamento implements Serializable {
      * Estaciona um veículo com a placa especificada.
      *
      * @param placa A placa do veículo a ser estacionado.
-     * @throws VagaIndisoponivelException
-     * @throws EstacionamentoLotadoException Se o estacionamento estiver lotado.
+     * @throws VagaIndisoponivelException Lança a exceção se a vaga estiver indisponíver
+     * @throws LotadoException Se o estacionamento estiver lotado.
      */
     public void estacionar(String placa) throws LotadoException, VagaIndisoponivelException {
         Vaga vagaDisponivel = null;
@@ -152,7 +152,7 @@ public class Estacionamento implements Serializable {
      *
      * @param placa A placa do veículo a ser retirado.
      * @return O valor a ser pago pelo uso da vaga.
-     * @throws ServicoNaoExecutadoException
+     * @throws ServicoNaoExecutadoException Lança a exceção 
      */
     public double sair(String placa) throws ServicoNaoExecutadoException {
         for (Cliente cliente : clientes) {

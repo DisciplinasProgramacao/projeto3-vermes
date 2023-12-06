@@ -27,6 +27,8 @@ public class Cliente implements Serializable, Observer {
      *
      * @param nome O nome do cliente.
      * @param id   O ID único do cliente.
+     * @param tipoDePlano O plano que o cliente terá
+     * @param taxaMensal a taxa mensal que será fixa 500 que é a taxa do mensalista.
      */
     public Cliente(String nome, String id, TipoDePlano tipoDePlano, double taxaMensal) {
         this.nome = nome;
@@ -72,6 +74,7 @@ public class Cliente implements Serializable, Observer {
      * Adiciona um veículo à lista de veículos do cliente.
      *
      * @param veiculo O veículo a ser adicionado.
+     * @param servico O servico escolhido pelo veículo
      */
     public void addVeiculo(Veiculo veiculo, Servico servico) {
         for (int i = 0; i < veiculos.length; i++) {
@@ -199,9 +202,10 @@ public class Cliente implements Serializable, Observer {
 
       /**
     * Obtém o número de utilizações registradas no mês corrente.
-    *
+    * @param mesCorrente mes que deseja obter as utilizacoes
     * Este método percorre o histórico de registros e conta quantas utilizações ocorreram
     * no mês e ano correntes, com base nas datas dos registros.
+    * @return numero de utilizacoes no mes dado
     */
     public int obterNumeroUtilizacoesNoMes(int mesCorrente) {
         Calendar cal = Calendar.getInstance();

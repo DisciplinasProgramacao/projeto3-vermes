@@ -14,7 +14,7 @@ public class Mensalista extends UsoDeVaga implements Diario {
      * Cria um novo objeto `Mensalista` associado a uma vaga específica.
      *
      * @param vaga A vaga associada ao mensalista.
-     * @throws VagaIndisponivelException Se a vaga estiver ocupada.
+     * @throws VagaIndisoponivelException Se a vaga estiver ocupada.
      */
     public Mensalista(Vaga vaga) throws VagaIndisoponivelException {
         super(vaga);

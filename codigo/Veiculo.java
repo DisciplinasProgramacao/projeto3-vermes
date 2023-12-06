@@ -25,8 +25,8 @@ public class Veiculo implements Serializable {
      * Estaciona o veículo em uma vaga.
      *
      * @param vaga A vaga em que o veículo será estacionado.
-     * @throws VagaIndisoponivelException
-     * @throws throws LotadoException
+     * @throws VagaIndisoponivelException Lança a exceção.
+     * @throws LotadoException Lança a exceção
      */
     public void estacionar(Vaga vaga) throws LotadoException, VagaIndisoponivelException {
         if (qtUso < MAX_USO) {
@@ -42,7 +42,8 @@ public class Veiculo implements Serializable {
      * Retira o veículo da vaga e calcula o valor a ser pago.
      *
      * @return O valor a ser pago pelo uso da vaga.
-     * @throws ServicoNaoExecutadoException
+     * @param cliente Recebe um Cliente para sair. 
+     * @throws ServicoNaoExecutadoException Lança a excessão.
      */
     public double sair(Cliente cliente) throws ServicoNaoExecutadoException {
         if (qtUso > 0) {

@@ -16,6 +16,7 @@ public class UsoDeVaga implements Serializable {
     /**
      * Construtor da classe UsoDeVaga.
      * @param vaga Vaga a ser utilizada.
+     * @throws VagaIndisoponivelException Lança e exceção.
      */
     public UsoDeVaga(Vaga vaga) throws VagaIndisoponivelException {
         this.vaga = vaga;
@@ -39,6 +40,8 @@ public class UsoDeVaga implements Serializable {
 
     /**
      * Registra a saída do veículo da vaga.
+     * @param cliente recebe um objeto do tipo Cliente.
+     * @throws ServicoNaoExecutadoException Lança a exceção.
      */
     public void sair(Cliente cliente) throws ServicoNaoExecutadoException {
         this.saida = LocalDateTime.now();
@@ -64,6 +67,7 @@ public class UsoDeVaga implements Serializable {
 
     /**
      * Calcula o valor a ser pago pelo uso da vaga.
+     * @param cliente Recebe um objeto do tipo Cliente.
      */
     public void calcularValorPago(Cliente cliente) {
         if (cliente.isMensalista() || (cliente.isTurnista() && cliente.getTurno().eHorarioDoTurno(LocalTime.now()))) {
