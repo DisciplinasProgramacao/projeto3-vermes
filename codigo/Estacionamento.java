@@ -86,7 +86,7 @@ public class Estacionamento implements Serializable {
 		}
 	}
     
-    
+
 
     /**
      * Busca um cliente no estacionamento.
@@ -428,5 +428,15 @@ public Vaga buscaVagaDisponivel() {
         }
     }
     return null;
+}
+
+public Cliente buscaClientePorPlaca(String placa) {
+    for (Cliente cliente : clientes) {
+        Veiculo veiculo = cliente.possuiVeiculo(placa);
+        if (veiculo != null) {
+            return cliente;
+        }
+    }
+    return null; 
 }
 }
