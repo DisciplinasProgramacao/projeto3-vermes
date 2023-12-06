@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -18,9 +19,12 @@ public class Aplicacao {
     private static double totalMesServicos = 0;
     private static double totalValorMedio = 0;
     private static double arrecadaTotal = 0;
+    private static Relatorio relatorio;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, VagaIndisoponivelException, ServicoNaoExecutadoException {
         scanner = new Scanner(System.in);
+        relatorio = new Relatorio();
+        estacionamento.addObserver(relatorio);
 
         System.out.println("Escolha o estacionamento (1, 2 ou 3): ");
         int escolhaEstacionamento = Integer.parseInt(scanner.nextLine());
@@ -268,11 +272,14 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
             totalMesServicos += valorServico;
             totalValorMedio += valorServico;
             arrecadaTotal += valorServico;
+    
+            relatorio.updateArrecadacao(estacionamento.buscaClientePorPlaca(placa), valorPago);
         } else {
             System.out.println("Operação cancelada. Nenhum serviço selecionado.");
             System.out.println("Valor pago: R$" + valorPago);
         }
     }
+    
     
     
     public static void consultarTotal() {
