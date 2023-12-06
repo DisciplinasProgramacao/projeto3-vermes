@@ -17,6 +17,7 @@ public class Estacionamento implements Serializable {
     private int quantFileiras;
     private int vagasPorFileira;
     private List<Observer> observers;
+    private Relatorio relatorio;
   
 
     /**
@@ -33,6 +34,7 @@ public class Estacionamento implements Serializable {
         this.clientes = new LinkedList<>();
         this.observers = new LinkedList<>();
         gerarVagas();
+        relatorio = new Relatorio();
     }
 
     /**
@@ -226,7 +228,7 @@ public class Estacionamento implements Serializable {
      * @return Uma string contendo os nomes dos clientes.
      */
 
-public String top5Clientes(int mes) {
+     public String top5Clientes(int mes) {
         Cliente[] topClientes = new Cliente[5];
 
         for (Cliente c : clientes) {
@@ -263,6 +265,14 @@ public String top5Clientes(int mes) {
      */
     public Cliente[] getClientes() {
         return clientes.toArray(new Cliente[0]);
+    }
+
+    public void setRelatorio(Relatorio relatorio) {
+        this.relatorio = relatorio;
+    }
+
+    public Relatorio getRelatorio() {
+        return relatorio;
     }
 
     /**
