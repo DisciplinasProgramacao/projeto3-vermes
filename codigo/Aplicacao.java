@@ -24,7 +24,7 @@ public class Aplicacao {
     public static void main(String[] args) throws IOException, ClassNotFoundException, VagaIndisoponivelException, ServicoNaoExecutadoException {
         scanner = new Scanner(System.in);
         relatorio = new Relatorio();
-        estacionamento.addObserver(relatorio);
+        
 
         System.out.println("Escolha o estacionamento (1, 2 ou 3): ");
         int escolhaEstacionamento = Integer.parseInt(scanner.nextLine());
@@ -268,12 +268,12 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
     
             System.out.println("Valor total pago (incluindo serviço): R$" + valorPago);
             System.out.println("Tempo total do serviço: " + tempoServico + " minutos");
+             relatorio.updateArrecadacao(estacionamento.buscaClientePorPlaca(placa), valorPago);
             totalServicos += valorServico;
             totalMesServicos += valorServico;
             totalValorMedio += valorServico;
             arrecadaTotal += valorServico;
-    
-            relatorio.updateArrecadacao(estacionamento.buscaClientePorPlaca(placa), valorPago);
+           
         } else {
             System.out.println("Operação cancelada. Nenhum serviço selecionado.");
             System.out.println("Valor pago: R$" + valorPago);
