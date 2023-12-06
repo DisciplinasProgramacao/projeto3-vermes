@@ -1,457 +1,404 @@
-import java.io.Serializable;
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.ArrayList;
 
 /**
- * A classe Estacionamento representa um estacionamento que gerencia o estacionamento de veículos para vários clientes.
+ * Classe que representa a aplicação de gerenciamento de um estacionamento.
  */
-public class Estacionamento implements Serializable {
+public class Aplicacao {
+    private static Scanner scanner;
+    private static Estacionamento estacionamento;
+    private static String nomeArquivo;
+    private static double totalServicos = 0;
+    private static double totalMesServicos = 0;
+    private static double totalValorMedio = 0;
+    private static double arrecadaTotal = 0;
+    private static Relatorio relatorio;
 
-    private String nome;
-    private LinkedList<Cliente> clientes;
-    private LinkedList<Vaga> vagas;
-    private int quantFileiras;
-    private int vagasPorFileira;
-    private List<Observer> observers;
-    private Relatorio relatorio;
-  
+    public static void main(String[] args) throws IOException, ClassNotFoundException, VagaIndisoponivelException, ServicoNaoExecutadoException {
+        scanner = new Scanner(System.in);
 
-    /**
-     * Constrói um objeto Estacionamento com o nome especificado, número de fileiras no estacionamento e número de vagas por fileira.
-     *
-     * @param nome O nome do estacionamento.
-     * @param fileiras O número de fileiras no estacionamento.
-     * @param vagasPorFila O número de vagas por fileira.
-     */
-    public Estacionamento(String nome, int fileiras, int vagasPorFila) {
-        this.nome = nome;
-        this.quantFileiras = fileiras;
-        this.vagasPorFileira = vagasPorFila;
-        this.clientes = new LinkedList<>();
-        this.observers = new LinkedList<>();
-        gerarVagas();
-        relatorio = new Relatorio();
-    }
+        
 
-    /**
-     * Obtém o nome do estacionamento.
-     *
-     * @return O nome do estacionamento.
-     */
-    public String getNome() {
-        return nome;
-    }
+        System.out.println("Escolha o estacionamento (1, 2 ou 3): ");
+        int escolhaEstacionamento = Integer.parseInt(scanner.nextLine());
 
-    /**
-     * Adiciona um veículo ao cliente identificado pelo ID.
-     *
-     * @param veiculo O veículo a ser adicionado.
-     * @param idCli O ID do cliente.
-     */
-    public void addVeiculo(Veiculo veiculo, String idCli) {
-        Cliente quem = new Cliente("idCli", idCli, null, quantFileiras);
-        Cliente cliente = busca(quem);
-        if (cliente != null) {
-            cliente.addVeiculo(veiculo, null);
+        switch (escolhaEstacionamento) {
+            case 1:
+                estacionamento = new Estacionamento("Estacionamento 1", 5, 10);
+                nomeArquivo = "dat/estacionamento1.dat";
+                break;
+            case 2:
+                estacionamento = new Estacionamento("Estacionamento 2", 5, 10);
+                nomeArquivo = "dat/estacionamento2.dat";
+                break;
+            case 3:
+                estacionamento = new Estacionamento("Estacionamento 3", 5, 10);
+                nomeArquivo = "dat/estacionamento3.dat";
+                break;
+            default:
+                System.out.println("Opção inválida. Usando Estacionamento 1 por padrão.");
+                estacionamento = new Estacionamento("Estacionamento 1", 5, 10);
+                nomeArquivo = "dat/estacionamento1.dat";
+                break;
         }
+
+        try {
+            
+            Estacionamento est = Serializacao.carregarEstacionamento(nomeArquivo);
+            if (est != null) {
+                estacionamento = est;
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Erro ao carregar o estacionamento: " + e.getMessage());
+        }
+
+        menu();
+    }
+    
+    public static void menu() throws IOException, VagaIndisoponivelException, ServicoNaoExecutadoException {
+        relatorio = estacionamento.getRelatorio();
+        System.out.println("Escolha uma das opções: ");
+        System.out.println("\t1. Cadastrar cliente");
+        System.out.println("\t2. Adicionar veículo");
+        System.out.println("\t3. Estacionar");
+        System.out.println("\t4. Sair");
+        System.out.println("\t5. Consultar total arrecadado pelo estacionamento");
+        System.out.println("\t6. Consultar total arrecadado no mês");
+        System.out.println("\t7. Consultar valor médio de utilização do estacionamento");
+        System.out.println("\t8. Consultar top 5 clientes");
+        System.out.println("\t9. Mostrar histórico de cliente");
+        System.out.println("\t10. Visualizar arrecadação total de cada estacionamento");
+        System.out.println("\t11. Visualizar média utilizada por mensalistas no mês");
+        System.out.println("\t12. Visualizar média utilizada por horistas no mês");
+        System.out.println("\t0. Sair do programa");
+
+        int opcao;
+
+        try {
+            opcao = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException exception) {
+            opcao = -1;
+        }
+
+        switch (opcao) {
+            case 1:
+                cadastrarCliente();
+                break;
+            case 2:
+                adicionarVeiculo();
+                break;
+            case 3:
+                estacionarVeiculo();
+                break;
+            case 4:
+                sairDaVaga();
+                break;
+            case 5:
+                consultarTotal();
+                break;
+            case 6:
+                consultarTotalMes();
+                break;
+            case 7:
+                consultarValorMedio();
+                break;
+            case 8:
+                mostrarTop5Clientes();
+                break;
+            case 9:
+                mostrarHistoricoCliente();
+                break;
+            case 10:
+                visualizarArrecadacaoTotal();
+                break;
+            case 11:
+                exibirMediaUtilizacaoMensalistasNoMesCorrente(estacionamento);
+                break;
+
+            case 12:
+                exibirArrecadacaoMediaHoristasNoMesCorrente();
+                break;
+            case 0:
+            try {
+                Serializacao.salvarEstacionamento(estacionamento, nomeArquivo);
+                estacionamento.setRelatorio(relatorio);
+
+            } catch (IOException e) {
+                System.out.println("Erro ao salvar estacionamento: " + e.getMessage());
+            }
+            System.out.println("Saindo do programa.");
+            System.exit(0);
+            default:
+                System.out.println("A opção informada é inválida.");
+        }
+
+
+        menu(); // Chama o menu novamente após a seleção da opção.
     }
 
-    /**
-     * Adiciona um cliente ao estacionamento.
-     *
-     * @param cliente O cliente a ser adicionado.
-     * @return true se o cliente foi adicionado com sucesso, false se o cliente já existir.
-     */
-    public boolean addCliente(Cliente cliente) {
-        if ((busca(cliente)) == null) {
-            clientes.add(cliente);
-            return true;
+    public static void cadastrarCliente() {
+        System.out.println("Digite o ID do cliente: ");
+        String idCliente = scanner.nextLine();
+    
+        System.out.println("Digite o nome do cliente: ");
+        String nomeCliente = scanner.nextLine();
+    
+        System.out.println("Escolha o tipo de cliente (1. Horista, 2. Mensalista, 3. Turnista): ");
+        int escolhaTipoCliente = Integer.parseInt(scanner.nextLine());
+    
+        TipoDePlano tipoCliente = null;
+        switch (escolhaTipoCliente) {
+            case 1:
+                tipoCliente = TipoDePlano.HORISTA;
+                break;
+            case 2:
+                tipoCliente = TipoDePlano.MENSALISTA;
+                break;
+            case 3:
+                tipoCliente = TipoDePlano.TURNISTA;
+                break;
+            default:
+                System.out.println("Opção inválida. Cliente será cadastrado como Horista por padrão.");
+                tipoCliente = TipoDePlano.HORISTA;
+                break;
+        }
+    
+        Cliente cliente;
+        if (tipoCliente == TipoDePlano.TURNISTA) {
+            System.out.println("Escolha o turno (1. Manhã, 2. Tarde, 3. Noite): ");
+            int escolhaTurno = Integer.parseInt(scanner.nextLine());
+            Turno turno = null;
+            switch (escolhaTurno) {
+                case 1:
+                    turno = Turno.MANHA;
+                    break;
+                case 2:
+                    turno = Turno.TARDE;
+                    break;
+                case 3:
+                    turno = Turno.NOITE;
+                    break;
+                default:
+                    System.out.println("Opção inválida. Turno padrão (Manhã) será atribuído.");
+                    turno = Turno.MANHA;
+                    break;
+            }
+            cliente = new Cliente(nomeCliente, idCliente, tipoCliente, turno);
         } else {
-            return false;
+            cliente = new Cliente(nomeCliente, idCliente, tipoCliente, arrecadaTotal);
         }
+    
+        estacionamento.addCliente(cliente);
+        estacionamento.addObserver(cliente);
     }
-
-    public void addObserver(Observer observer) {
-		observers.add(observer);
-	}
-
-	public void removeObserver(Observer observer) {
-		observers.remove(observer);
-	}
-
-	public void notifyObservers(Cliente cliente, double novaArrecadacao) {
-		for (Observer observer : observers) {
-			observer.updateArrecadacao(cliente, novaArrecadacao);
-		}
-	}
     
 
-
-    /**
-     * Busca um cliente no estacionamento.
-     *
-     * @param quem O cliente a ser buscado.
-     * @return O cliente se encontrado, ou null se não encontrado.
-     */
-    Cliente busca(Cliente quem) {
-        for (Cliente cliente : clientes) {
-            if (cliente != null && cliente.equals(quem)) {
-                return cliente;
+   public static void adicionarVeiculo() {
+        System.out.println("Digite o ID do cliente: ");
+        String idCliente = scanner.nextLine();
+    
+        Cliente cliente = estacionamento.busca(idCliente);
+    
+        if (cliente != null) {
+            System.out.println("Digite a placa do veículo: ");
+            String placa = scanner.nextLine();
+            Veiculo veiculo = VeiculoFactory.criarVeiculo(placa); // Use a VeiculoFactory
+    
+            try {
+                cliente.addVeiculo(veiculo, null);
+                System.out.println("Veículo adicionado com sucesso.");
+            } catch (Exception e) {
+                System.out.println("Erro ao adicionar veículo: " + e.getMessage());
             }
-        }
-        return null;
-    }
-
-    /**
-     * Gera as vagas no estacionamento com base no número de fileiras e vagas por fileira.
-     */
-    private void gerarVagas() {
-        vagas = new LinkedList<>();
-        for (int i = 0; i < quantFileiras; i++) {
-            for (int j = 0; j < vagasPorFileira; j++) {
-                int numeroVaga = i * vagasPorFileira + j + 1;
-                vagas.add(new Vaga(i, numeroVaga));
-            }
+        } else {
+            System.out.println("Cliente não encontrado.");
         }
     }
+    
+    
+public static void estacionarVeiculo() throws VagaIndisoponivelException {
+        System.out.println("Digite a placa do veículo: ");
+        String placa = scanner.nextLine();
+    
+        try {
+            UsoDeVaga usoDeVaga = UsoDeVagaFactory.criarUsoDeVaga(estacionamento.buscaVagaDisponivel());
+            estacionamento.estacionar(placa);
+            System.out.println("Veículo estacionado com sucesso.");
+        } catch (LotadoException e) {
+            System.out.println("O estacionamento está lotado");
+        }
+        
+    }
+    
+    public static void sairDaVaga() throws ServicoNaoExecutadoException {
+        System.out.println("Digite a placa do veículo: ");
+        String placa = scanner.nextLine();
+    
+        double valorPago = estacionamento.sair(placa);
+    
+        System.out.println("Escolha um dos serviços:");
+        System.out.println("1. Manobrista - R$5.0");
+        System.out.println("2. Lavagem - R$20.0");
+        System.out.println("3. Polimento - R$45.0");
+    
+        int opcaoServico = Integer.parseInt(scanner.nextLine());
+    
+        Servico servicoEscolhido = null;
+        switch (opcaoServico) {
+            case 1:
+                servicoEscolhido = Servico.MANOBRISTA;
+                break;
+            case 2:
+                servicoEscolhido = Servico.LAVAGEM;
+                break;
+            case 3:
+                servicoEscolhido = Servico.POLIMENTO;
+                break;
+            default:
+                System.out.println("Opção inválida. Nenhum serviço selecionado.");
+                break;
+        }
+    
+        if (servicoEscolhido != null) {
+            double valorServico = servicoEscolhido.getValor();
+            double tempoServico = servicoEscolhido.getTempo();
+    
+            System.out.println("Serviço aplicado com sucesso.");
+            valorPago += valorServico;
+    
+            System.out.println("Valor total pago (incluindo serviço): R$" + valorPago);
+            System.out.println("Tempo total do serviço: " + tempoServico + " minutos");
+            relatorio.updateArrecadacao(estacionamento.buscaClientePorPlaca(placa), valorPago);
+            estacionamento.notifyObservers(estacionamento.buscaClientePorPlaca(placa), estacionamento.totalArrecadado());
 
-    /**
-     * Estaciona um veículo com a placa especificada.
-     *
-     * @param placa A placa do veículo a ser estacionado.
-     * @throws VagaIndisoponivelException
-     * @throws EstacionamentoLotadoException Se o estacionamento estiver lotado.
-     */
-    public void estacionar(String placa) throws LotadoException, VagaIndisoponivelException {
-        Vaga vagaDisponivel = null;
-        Veiculo veiculoEncontrado = null;
-        for (Vaga vaga : vagas) {
-            if (vaga.disponivel()) {
-                vagaDisponivel = vaga;
+            totalServicos += valorServico;
+            totalMesServicos += valorServico;
+            totalValorMedio += valorServico;
+            arrecadaTotal += valorServico;
+            
+           
+        } else {
+            System.out.println("Operação cancelada. Nenhum serviço selecionado.");
+            System.out.println("Valor pago: R$" + valorPago);
+        }
+    }
+    
+    
+    
+    public static void consultarTotal() {
+        double total = estacionamento.totalArrecadado();
+        System.out.println("O total arrecadado pelo estacionamento foi de R$" + (total + totalServicos));
+        
+    }
+
+    public static void consultarTotalMes() {
+        System.out.println("Digite o mês: ");
+        int mes = Integer.parseInt(scanner.nextLine());
+        double totalMes = estacionamento.arrecadacaoNoMes(mes);
+        System.out.println("A arrecadação do mês " + mes + " foi de R$" + (totalMes + totalMesServicos));
+    }
+
+    public static void consultarValorMedio() {
+        double valorMedio = estacionamento.valorMedioPorUso();
+        System.out.println("O valor médio de uso no estacionamento foi de R$" + (valorMedio + totalValorMedio));
+    }
+
+    public static void mostrarTop5Clientes() {
+        Map<Cliente, Double> top5Clientes = estacionamento.getRelatorio().getTop5Clientes();
+    
+        System.out.println("Top 5 Clientes:");
+        int count = 1;
+    
+        for (Map.Entry<Cliente, Double> entry : top5Clientes.entrySet()) {
+            Cliente cliente = entry.getKey();
+            double valorGasto = entry.getValue();
+    
+            System.out.println(count + ". ID do Cliente: " + cliente.getId() + ", Valor Gasto: R$" + valorGasto);
+            count++;
+    
+            if (count > 5) {
                 break;
             }
         }
+    }
 
-        if (vagaDisponivel != null) {
-            for (Cliente cliente : clientes) {
-                veiculoEncontrado = cliente.possuiVeiculo(placa);
-                if (veiculoEncontrado != null) {
-                    veiculoEncontrado.estacionar(vagaDisponivel);
-                    break;
-                }
-            }
+    public static void mostrarHistoricoCliente() {
+        System.out.println("Digite o ID do cliente: ");
+        String idCliente = scanner.nextLine();
+
+        Cliente cliente = estacionamento.busca(idCliente);
+
+        if (cliente != null) {
+            String historicoCliente = cliente.historico();
+            System.out.println("Histórico do Cliente:\n" + historicoCliente);
+        } else {
+            System.out.println("Cliente não encontrado.");
         }
     }
 
-    /**
-     * Retira um veículo com a placa especificada do estacionamento e retorna o valor a ser pago.
-     *
-     * @param placa A placa do veículo a ser retirado.
-     * @return O valor a ser pago pelo uso da vaga.
-     * @throws ServicoNaoExecutadoException
-     */
-    public double sair(String placa) throws ServicoNaoExecutadoException {
-        for (Cliente cliente : clientes) {
-            Veiculo veiculo = cliente.possuiVeiculo(placa);
-            if (veiculo != null) {
-                double valorPago = veiculo.sair(cliente);
-                System.out.println("Valor a ser pago: " + valorPago);
-                return valorPago;
+    public static void calcularArrecadacaoTotalOrdenar() {
+        double arrecadacaoTotal = estacionamento.calcularArrecadacaoTotal();
+        System.out.println("A arrecadação total do estacionamento selecionado foi de R$" + (arrecadacaoTotal + arrecadaTotal));
+    }
+
+   
+
+ public static void visualizarArrecadacaoTotal() {
+    // Calcula a arrecadação total do estacionamento atual antes de carregar outros estacionamentos
+    calcularArrecadacaoTotalOrdenar();
+
+    List<Estacionamento> estacionamentos = new ArrayList<>();
+    double arrecadacaoTotalGeral = 0;
+
+    for (int i = 1; i <= 3; i++) {
+        String nomeArquivo = "dat/estacionamento" + i + ".dat";
+        try {
+            Estacionamento est = Serializacao.carregarEstacionamento(nomeArquivo);
+            if (est != null) {
+                estacionamentos.add(est);
+                double arrecadacaoTotal = est.totalArrecadado();
+                arrecadacaoTotalGeral += arrecadacaoTotal;
             }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Erro ao carregar o estacionamento " + i + ": " + e.getMessage());
         }
+    }
+
+    // Ordena a lista de estacionamentos com base na arrecadação total (em ordem decrescente)
+    Collections.sort(estacionamentos, Comparator.comparingDouble(Estacionamento::totalArrecadado).reversed());
+
+    System.out.println("Somente Dados Salvos em arquivo, Ordenados por Arrecadação Decrescente:");
+    DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+    for (int i = 0; i < estacionamentos.size(); i++) {
+        int j = i + 1;
+        Estacionamento est = estacionamentos.get(i);
+        String arrecadacaoFormatada = decimalFormat.format(est.totalArrecadado());
+        System.out.printf("Nome: %s, Arrecadação Total: R$%s%n", est.getNome(), arrecadacaoFormatada);
+    }
+
+    String arrecadacaoTotalGeralFormatada = decimalFormat.format(arrecadacaoTotalGeral);
+    System.out.printf("Arrecadação Total Geral: R$%s%n", arrecadacaoTotalGeralFormatada);
+}
+  
+
+    private static void exibirMediaUtilizacaoMensalistasNoMesCorrente(Estacionamento estacionamento) {
+        double mediaMensalista = estacionamento.arrecadacaoMediaMensalistasNoMesCorrente();
+        System.out.println("Total de clientes mensalistas: " + estacionamento.getTotalClientesMensalistas());
+        System.out.println("Total de utilizações mensalistas: " + estacionamento.getTotalUtilizacoesMensalistas());
     
-        System.out.println("Veículo não encontrado.");
-        return 0.0;
-    }
-
-/**
-     * Calcula o total arrecadado pelo estacionamento.
-     *
-     * @return O valor total arrecadado.
-     */
-
-     public double totalArrecadado() {
-        double total = 0.0;
-        for (Cliente cliente : clientes) {
-            total += cliente.arrecadadoTotal();
-        }
-        return total;
-    }
-
-
-/**
-     * Calcula a arrecadação no mês especificado.
-     *
-     * @param mes O número do mês (1 a 12).
-     * @return O valor arrecadado no mês.
-     */
-    public double arrecadacaoNoMes(int mes) {
-        double totalMes = 0;
-        for (Cliente cliente : clientes) {
-            if (cliente != null) {
-                totalMes += cliente.arrecadadoNoMes(mes);
-            }
-        }
-        return totalMes;
-    }
-
-
-    /**
-     * Calcula o valor médio por uso de vaga.
-     *
-     * @return O valor médio por uso de vaga.
-     */
-    public double valorMedioPorUso() {
-        double totalArrecadado = 0.0;
-        int totalUsos = 0;
-
-        for (Cliente cliente : clientes) {
-            totalArrecadado += cliente.arrecadadoTotal();
-            totalUsos += cliente.totalDeUsos();
-        }
-
-        if (totalUsos == 0) {
-            return 0.0;
-        }
-
-        return totalArrecadado / totalUsos;
-    }
-
- /**
-     * Retorna os nomes dos top 5 clientes com maior arrecadação no mês especificado.
-     *
-     * @param mes O número do mês (1 a 12).
-     * @return Uma string contendo os nomes dos clientes.
-     */
-
-     public String top5Clientes(int mes) {
-        Cliente[] topClientes = new Cliente[5];
-
-        for (Cliente c : clientes) {
-            if (c != null) {
-                double valorDoCliente = c.arrecadadoNoMes(mes);
-
-                for (int i = 0; i < 5; i++) {
-                    if (topClientes[i] == null || valorDoCliente > topClientes[i].arrecadadoNoMes(mes)) {
-                        for (int j = 4; j > i; j--) {
-                            topClientes[j] = topClientes[j - 1];
-                        }
-                        topClientes[i] = c;
-                        break;
-                    }
-                }
-            }
-        }
-
-        // Agora topClientes contém os 5 principais clientes
-        String[] nomesTopClientes = new String[5];
-        for (int i = 0; i < 5; i++) {
-            if (topClientes[i] != null) {
-                nomesTopClientes[i] = topClientes[i].getNome();
-            }
-        }
-
-        return Arrays.toString(nomesTopClientes);
-    }
-
-    /**
-     * Retorna a lista de clientes.
-     *
-     * @return A lista de clientes.
-     */
-    public Cliente[] getClientes() {
-        return clientes.toArray(new Cliente[0]);
-    }
-
-    public void setRelatorio(Relatorio relatorio) {
-        this.relatorio = relatorio;
-    }
-
-    public Relatorio getRelatorio() {
-        if (relatorio == null) {
-            relatorio = new Relatorio();
-        }
-        return relatorio;
+        System.out.println("A média de utilização dos clientes mensalistas no mês corrente é: " + mediaMensalista);
     }
     
 
-    /**
-     * Busca um cliente pelo ID.
-     *
-     * @param idCliente O ID do cliente a ser buscado.
-     * @return O cliente encontrado, ou null se não encontrado.
-     */
-    public Cliente busca(String idCliente) {
-        for (Cliente cliente : clientes) {
-            if (cliente.getId().equals(idCliente)) {
-                return cliente;
-            }
-        }
-        return null;
+    private static void exibirArrecadacaoMediaHoristasNoMesCorrente() {
+        double mediaHorista = estacionamento.arrecadacaoMediaHoristasNoMesCorrente();
+        System.out.println("A média de arrecadação dos clientes horistas no mês corrente é: " + mediaHorista);
     }
-
-    /**
-     * Busca um veículo pela placa.
-     *
-     * @param placa A placa do veículo a ser buscado.
-     * @return O veículo encontrado, ou null se não encontrado.
-     */
-    public Veiculo buscaVeiculo(String placa) {
-        for (Cliente cliente : clientes) {
-            Veiculo veiculo = cliente.possuiVeiculo(placa);
-            if (veiculo != null) {
-                return veiculo;
-            }
-        }
-        return null;
-    }
-    /**
- * Calcula a arrecadação média mensal para clientes mensalistas no mês corrente.
- *
- * @return A arrecadação média mensal para clientes mensalistas.
- */
-public double arrecadacaoMediaMensalistasNoMesCorrente() {
-    // Obtém a data atual para o mês corrente
-    LocalDate dataAtual = LocalDate.now();
-    int mesCorrente = dataAtual.getMonthValue();
-
-    // Conta o número total de clientes mensalistas
-    long totalClientesMensalistas = clientes.stream()
-            .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
-            .count();
-
-    // Calcula a arrecadação total dos clientes mensalistas no mês corrente
-    double totalArrecadacaoMensalistas = clientes.stream()
-            .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
-            .mapToDouble(cliente -> cliente.arrecadadoNoMes(mesCorrente))
-            .sum();
-
-    // Calcula a média de arrecadação para clientes mensalistas
-    return totalClientesMensalistas > 0 ?
-            totalArrecadacaoMensalistas / totalClientesMensalistas :
-            0.0;
-}
-
-/**
- * Verifica se o tipo de plano é mensalista.
- *
- * @param tipoDePlano O tipo de plano do cliente.
- * @return true se o cliente é mensalista, false caso contrário.
- */
-private boolean isMensalista(TipoDePlano tipoDePlano) {
-    return tipoDePlano != null && tipoDePlano.equals(TipoDePlano.MENSALISTA);
-}
-
-/**
- * Obtém o total de utilizações mensais para clientes mensalistas no mês corrente.
- *
- * @return O total de utilizações mensais para clientes mensalistas.
- */
-public int getTotalUtilizacoesMensalistas() {
-    // Obtém a data atual para o mês corrente
-    LocalDate dataAtual = LocalDate.now();
-    int mesCorrente = dataAtual.getMonthValue();
-
-    // Calcula o total de utilizações mensais para clientes mensalistas
-    return clientes.stream()
-            .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
-            .mapToInt(cliente -> cliente.obterNumeroUtilizacoesNoMes(mesCorrente))
-            .sum();
-}
-
-/**
- * Obtém o total de clientes mensalistas.
- *
- * @return O total de clientes mensalistas.
- */
-public long getTotalClientesMensalistas() {
-    // Conta o número total de clientes mensalistas
-    return clientes.stream()
-            .filter(cliente -> isMensalista(cliente.getTipoDePlano()))
-            .count();
-}
-
-/**
- * Calcula a arrecadação média mensal para clientes horistas no mês corrente.
- *
- * @return A arrecadação média mensal para clientes horistas.
- */
-public double arrecadacaoMediaHoristasNoMesCorrente() {
-    // Obtém a data atual para o mês corrente
-    LocalDate dataAtual = LocalDate.now();
-    int mesCorrente = dataAtual.getMonthValue();
-
-    // Conta o número total de clientes horistas
-    long totalClientesHoristas = clientes.stream()
-            .filter(cliente -> isHorista(cliente.getTipoDePlano()))
-            .count();
-
-    // Calcula a arrecadação total dos clientes horistas no mês corrente
-    double totalArrecadacaoHoristas = clientes.stream()
-            .filter(cliente -> isHorista(cliente.getTipoDePlano()))
-            .mapToDouble(cliente -> cliente.obterNumeroUtilizacoesNoMes(mesCorrente))
-            .sum();
-
-    // Calcula a média de arrecadação para clientes horistas
-    return totalClientesHoristas > 0 ?
-            totalArrecadacaoHoristas / totalClientesHoristas :
-            0.0;
-}
-
-/**
- * Verifica se o tipo de plano é horista.
- *
- * @param tipoDePlano O tipo de plano do cliente.
- * @return true se o cliente é horista, false caso contrário.
- */
-private boolean isHorista(TipoDePlano tipoDePlano) {
-    return tipoDePlano != null && tipoDePlano.equals(TipoDePlano.HORISTA);
-}
-
-/**
- * Calcula a arrecadação total do estacionamento.
- *
- * @return A arrecadação total do estacionamento.
- */
-public double calcularArrecadacaoTotal() {
-    // Calcula a arrecadação total somando a arrecadação de cada cliente
-    return clientes.stream()
-            .mapToDouble(Cliente::arrecadadoTotal)
-            .sum();
-}
-    /**
-     * Ordena a lista de estacionamentos pelo valor total arrecadado, em ordem decrescente.
-     *
-     * @param estacionamentos A lista de estacionamentos a ser ordenada.
-     */
-       public static void ordenarEstacionamentos(List<Estacionamento> estacionamentos) {
-        Collections.sort(estacionamentos, Comparator.comparingDouble(Estacionamento::calcularArrecadacaoTotal).reversed());
-}
-/**
- * Busca uma vaga disponível no estacionamento.
- *
- * @return A vaga disponível, ou null se nenhuma vaga estiver disponível.
- */
-public Vaga buscaVagaDisponivel() {
-    for (Vaga vaga : vagas) {
-        if (vaga.disponivel()) {
-            return vaga;
-        }
-    }
-    return null;
-}
-
-public Cliente buscaClientePorPlaca(String placa) {
-    for (Cliente cliente : clientes) {
-        Veiculo veiculo = cliente.possuiVeiculo(placa);
-        if (veiculo != null) {
-            return cliente;
-        }
-    }
-    return null; 
-}
 }
