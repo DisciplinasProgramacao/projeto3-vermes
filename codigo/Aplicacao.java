@@ -274,6 +274,7 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
             System.out.println("Tempo total do serviço: " + tempoServico + " minutos");
             relatorio.updateArrecadacao(estacionamento.buscaClientePorPlaca(placa), valorPago);
             estacionamento.notifyObservers(estacionamento.buscaClientePorPlaca(placa), estacionamento.totalArrecadado());
+            estacionamento.setRelatorio(relatorio);
 
             totalServicos += valorServico;
             totalMesServicos += valorServico;
@@ -308,7 +309,7 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
     }
 
     public static void mostrarTop5Clientes() {
-        Map<Cliente, Double> top5Clientes = relatorio.getTop5Clientes();
+        Map<Cliente, Double> top5Clientes = estacionamento.getRelatorio().getTop5Clientes();
     
         System.out.println("Top 5 Clientes:");
         int count = 1;
