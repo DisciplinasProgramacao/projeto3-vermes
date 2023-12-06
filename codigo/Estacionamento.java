@@ -272,8 +272,12 @@ public class Estacionamento implements Serializable {
     }
 
     public Relatorio getRelatorio() {
+        if (relatorio == null) {
+            relatorio = new Relatorio();
+        }
         return relatorio;
     }
+    
 
     /**
      * Busca um cliente pelo ID.
