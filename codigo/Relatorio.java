@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.*;
 
-public class Relatorio implements Observer {
+public class Relatorio implements Observer, Serializable{
     private Map<Cliente, Double> top5Clientes;
     private double arrecadacaoMensal;
 
@@ -52,3 +53,4 @@ public class Relatorio implements Observer {
         return result;
  }
 }
+
