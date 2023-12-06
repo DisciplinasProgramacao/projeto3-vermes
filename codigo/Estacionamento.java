@@ -16,6 +16,7 @@ public class Estacionamento implements Serializable {
     private LinkedList<Vaga> vagas;
     private int quantFileiras;
     private int vagasPorFileira;
+    private List<Observer> observers;
   
 
     /**
@@ -70,6 +71,22 @@ public class Estacionamento implements Serializable {
             return false;
         }
     }
+
+    public void addObserver(Observer observer) {
+		observers.add(observer);
+	}
+
+	public void removeObserver(Observer observer) {
+		observers.remove(observer);
+	}
+
+	public void notifyObservers(Cliente cliente, double novaArrecadacao) {
+		for (Observer observer : observers) {
+			observer.updateArrecadacao(cliente, novaArrecadacao);
+		}
+	}
+    
+
 
     /**
      * Busca um cliente no estacionamento.
@@ -411,5 +428,15 @@ public Vaga buscaVagaDisponivel() {
         }
     }
     return null;
+}
+
+public Cliente buscaClientePorPlaca(String placa) {
+    for (Cliente cliente : clientes) {
+        Veiculo veiculo = cliente.possuiVeiculo(placa);
+        if (veiculo != null) {
+            return cliente;
+        }
+    }
+    return null; 
 }
 }
