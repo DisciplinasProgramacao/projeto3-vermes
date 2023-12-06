@@ -31,6 +31,7 @@ public class Estacionamento implements Serializable {
         this.quantFileiras = fileiras;
         this.vagasPorFileira = vagasPorFila;
         this.clientes = new LinkedList<>();
+        this.observers = new LinkedList<>();
         gerarVagas();
     }
 

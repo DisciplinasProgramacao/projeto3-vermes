@@ -24,6 +24,7 @@ public class Aplicacao {
     public static void main(String[] args) throws IOException, ClassNotFoundException, VagaIndisoponivelException, ServicoNaoExecutadoException {
         scanner = new Scanner(System.in);
         relatorio = new Relatorio();
+
         
 
         System.out.println("Escolha o estacionamento (1, 2 ou 3): ");
@@ -60,7 +61,7 @@ public class Aplicacao {
 
         menu();
     }
-
+    
     public static void menu() throws IOException, VagaIndisoponivelException, ServicoNaoExecutadoException {
         System.out.println("Escolha uma das opções: ");
         System.out.println("\t1. Cadastrar cliente");
@@ -135,6 +136,7 @@ public class Aplicacao {
                 System.out.println("A opção informada é inválida.");
         }
 
+
         menu(); // Chama o menu novamente após a seleção da opção.
     }
 
@@ -191,6 +193,7 @@ public class Aplicacao {
         }
     
         estacionamento.addCliente(cliente);
+        estacionamento.addObserver(cliente);
     }
     
 
@@ -228,6 +231,7 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
         } catch (LotadoException e) {
             System.out.println("O estacionamento está lotado");
         }
+        
     }
     
     public static void sairDaVaga() throws ServicoNaoExecutadoException {
@@ -268,11 +272,14 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
     
             System.out.println("Valor total pago (incluindo serviço): R$" + valorPago);
             System.out.println("Tempo total do serviço: " + tempoServico + " minutos");
-             relatorio.updateArrecadacao(estacionamento.buscaClientePorPlaca(placa), valorPago);
+            relatorio.updateArrecadacao(estacionamento.buscaClientePorPlaca(placa), valorPago);
+            estacionamento.notifyObservers(estacionamento.buscaClientePorPlaca(placa), estacionamento.totalArrecadado());
+
             totalServicos += valorServico;
             totalMesServicos += valorServico;
             totalValorMedio += valorServico;
             arrecadaTotal += valorServico;
+            
            
         } else {
             System.out.println("Operação cancelada. Nenhum serviço selecionado.");
@@ -285,6 +292,7 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
     public static void consultarTotal() {
         double total = estacionamento.totalArrecadado();
         System.out.println("O total arrecadado pelo estacionamento foi de R$" + (total + totalServicos));
+        
     }
 
     public static void consultarTotalMes() {
