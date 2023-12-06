@@ -308,8 +308,22 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
     }
 
     public static void mostrarTop5Clientes() {
-          Map<Cliente, Double> top5Clientes = relatorio.getTop5Clientes();
-        System.out.println("Top 5 Clientes: " + top5Clientes);
+        Map<Cliente, Double> top5Clientes = relatorio.getTop5Clientes();
+    
+        System.out.println("Top 5 Clientes:");
+        int count = 1;
+    
+        for (Map.Entry<Cliente, Double> entry : top5Clientes.entrySet()) {
+            Cliente cliente = entry.getKey();
+            double valorGasto = entry.getValue();
+    
+            System.out.println(count + ". ID do Cliente: " + cliente.getId() + ", Valor Gasto: R$" + valorGasto);
+            count++;
+    
+            if (count > 5) {
+                break;
+            }
+        }
     }
 
     public static void mostrarHistoricoCliente() {
@@ -385,4 +399,3 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
         System.out.println("A média de arrecadação dos clientes horistas no mês corrente é: " + mediaHorista);
     }
 }
-
