@@ -1,3 +1,3 @@
 public interface Observer {
-    void update(double valor, Cliente cliente);
+    void updateArrecadacao(Cliente cliente, double novaArrecadacao);
 }

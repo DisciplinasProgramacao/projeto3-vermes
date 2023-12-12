@@ -9,7 +9,7 @@ import java.util.Comparator;
 /**
  * A classe Estacionamento representa um estacionamento que gerencia o estacionamento de veículos para vários clientes.
  */
-public class Estacionamento implements Serializable, Observer{
+public class Estacionamento implements Serializable {
 
     private String nome;
     private LinkedList<Cliente> clientes;
@@ -18,9 +18,6 @@ public class Estacionamento implements Serializable, Observer{
     private int vagasPorFileira;
     private List<Observer> observers;
     private Relatorio relatorio;
-    private double valorTotalArrecadado;
-    
-    
   
 
     /**
@@ -78,6 +75,19 @@ public class Estacionamento implements Serializable, Observer{
         }
     }
 
+    public void addObserver(Observer observer) {
+		observers.add(observer);
+	}
+
+	public void removeObserver(Observer observer) {
+		observers.remove(observer);
+	}
+
+	public void notifyObservers(Cliente cliente, double novaArrecadacao) {
+		for (Observer observer : observers) {
+			observer.updateArrecadacao(cliente, novaArrecadacao);
+		}
+	}
     
 
 
@@ -169,11 +179,9 @@ public class Estacionamento implements Serializable, Observer{
         for (Cliente cliente : clientes) {
             total += cliente.arrecadadoTotal();
         }
-          
         return total;
     }
 
-    
 
 /**
      * Calcula a arrecadação no mês especificado.
@@ -255,8 +263,8 @@ public class Estacionamento implements Serializable, Observer{
      *
      * @return A lista de clientes.
      */
-    public List<Cliente>getClientes() {
-        return clientes;
+    public Cliente[] getClientes() {
+        return clientes.toArray(new Cliente[0]);
     }
 
     public void setRelatorio(Relatorio relatorio) {
@@ -445,13 +453,5 @@ public Cliente buscaClientePorPlaca(String placa) {
         }
     }
     return null; 
-}
-@Override
-
-public void update(double valor, Cliente cliente) {
-
-    Cliente clienteAtualizado = busca(cliente.getId());
-    clienteAtualizado.setValorPago(valor);
-    
 }
 }

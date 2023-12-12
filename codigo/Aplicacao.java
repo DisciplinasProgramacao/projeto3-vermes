@@ -277,6 +277,12 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
             totalMesServicos += valorServico;
             totalValorMedio += valorServico;
             arrecadaTotal += valorServico;
+
+            relatorio.updateArrecadacao(estacionamento.buscaClientePorPlaca(placa), valorPago);
+            estacionamento.notifyObservers(estacionamento.buscaClientePorPlaca(placa), estacionamento.totalArrecadado());
+            
+
+            
         } else {
             System.out.println("Operação cancelada. Nenhum serviço selecionado.");
             System.out.println("Valor pago: R$" + valorPago);

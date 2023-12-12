@@ -287,6 +287,7 @@ public double calcularMensalidade() {
         return turno;
     }
 
+   
     @Override
     public void updateArrecadacao(Cliente cliente, double novaArrecadacao) {
         double novaArrecadacaoCliente = arrecadadoTotal() + novaArrecadacao;
