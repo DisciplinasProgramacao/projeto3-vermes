@@ -228,13 +228,11 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
         String placa = scanner.nextLine();
     
         try {
-            UsoDeVaga usoDeVaga = UsoDeVagaFactory.criarUsoDeVaga(estacionamento.buscaVagaDisponivel());
             estacionamento.estacionar(placa);
             System.out.println("Veículo estacionado com sucesso.");
         } catch (LotadoException e) {
             System.out.println("O estacionamento está lotado");
         }
-        
     }
     
     public static void sairDaVaga() throws ServicoNaoExecutadoException {
@@ -275,21 +273,15 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
     
             System.out.println("Valor total pago (incluindo serviço): R$" + valorPago);
             System.out.println("Tempo total do serviço: " + tempoServico + " minutos");
-            relatorio.updateArrecadacao(estacionamento.buscaClientePorPlaca(placa), valorPago);
-            estacionamento.notifyObservers(estacionamento.buscaClientePorPlaca(placa), estacionamento.totalArrecadado());
-
             totalServicos += valorServico;
             totalMesServicos += valorServico;
             totalValorMedio += valorServico;
             arrecadaTotal += valorServico;
-            
-           
         } else {
             System.out.println("Operação cancelada. Nenhum serviço selecionado.");
             System.out.println("Valor pago: R$" + valorPago);
         }
     }
-    
     
     
     public static void consultarTotal() {
