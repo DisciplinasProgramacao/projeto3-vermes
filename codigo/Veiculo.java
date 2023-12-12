@@ -37,13 +37,13 @@ public void estacionar(Vaga vaga, Cliente cliente) throws LotadoException, VagaI
 
         // Verifica o tipo de plano do cliente
         if (cliente.isMensalista()) {
-            // Código específico para mensalistas
-            // Pode incluir lógica adicional, como definir a vaga mensalista no histórico, etc.
+            // Lógica específica para mensalistas
+            novoUso.contratarServico(cliente.getHistorico()); // Por exemplo, contratação de serviço mensalista
         } else if (cliente.isTurnista()) {
-            // Código específico para turnistas
-            // Pode incluir lógica adicional, como definir o turno no histórico, etc.
+            // Lógica específica para turnistas
+            novoUso.contratarServico(cliente.getHistorico()); // Por exemplo, contratação de serviço turnista
         } else {
-            // Código para outros tipos de clientes (por exemplo, horistas)
+            // Lógica para outros tipos de clientes (por exemplo, horistas)
             // Pode incluir lógica adicional, se necessário.
         }
 
