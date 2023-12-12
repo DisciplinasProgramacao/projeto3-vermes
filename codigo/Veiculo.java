@@ -22,21 +22,35 @@ public class Veiculo implements Serializable {
     }
 
     /**
-     * Estaciona o veículo em uma vaga.
-     *
-     * @param vaga A vaga em que o veículo será estacionado.
-     * @throws VagaIndisoponivelException Lança a exceção.
-     * @throws LotadoException Lança a exceção
-     */
-    public void estacionar(Vaga vaga) throws LotadoException, VagaIndisoponivelException {
-        if (qtUso < MAX_USO) {
-            UsoDeVaga novoUso = new UsoDeVaga(vaga);
-            usos[qtUso] = novoUso;
-            qtUso++;
+ * Estaciona o veículo em uma vaga.
+ *
+ * @param vaga A vaga em que o veículo será estacionado.
+ * @param cliente O cliente associado ao veículo.
+ * @throws VagaIndisponivelException Lança a exceção.
+ * @throws LotadoException Lança a exceção
+ */
+public void estacionar(Vaga vaga, Cliente cliente) throws LotadoException, VagaIndisoponivelException {
+    if (qtUso < MAX_USO) {
+        UsoDeVaga novoUso = new UsoDeVaga(vaga);
+        usos[qtUso] = novoUso;
+        qtUso++;
+
+        // Verifica o tipo de plano do cliente
+        if (cliente.isMensalista()) {
+            // Código específico para mensalistas
+            // Pode incluir lógica adicional, como definir a vaga mensalista no histórico, etc.
+        } else if (cliente.isTurnista()) {
+            // Código específico para turnistas
+            // Pode incluir lógica adicional, como definir o turno no histórico, etc.
         } else {
-            throw new LotadoException();
+            // Código para outros tipos de clientes (por exemplo, horistas)
+            // Pode incluir lógica adicional, se necessário.
         }
+
+    } else {
+        throw new LotadoException();
     }
+}
 
     /**
      * Retira o veículo da vaga e calcula o valor a ser pago.
