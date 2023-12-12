@@ -1,6 +1,6 @@
-public class MensalistaFactory implements UsuarioFactory {
+public class MensalistaFactory implements UsoDeVagaFactory {
     @Override
-    public Usuario criar(Vaga vaga) throws VagaIndisoponivelException {
+    public UsoDeVaga criar(Vaga vaga) throws VagaIndisoponivelException {
         return new Mensalista(vaga);
     }
 }
