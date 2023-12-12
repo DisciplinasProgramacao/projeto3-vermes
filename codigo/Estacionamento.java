@@ -9,7 +9,7 @@ import java.util.Comparator;
 /**
  * A classe Estacionamento representa um estacionamento que gerencia o estacionamento de veículos para vários clientes.
  */
-public class Estacionamento implements Serializable {
+public class Estacionamento implements Serializable, Observer{
 
     private String nome;
     private LinkedList<Cliente> clientes;
@@ -18,6 +18,9 @@ public class Estacionamento implements Serializable {
     private int vagasPorFileira;
     private List<Observer> observers;
     private Relatorio relatorio;
+    private double valorTotalArrecadado;
+    
+    
   
 
     /**
@@ -75,19 +78,6 @@ public class Estacionamento implements Serializable {
         }
     }
 
-    public void addObserver(Observer observer) {
-		observers.add(observer);
-	}
-
-	public void removeObserver(Observer observer) {
-		observers.remove(observer);
-	}
-
-	public void notifyObservers(Cliente cliente, double novaArrecadacao) {
-		for (Observer observer : observers) {
-			observer.updateArrecadacao(cliente, novaArrecadacao);
-		}
-	}
     
 
 
@@ -140,7 +130,7 @@ public class Estacionamento implements Serializable {
             for (Cliente cliente : clientes) {
                 veiculoEncontrado = cliente.possuiVeiculo(placa);
                 if (veiculoEncontrado != null) {
-                    veiculoEncontrado.estacionar(vagaDisponivel);
+                    veiculoEncontrado.estacionar(vagaDisponivel,cliente);
                     break;
                 }
             }
@@ -179,9 +169,11 @@ public class Estacionamento implements Serializable {
         for (Cliente cliente : clientes) {
             total += cliente.arrecadadoTotal();
         }
+          
         return total;
     }
 
+    
 
 /**
      * Calcula a arrecadação no mês especificado.
@@ -263,8 +255,8 @@ public class Estacionamento implements Serializable {
      *
      * @return A lista de clientes.
      */
-    public Cliente[] getClientes() {
-        return clientes.toArray(new Cliente[0]);
+    public List<Cliente>getClientes() {
+        return clientes;
     }
 
     public void setRelatorio(Relatorio relatorio) {
@@ -453,5 +445,13 @@ public Cliente buscaClientePorPlaca(String placa) {
         }
     }
     return null; 
+}
+@Override
+
+public void update(double valor, Cliente cliente) {
+
+    Cliente clienteAtualizado = busca(cliente.getId());
+    clienteAtualizado.setValorPago(valor);
+    
 }
 }
