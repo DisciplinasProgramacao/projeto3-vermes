@@ -1,3 +1,3 @@
-public interface Diario{
+public interface Usuario{
     public boolean estacionar();
 }

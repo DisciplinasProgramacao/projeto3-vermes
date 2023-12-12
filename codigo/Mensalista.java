@@ -1,8 +1,8 @@
 /**
- * A classe `Mensalista` representa um uso de vaga mensalista em um estacionamento, implementando a interface Diario.
+ * A classe `Mensalista` representa um uso de vaga mensalista em um estacionamento, implementando a interface Usuario.
  * Um mensalista possui um tipo de plano, uma vaga associada e um valor pago mensalmente.
  */
-public class Mensalista extends UsoDeVaga implements Diario {
+public class Mensalista extends UsoDeVaga implements Usuario {
 
     /** O tipo de plano associado ao mensalista, que é sempre do tipo MENSALISTA. */
     TipoDePlano tipoDePlano = TipoDePlano.MENSALISTA;
