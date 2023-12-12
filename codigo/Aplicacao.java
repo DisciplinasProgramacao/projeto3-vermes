@@ -200,17 +200,17 @@ public class Aplicacao {
     }
     
 
-   public static void adicionarVeiculo() {
+  public static void adicionarVeiculo() {
         System.out.println("Digite o ID do cliente: ");
         String idCliente = scanner.nextLine();
-    
+
         Cliente cliente = estacionamento.busca(idCliente);
-    
+
         if (cliente != null) {
             System.out.println("Digite a placa do veículo: ");
             String placa = scanner.nextLine();
-            Veiculo veiculo = VeiculoFactory.criarVeiculo(placa); // Use a VeiculoFactory
-    
+            Veiculo veiculo = new Veiculo(placa);
+
             try {
                 cliente.addVeiculo(veiculo, null);
                 System.out.println("Veículo adicionado com sucesso.");
