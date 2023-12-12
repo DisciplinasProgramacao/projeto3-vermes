@@ -292,5 +292,31 @@ public double calcularMensalidade() {
         double novaArrecadacaoCliente = arrecadadoTotal() + novaArrecadacao;
         estacionamento.notifyObservers(this, novaArrecadacaoCliente);
     }
+    /**
+     * Adiciona um uso de vaga mensalista ao histórico do cliente.
+     *
+     * @param mensalista O objeto Mensalista a ser adicionado ao histórico.
+     */
+    public void addUsoDeVagaMensalista(Mensalista mensalista) {
+        historico.adicionarRegistro(new Registro(new Date(), "Uso de vaga mensalista", 0));
+    }
+
+    /**
+     * Adiciona um uso de vaga turnista ao histórico do cliente.
+     *
+     * @param turnista O objeto Turnista a ser adicionado ao histórico.
+     */
+    public void addUsoDeVagaTurnista(Turnista turnista) {
+        historico.adicionarRegistro(new Registro(new Date(), "Uso de vaga turnista", 0));
+    }
+
+    /**
+     * Adiciona um uso de vaga horista ao histórico do cliente.
+     *
+     * @param horista O objeto Horista a ser adicionado ao histórico.
+     */
+    public void addUsoDeVagaHorista(Horista horista) {
+        historico.adicionarRegistro(new Registro(new Date(), "Uso de vaga horista", 0));
+    }
 }
 
