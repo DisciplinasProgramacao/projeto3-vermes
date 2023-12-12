@@ -3,7 +3,7 @@
  * implementando a interface Diario.
  * Um horista possui um tipo de plano, um valor pago e métodos para calcular e obter esse valor.
  */
-public class Horista extends UsoDeVaga implements Diario {
+public class Horista extends UsoDeVaga implements Usuario {
 
     /** O tipo de plano associado ao horista, que é sempre do tipo HORISTA. */
     TipoDePlano tipoDePlano = TipoDePlano.HORISTA;
