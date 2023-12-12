@@ -5,7 +5,7 @@ import java.time.LocalTime;
  * implementando a interface Diario.
  * Um turnista possui um tipo de plano, um turno associado, um valor pago e métodos para calcular e obter esse valor.
  */
-public class Turnista extends UsoDeVaga implements Diario {
+public class Turnista extends UsoDeVaga implements Usuario {
 
     /** O valor máximo que um turnista pode pagar. */
     private static final double VALOR_MAXIMO = 50.0;
