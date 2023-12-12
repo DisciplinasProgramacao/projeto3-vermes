@@ -1,6 +1,6 @@
-public class HoristaFactory implements UsuarioFactory {
+public class HoristaFactory implements UsoDeVagaFactory {
     @Override
-    public Usuario criar(Vaga vaga) throws VagaIndisoponivelException {
+    public UsoDeVaga criar(Vaga vaga) throws VagaIndisoponivelException {
         return new Horista(vaga);
     }
 }
