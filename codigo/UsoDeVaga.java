@@ -1,7 +1,6 @@
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 
 public class UsoDeVaga implements Serializable {
 
@@ -33,10 +32,10 @@ public class UsoDeVaga implements Serializable {
 
     /**
      * Método para contratar um serviço para o veículo.
-     * @param list Serviço a ser contratado.
+     * @param qual Serviço a ser contratado.
      */
-    public void contratarServico(Servico list) {
-        this.servico = list;
+    public void contratarServico(Servico qual) {
+        this.servico = qual;
     }
 
     /**
@@ -120,4 +119,3 @@ public class UsoDeVaga implements Serializable {
         return "UsoDeVaga [entrada=" + entrada + ", saida=" + saida + ", valorPago=" + valorPago + ", servico=" + servico + "]";
     }
 }
-
