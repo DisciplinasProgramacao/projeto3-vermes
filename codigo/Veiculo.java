@@ -37,21 +37,23 @@ public void estacionar(Vaga vaga, Cliente cliente) throws LotadoException, VagaI
 
         // Verifica o tipo de plano do cliente
         if (cliente.isMensalista()) {
-            // Lógica específica para mensalistas
-            novoUso.contratarServico(cliente.getHistorico()); // Por exemplo, contratação de serviço mensalista
+            
+            Mensalista mensalista = new Mensalista(vaga);
+            cliente.addUsoDeVagaMensalista(mensalista);
         } else if (cliente.isTurnista()) {
-            // Lógica específica para turnistas
-            novoUso.contratarServico(cliente.getHistorico()); // Por exemplo, contratação de serviço turnista
+            
+            Turnista turnista = new Turnista(vaga, cliente.getTurno());
+            cliente.addUsoDeVagaTurnista(turnista);
         } else {
-            // Lógica para outros tipos de clientes (por exemplo, horistas)
-            // Pode incluir lógica adicional, se necessário.
+            
+            Horista horista = new Horista(vaga);
+            cliente.addUsoDeVagaHorista(horista);
         }
 
     } else {
         throw new LotadoException();
     }
 }
-
     /**
      * Retira o veículo da vaga e calcula o valor a ser pago.
      *
