@@ -26,9 +26,7 @@ public class UsoDeVaga implements Serializable {
             vaga.estacionar();
             this.entrada = LocalDateTime.now();
             this.valorPago = VALOR_FRACAO;
-        } else {
-            throw new VagaIndisoponivelException("A vaga está indisponível.");
-        }
+        } 
     }
 
     /**
