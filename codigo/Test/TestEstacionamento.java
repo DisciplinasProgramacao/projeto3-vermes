@@ -58,11 +58,11 @@ public class TestEstacionamento {
 
     @Test
     public void testArrecadadoNoMes() throws ServicoNaoExecutadoException, LotadoException, VagaIndisoponivelException {
-        veiculo1.estacionar(new Vaga(1, 1));
+        veiculo1.estacionar(new Vaga(1, 1), cliente1);
         veiculo1.sair(cliente1);  
-        veiculo2.estacionar(new Vaga(2, 2));
+        veiculo2.estacionar(new Vaga(2, 2), cliente1);
         veiculo2.sair(cliente2);  
-        veiculo2.estacionar(new Vaga(3, 3));
+        veiculo2.estacionar(new Vaga(3, 3), cliente1);
         veiculo2.sair(cliente2);  
     
         int mes = 1;
