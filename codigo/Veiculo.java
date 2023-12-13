@@ -37,7 +37,6 @@ public void estacionar(Vaga vaga, Cliente cliente) throws LotadoException, VagaI
         if (cliente.isMensalista()) {
             factory = new MensalistaFactory();
         } else if (cliente.isTurnista()) {
-            // Supondo que o cliente tenha um turno associado
             factory = new TurnistaFactory(cliente.getTurno());
         } else {
             factory = new HoristaFactory();
@@ -53,8 +52,7 @@ public void estacionar(Vaga vaga, Cliente cliente) throws LotadoException, VagaI
             adicionarUsoDeVagaAoCliente(cliente, novoUso);
 
         } catch (VagaIndisoponivelException e) {
-            // Lidar com exceção, se necessário
-            e.printStackTrace(); // exemplo, substitua isso pela lógica apropriada
+            e.printStackTrace(); 
         }
 
     } else {
