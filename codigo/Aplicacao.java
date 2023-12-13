@@ -196,7 +196,7 @@ public class Aplicacao {
         }
     
         estacionamento.addCliente(cliente);
-        estacionamento.addObserver(cliente);
+        cliente.addObserver(estacionamento);
     }
     
     // Adiciona um veículo a um cliente
