@@ -31,29 +31,49 @@ public class Veiculo implements Serializable {
  */
 public void estacionar(Vaga vaga, Cliente cliente) throws LotadoException, VagaIndisoponivelException {
     if (qtUso < MAX_USO) {
-        UsoDeVaga novoUso = new UsoDeVaga(vaga);
-        usos[qtUso] = novoUso;
-        qtUso++;
+        UsoDeVagaFactory factory;
 
-        // Verifica o tipo de plano do cliente
+        // Escolhe a fábrica com base no tipo de cliente
         if (cliente.isMensalista()) {
-            
-            Mensalista mensalista = new Mensalista(vaga);
-            cliente.addUsoDeVagaMensalista(mensalista);
+            factory = new MensalistaFactory();
         } else if (cliente.isTurnista()) {
-            
-            Turnista turnista = new Turnista(vaga, cliente.getTurno());
-            cliente.addUsoDeVagaTurnista(turnista);
+            // Supondo que o cliente tenha um turno associado
+            factory = new TurnistaFactory(cliente.getTurno());
         } else {
-            
-            Horista horista = new Horista(vaga);
-            cliente.addUsoDeVagaHorista(horista);
+            factory = new HoristaFactory();
+        }
+
+        try {
+            // Cria uma instância de UsoDeVaga usando a fábrica
+            UsoDeVaga novoUso = factory.criar(vaga);
+            usos[qtUso] = novoUso;
+            qtUso++;
+
+            // Adiciona o uso de vaga ao cliente
+            adicionarUsoDeVagaAoCliente(cliente, novoUso);
+
+        } catch (VagaIndisoponivelException e) {
+            // Lidar com exceção, se necessário
+            e.printStackTrace(); // exemplo, substitua isso pela lógica apropriada
         }
 
     } else {
         throw new LotadoException();
     }
 }
+
+// Método para adicionar o uso de vaga ao cliente
+private void adicionarUsoDeVagaAoCliente(Cliente cliente, UsoDeVaga usoDeVaga) {
+    if (cliente.isMensalista()) {
+        cliente.addUsoDeVagaMensalista((Mensalista) usoDeVaga);
+    } else if (cliente.isTurnista()) {
+        cliente.addUsoDeVagaTurnista((Turnista) usoDeVaga);
+    } else {
+        cliente.addUsoDeVagaHorista((Horista) usoDeVaga);
+    }
+}
+
+
     /**
      * Retira o veículo da vaga e calcula o valor a ser pago.
      *
@@ -155,4 +175,3 @@ public void estacionar(Vaga vaga, Cliente cliente) throws LotadoException, VagaI
         this.servico = servico;
     }
 }
-
