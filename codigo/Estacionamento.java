@@ -10,7 +10,7 @@ import java.util.Comparator;
  * A classe Estacionamento representa um estacionamento que gerencia o
  * estacionamento de veículos para vários clientes.
  */
-public class Estacionamento implements Serializable {
+public class Estacionamento implements Serializable,Observer {
 
     private String nome;
     private LinkedList<Cliente> clientes;
@@ -37,6 +37,8 @@ public class Estacionamento implements Serializable {
         gerarVagas();
         relatorio = new Relatorio();
     }
+
+    
 
     /**
      * Obtém o nome do estacionamento.
@@ -74,36 +76,6 @@ public class Estacionamento implements Serializable {
             return true;
         } else {
             return false;
-        }
-    }
-
-    /**
-     * Adiciona um observer ao estacionamento.
-     * 
-     * @param observer O observer a ser adicionado.
-     */
-    public void addObserver(Observer observer) {
-        observers.add(observer);
-    }
-
-    /**
-     * Remove um observer do estacionamento.
-     * 
-     * @param observer O observer a ser removido.
-     */
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
-    }
-
-    /**
-     * Notifica os observers sobre a arrecadação do estacionamento.
-     * 
-     * @param cliente         O cliente que estacionou.
-     * @param novaArrecadacao A nova arrecadação do estacionamento.
-     */
-    public void notifyObservers(Cliente cliente, double novaArrecadacao) {
-        for (Observer observer : observers) {
-            observer.updateArrecadacao(cliente, novaArrecadacao);
         }
     }
 
@@ -480,4 +452,16 @@ public class Estacionamento implements Serializable {
         }
         return null;
     }
+    public void notifyObservers(Cliente cliente, double novaArrecadacao) {
+		for (Observer observer : observers) {
+			observer.updateArrecadacao(cliente, novaArrecadacao);
+		}
+	}
+
+    @Override
+public void updateArrecadacao(Cliente cliente, double novaArrecadacao) {
+    double novaArrecadacaoCliente = cliente.arrecadadoTotal() + novaArrecadacao;
+    cliente.notifyObservers(novaArrecadacaoCliente);
+}
+
 }
