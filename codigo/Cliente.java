@@ -2,13 +2,14 @@ import java.util.List;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 /**
  * A classe `Cliente` representa um cliente que possui veículos e um histórico de uso de vagas.
  */
-public class Cliente implements Serializable, Observer {
+public class Cliente implements Serializable {
 
     private String nome;
     private String id;
@@ -19,6 +20,37 @@ public class Cliente implements Serializable, Observer {
     private static double taxaMensal;
     private static double taxaTurnista;
     private Estacionamento estacionamento;
+    private List<Observer> observers = new ArrayList<>();
+
+    /**
+     * Adds an observer to the list.
+     *
+     * @param observer The observer to be added.
+     */
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    /**
+     * Removes an observer from the list.
+     *
+     * @param observer The observer to be removed.
+     */
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    /**
+     * Notifies all observers with the updated arrecadacao.
+     *
+     * @param novaArrecadacao The new arrecadacao value.
+     */
+    public void notifyObservers(double novaArrecadacao) {
+        for (Observer observer : observers) {
+            observer.updateArrecadacao(this, novaArrecadacao);
+        }
+    }
+
     
 
 
@@ -288,11 +320,6 @@ public double calcularMensalidade() {
     }
 
    
-    @Override
-    public void updateArrecadacao(Cliente cliente, double novaArrecadacao) {
-        double novaArrecadacaoCliente = arrecadadoTotal() + novaArrecadacao;
-        estacionamento.notifyObservers(this, novaArrecadacaoCliente);
-    }
     /**
      * Adiciona um uso de vaga mensalista ao histórico do cliente.
      *
