@@ -26,7 +26,7 @@ public class Veiculo implements Serializable {
  *
  * @param vaga A vaga em que o veículo será estacionado.
  * @param cliente O cliente associado ao veículo.
- * @throws VagaIndisponivelException Lança a exceção.
+ * @throws VagaIndisoponivelException Lança a exceção.
  * @throws LotadoException Lança a exceção
  */
 public void estacionar(Vaga vaga, Cliente cliente) throws LotadoException, VagaIndisoponivelException {
@@ -138,11 +138,19 @@ public void estacionar(Vaga vaga, Cliente cliente) throws LotadoException, VagaI
             System.out.println("Índice de uso inválido.");
             return null;
         }
-    }
+    }   
+    /**
+     * retorna um Serviço.
+     * @return Serviço.
+     */
     public Servico getServico() {
         return servico;
     }
 
+    /**
+     * Define um Serviço.
+     * @param servico Recebe um Serviço.
+     */
     public void setServico(Servico servico) {
         this.servico = servico;
     }

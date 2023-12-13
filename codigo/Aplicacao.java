@@ -24,7 +24,7 @@ public class Aplicacao {
     public static void main(String[] args) throws IOException, ClassNotFoundException, VagaIndisoponivelException, ServicoNaoExecutadoException {
         scanner = new Scanner(System.in);
 
-        
+        // Cria o estacionamento com base na escolha do usuário
 
         System.out.println("Escolha o estacionamento (1, 2 ou 3): ");
         int escolhaEstacionamento = Integer.parseInt(scanner.nextLine());
@@ -61,7 +61,7 @@ public class Aplicacao {
 
         menu();
     }
-    
+        // Exibe o menu de opções
     public static void menu() throws IOException, VagaIndisoponivelException, ServicoNaoExecutadoException {
         relatorio = estacionamento.getRelatorio();
         System.out.println("Escolha uma das opções: ");
@@ -86,7 +86,7 @@ public class Aplicacao {
         } catch (NumberFormatException exception) {
             opcao = -1;
         }
-
+        // Chama o método correspondente à opção selecionada
         switch (opcao) {
             case 1:
                 cadastrarCliente();
@@ -142,7 +142,7 @@ public class Aplicacao {
 
         menu(); // Chama o menu novamente após a seleção da opção.
     }
-
+    // Cadastra um cliente no estacionamento
     public static void cadastrarCliente() {
         System.out.println("Digite o ID do cliente: ");
         String idCliente = scanner.nextLine();
@@ -199,7 +199,7 @@ public class Aplicacao {
         estacionamento.addObserver(cliente);
     }
     
-
+    // Adiciona um veículo a um cliente
   public static void adicionarVeiculo() {
         System.out.println("Digite o ID do cliente: ");
         String idCliente = scanner.nextLine();
@@ -222,7 +222,7 @@ public class Aplicacao {
         }
     }
     
-    
+    // Estaciona o veículo na vaga
 public static void estacionarVeiculo() throws VagaIndisoponivelException {
         System.out.println("Digite a placa do veículo: ");
         String placa = scanner.nextLine();
@@ -234,7 +234,7 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
             System.out.println("O estacionamento está lotado");
         }
     }
-    
+    // Registra a saída do veículo da vaga e calcula o valor a ser pago
     public static void sairDaVaga() throws ServicoNaoExecutadoException {
         System.out.println("Digite a placa do veículo: ");
         String placa = scanner.nextLine();
@@ -289,12 +289,13 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
         }
     }
     
-    
+    // Calcula a arrecadação total do estacionamento
     public static void consultarTotal() {
         double total = estacionamento.totalArrecadado();
         System.out.println("O total arrecadado pelo estacionamento foi de R$" + (total + totalServicos));
         
     }
+    // Calcula a arrecadação total do mês especificado
 
     public static void consultarTotalMes() {
         System.out.println("Digite o mês: ");
@@ -302,11 +303,12 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
         double totalMes = estacionamento.arrecadacaoNoMes(mes);
         System.out.println("A arrecadação do mês " + mes + " foi de R$" + (totalMes + totalMesServicos));
     }
-
+    // Calcula o valor médio de utilização do estacionamento
     public static void consultarValorMedio() {
         double valorMedio = estacionamento.valorMedioPorUso();
         System.out.println("O valor médio de uso no estacionamento foi de R$" + (valorMedio + totalValorMedio));
     }
+    // Mostra o top 5 clientes
 
     public static void mostrarTop5Clientes() {
         Map<Cliente, Double> top5Clientes = estacionamento.getRelatorio().getTop5Clientes();
@@ -326,7 +328,7 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
             }
         }
     }
-
+    // Mostra o histórico de um cliente
     public static void mostrarHistoricoCliente() {
         System.out.println("Digite o ID do cliente: ");
         String idCliente = scanner.nextLine();
@@ -340,7 +342,7 @@ public static void estacionarVeiculo() throws VagaIndisoponivelException {
             System.out.println("Cliente não encontrado.");
         }
     }
-
+ // Calcula a arrecadação total do estacionamento atual antes de carregar outros estacionamentos
     public static void calcularArrecadacaoTotalOrdenar() {
         double arrecadacaoTotal = estacionamento.calcularArrecadacaoTotal();
         System.out.println("A arrecadação total do estacionamento selecionado foi de R$" + (arrecadacaoTotal + arrecadaTotal));

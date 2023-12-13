@@ -1,6 +1,12 @@
 import java.io.Serializable;
 import java.util.*;
-
+/**
+ * Classe que representa o relatório do estacionamento.
+ * Implementa a interface Observer para ser notificado quando a arrecadação do estacionamento é atualizada.
+ * Implementa a interface Serializable para que possa ser salva em arquivo.
+ * @see Observer 
+ * @see Serializable
+ */
 public class Relatorio implements Observer, Serializable{
     private Map<Cliente, Double> top5Clientes;
     private double arrecadacaoMensal;
@@ -10,7 +16,13 @@ public class Relatorio implements Observer, Serializable{
         this.arrecadacaoMensal = 0.0;
     }
 
+     
     @Override
+     /**
+      * Método que atualiza o observador.
+      * @param cliente Cliente que será atualizado.
+      * @param novaArrecadacao Nova arrecadação do estacionamento.
+      */
     public void updateArrecadacao(Cliente cliente, double novaArrecadacao) {
         top5Clientes.put(cliente, novaArrecadacao);
 
@@ -32,16 +44,28 @@ public class Relatorio implements Observer, Serializable{
         // Atualiza a arrecadação mensal
         arrecadacaoMensal += novaArrecadacao;
     }
-
+    /**
+     * Método que retorna o Top5 de clientes do estacionamento.
+     * @return Map com os 5 clientes que mais arrecadaram no estacionamento.
+     */
     public Map<Cliente, Double> getTop5Clientes() {
         return top5Clientes;
     }
-
+    /**
+     * Método que retorna a arrecadação mensal do estacionamento.
+     * @return Arrecadação mensal do estacionamento.
+     */
     public double getArrecadacaoMensal() {
         return arrecadacaoMensal;
     }
 
-    // Método utilitário para ordenar um Map por valores
+    /**
+     * Método utilitário que ordena um Map por seus valores.
+     * @param <K> uma chave associada a um cliente
+     * @param <V> um valor que represente a arrecadação do cliente que extenda qualquer superclasse de Comparable
+     * @param map Map que será ordenado.
+     * @return Map ordenado.
+     */
     private <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
         List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
         list.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
