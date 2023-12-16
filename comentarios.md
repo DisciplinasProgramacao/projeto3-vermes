@@ -44,19 +44,19 @@ isso aparentemente seria um forEach (ou um sublist/submap)
 
 
 # Requisitos:
-  - Gerais: /6 pontos
+  - Gerais: 0/6 pontos
     - cliente mudar de plano
     - estacionar e cálculo de preço
     - relatórios estacionamento
     - relatórios cliente e carro
-  - Padrões de projeto: /6 pontos
+  - Padrões de projeto: 2/6 pontos
     - Factory 
-    - Strategy
-  - App: /5 pontos
+    - Observer
+  - App: 3/5 pontos
     - funcional 
     - carga de teste
     - robustez
-  - Documentação: /3 pontos
+  - Documentação: 3/3 pontos
     - diagrama 
     - javadoc 
 
